@@ -1,0 +1,10 @@
+[
+  {"key":"newtoki","name":"Newtoki","base":"https://newtoki1.org","numbered":true,"services":[{"name":"Newtoki 웹툰","path":"/webtoon"},{"name":"Newtoki 만화","path":"/manhwa"}]},
+  {"key":"toki","name":"Toki","base":"https://toki31.com","numbered":true,"services":[{"name":"Toki 웹툰","path":"/ing"},{"name":"Toki 만화","path":"/manhwa"}]},
+  {"key":"blacktoon","name":"Blacktoon","base":"https://blacktoon417.com","numbered":true,"services":[{"name":"Blacktoon 웹툰","path":"/"}]},
+  {"key":"jjaptoon","name":"Jjaptoon","base":"https://www.jjaptoon004.com","numbered":true,"services":[{"name":"Jjaptoon 웹툰","path":"/"}]},
+  {"key":"sbxh","name":"SBXH","base":"https://sbxh9.com","numbered":true,"services":[{"name":"SBXH 웹툰","path":"/ing"},{"name":"SBXH 만화","path":"/manhwa"}]},
+  {"key":"wfwf","name":"WFWF","base":"https://wfwf428.com","numbered":true,"services":[{"name":"WFWF 웹툰","path":"/ing"},{"name":"WFWF 만화","path":"/"}]},
+  {"key":"11toon","name":"11toon","base":"https://www.11toon.com","numbered":false,"services":[{"name":"11toon 만화","path":"/"}]},
+  {"key":"naver","name":"Naver","base":"https://comic.naver.com","numbered":false,"services":[{"name":"Naver 웹툰","path":"/webtoon"}]}
+]
