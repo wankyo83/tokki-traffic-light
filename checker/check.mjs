@@ -5,27 +5,27 @@ const oldStatus = await readOldStatus();
 const services = [];
 
 for (const site of sites) {
-  const previous = oldStatus.services?.find(s => s.group === site.key && s.ok)?.baseUrl;
-  const candidates = candidateUrls(previous || site.base, site.numbered);
-  let selected = null;
-  let lastFailure = '사이트에 연결할 수 없습니다.';
-
-  for (const candidate of candidates) {
-    const probe = await checkUrl(candidate + site.services[0].path);
-    if (probe.ok) {
-      selected = {baseUrl: candidate, probe};
-      break;
-    }
-    lastFailure = probe.reason;
-  }
-
   for (const service of site.services) {
+    const previous = oldStatus.services?.find(s => s.name === service.name && s.ok)?.baseUrl;
+    const candidates = candidateUrls(previous || site.base, site.numbered);
+    let selected = null;
+    let lastFailure = '사이트에 연결할 수 없습니다.';
+
+    for (const candidate of candidates) {
+      const probe = await checkUrl(candidate + service.path);
+      if (probe.ok) {
+        selected = {baseUrl: candidate, probe};
+        break;
+      }
+      lastFailure = probe.reason;
+    }
+
     if (!selected) {
       services.push({group:site.key,name:service.name,url:site.base + service.path,baseUrl:site.base,ok:false,reason:`기본 주소부터 +10까지 확인 실패 · ${lastFailure}`});
       continue;
     }
     const url = selected.baseUrl + service.path;
-    const result = service === site.services[0] ? selected.probe : await checkUrl(url);
+    const result = selected.probe;
     services.push({group:site.key,name:service.name,url,baseUrl:selected.baseUrl,ok:result.ok,reason:result.ok ? '' : result.reason,responseMs:result.responseMs});
   }
 }
