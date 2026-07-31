@@ -1,21 +1,23 @@
 {
-  "checkedAt": "2026-07-31T23:40:49.213Z",
+  "checkedAt": "2026-07-31T23:47:58.722Z",
   "services": [
     {
       "group": "newtoki",
       "name": "Newtoki 웹툰",
-      "url": "https://newtoki1.org/webtoon",
-      "baseUrl": "https://newtoki1.org",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "url": "https://newtoki9.org/webtoon",
+      "baseUrl": "https://newtoki9.org",
+      "ok": true,
+      "reason": "",
+      "responseMs": 1826
     },
     {
       "group": "newtoki",
       "name": "Newtoki 만화",
-      "url": "https://newtoki1.org/manhwa",
-      "baseUrl": "https://newtoki1.org",
+      "url": "https://newtoki9.org/manhwa",
+      "baseUrl": "https://newtoki9.org",
       "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "reason": "HTTP 404 Not Found",
+      "responseMs": 187
     },
     {
       "group": "toki",
@@ -23,7 +25,7 @@
       "url": "https://toki31.com/ing",
       "baseUrl": "https://toki31.com",
       "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · EACCES"
+      "reason": "기본 주소부터 +10까지 확인 실패 · HTTP 403 Forbidden"
     },
     {
       "group": "toki",
@@ -31,71 +33,79 @@
       "url": "https://toki31.com/manhwa",
       "baseUrl": "https://toki31.com",
       "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · EACCES"
+      "reason": "기본 주소부터 +10까지 확인 실패 · HTTP 403 Forbidden"
     },
     {
       "group": "blacktoon",
       "name": "Blacktoon 웹툰",
       "url": "https://blacktoon417.com/",
       "baseUrl": "https://blacktoon417.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "ok": true,
+      "reason": "",
+      "responseMs": 79
     },
     {
       "group": "jjaptoon",
       "name": "Jjaptoon 웹툰",
       "url": "https://www.jjaptoon004.com/",
       "baseUrl": "https://www.jjaptoon004.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "ok": true,
+      "reason": "",
+      "responseMs": 83
     },
     {
       "group": "sbxh",
       "name": "SBXH 웹툰",
       "url": "https://sbxh9.com/ing",
       "baseUrl": "https://sbxh9.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "ok": true,
+      "reason": "",
+      "responseMs": 895
     },
     {
       "group": "sbxh",
       "name": "SBXH 만화",
       "url": "https://sbxh9.com/manhwa",
       "baseUrl": "https://sbxh9.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "ok": true,
+      "reason": "",
+      "responseMs": 382
     },
     {
       "group": "wfwf",
       "name": "WFWF 웹툰",
       "url": "https://wfwf428.com/ing",
       "baseUrl": "https://wfwf428.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · EACCES"
+      "ok": true,
+      "reason": "",
+      "responseMs": 941
     },
     {
       "group": "wfwf",
       "name": "WFWF 만화",
       "url": "https://wfwf428.com/",
       "baseUrl": "https://wfwf428.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · EACCES"
+      "ok": true,
+      "reason": "",
+      "responseMs": 349
     },
     {
       "group": "11toon",
       "name": "11toon 만화",
       "url": "https://www.11toon.com/",
       "baseUrl": "https://www.11toon.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · EACCES"
+      "ok": true,
+      "reason": "",
+      "responseMs": 6252
     },
     {
       "group": "naver",
       "name": "Naver 웹툰",
       "url": "https://comic.naver.com/webtoon",
       "baseUrl": "https://comic.naver.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · EACCES"
+      "ok": true,
+      "reason": "",
+      "responseMs": 569
     }
   ]
 }
