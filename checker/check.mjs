@@ -1,23 +1,30 @@
 import fs from 'node:fs/promises';
 
 const sites = JSON.parse(await fs.readFile(new URL('./sites.json', import.meta.url), 'utf8'));
-const oldStatus = await readOldStatus();
 const services = [];
 
 for (const site of sites) {
   for (const service of site.services) {
-    const previous = oldStatus.services?.find(s => s.name === service.name && s.ok)?.baseUrl;
-    const candidates = candidateUrls(previous || site.base, site.numbered);
+    const candidates = candidateUrls(site.base, site.numbered);
     let selected = null;
     let lastFailure = '사이트에 연결할 수 없습니다.';
+    let defaultProbe = null;
 
-    for (const candidate of candidates) {
-      const probe = await checkUrl(candidate + service.path);
+    for (let index = 0; index < candidates.length; index++) {
+      const candidate = candidates[index];
+      const probe = await checkUrl(candidate + service.path, site, service);
+      if (index === 0) defaultProbe = probe;
       if (probe.ok) {
         selected = {baseUrl: candidate, probe};
         break;
       }
       lastFailure = probe.reason;
+    }
+
+    // GitHub 서버에서만 차단된 기본 주소는 DNS가 살아 있으면 유지한다.
+    // 번호 후보 주소는 반드시 사이트 고유 문구와 콘텐츠 구조가 확인돼야 채택한다.
+    if (!selected && defaultProbe && isRunnerLimited(defaultProbe) && await dnsExists(new URL(site.base).hostname)) {
+      selected = {baseUrl: site.base, probe: {...defaultProbe, ok:true, limited:true}};
     }
 
     if (!selected) {
@@ -33,11 +40,6 @@ for (const site of sites) {
 await fs.writeFile(new URL('../site/status.json', import.meta.url), JSON.stringify({checkedAt:new Date().toISOString(),services}, null, 2) + '\n');
 console.log(JSON.stringify(services.map(({name,url,ok,reason}) => ({name,url,ok,reason})), null, 2));
 
-async function readOldStatus() {
-  try { return JSON.parse(await fs.readFile(new URL('../site/status.json', import.meta.url), 'utf8')); }
-  catch { return {services:[]}; }
-}
-
 function candidateUrls(base, numbered) {
   if (!numbered) return [base];
   const url = new URL(base);
@@ -52,7 +54,7 @@ function candidateUrls(base, numbered) {
   });
 }
 
-async function checkUrl(url) {
+async function checkUrl(url, site, service) {
   const started = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
@@ -63,10 +65,30 @@ async function checkUrl(url) {
     if (!response.ok) return {ok:false,responseMs,reason:`HTTP ${response.status} ${response.statusText}`.trim()};
     if (/cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text)) return {ok:false,responseMs,reason:'Cloudflare 브라우저 인증이 필요합니다.'};
     if (!/<html|<!doctype|<body/i.test(text)) return {ok:false,responseMs,reason:'정상 웹페이지 형식이 아닙니다.'};
+    const normalized = text.toLowerCase();
+    const siteMatch = site.markers.some(marker => normalized.includes(marker.toLowerCase()));
+    const sectionMatch = service.markers.some(marker => normalized.includes(marker.toLowerCase()));
+    if (!siteMatch || !sectionMatch) return {ok:false,responseMs,identityMismatch:true,reason:'사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
     return {ok:true,responseMs};
   } catch (error) {
     const responseMs = Date.now() - started;
     if (error.name === 'AbortError') return {ok:false,responseMs,reason:'응답 시간 초과'};
     return {ok:false,responseMs,reason:error.cause?.code || error.message};
   } finally { clearTimeout(timer); }
+}
+
+async function dnsExists(hostname) {
+  try {
+    const response = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(hostname)}&type=A`, {headers:{accept:'application/dns-json'}});
+    if (!response.ok) return false;
+    const data = await response.json();
+    return data.Status === 0 && Array.isArray(data.Answer) && data.Answer.some(answer => answer.type === 1);
+  } catch { return false; }
+}
+
+function isRunnerLimited(probe) {
+  return !probe.identityMismatch && (
+    /^HTTP (403|429)\b/.test(probe.reason) ||
+    /^(ENOTFOUND|EAI_AGAIN|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|검사 시간 초과)$/.test(probe.reason)
+  );
 }
