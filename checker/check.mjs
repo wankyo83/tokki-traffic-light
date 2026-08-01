@@ -60,7 +60,11 @@ async function checkUrl(url, site, service) {
   const timer = setTimeout(() => controller.abort(), 12000);
   try {
     const response = await fetch(url, {redirect:'follow',signal:controller.signal,headers:{'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/127 Safari/537.36','accept':'text/html,application/xhtml+xml'}});
-    const text = (await response.text()).slice(0, 300000);
+    const bytes = await response.arrayBuffer();
+    const charset = response.headers.get('content-type')?.match(/charset\s*=\s*["']?([^;"'\s]+)/i)?.[1] || 'utf-8';
+    let text;
+    try { text = new TextDecoder(charset).decode(bytes).slice(0, 300000); }
+    catch { text = new TextDecoder('utf-8').decode(bytes).slice(0, 300000); }
     const responseMs = Date.now() - started;
     if (!response.ok) return {ok:false,responseMs,reason:`HTTP ${response.status} ${response.statusText}`.trim()};
     if (/cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text)) return {ok:false,responseMs,reason:'Cloudflare 브라우저 인증이 필요합니다.'};
