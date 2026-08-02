@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-02T14:02:07.987Z",
+  "checkedAt": "2026-08-02T15:11:38.666Z",
   "services": [
     {
       "group": "newtoki",
@@ -8,7 +8,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 558
+      "responseMs": 799
     },
     {
       "group": "newtoki",
@@ -17,7 +17,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 292
+      "responseMs": 201
     },
     {
       "group": "toki",
@@ -26,7 +26,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 487
+      "responseMs": 282
     },
     {
       "group": "toki",
@@ -35,7 +35,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 195
+      "responseMs": 210
     },
     {
       "group": "blacktoon",
@@ -44,16 +44,15 @@
       "baseUrl": "https://blacktoon417.com",
       "ok": true,
       "reason": "",
-      "responseMs": 218
+      "responseMs": 80
     },
     {
       "group": "jjaptoon",
       "name": "Jjaptoon 웹툰",
       "url": "https://www.jjaptoon004.com/",
       "baseUrl": "https://www.jjaptoon004.com",
-      "ok": true,
-      "reason": "",
-      "responseMs": 689
+      "ok": false,
+      "reason": "기본 주소부터 +10까지 확인 실패 · ENOTFOUND"
     },
     {
       "group": "sbxh",
@@ -62,7 +61,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 996
+      "responseMs": 776
     },
     {
       "group": "sbxh",
@@ -71,7 +70,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 430
+      "responseMs": 395
     },
     {
       "group": "wfwf",
@@ -80,7 +79,7 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 904
+      "responseMs": 1183
     },
     {
       "group": "wfwf",
@@ -89,7 +88,7 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 630
+      "responseMs": 196
     },
     {
       "group": "11toon",
@@ -98,7 +97,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 6238
+      "responseMs": 1672
     },
     {
       "group": "naver",
@@ -107,7 +106,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 749
+      "responseMs": 433
     }
   ]
 }
