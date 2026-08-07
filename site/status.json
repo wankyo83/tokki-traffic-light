@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-07T23:00:17.201Z",
+  "checkedAt": "2026-08-07T23:41:54.385Z",
   "services": [
     {
       "group": "newtoki",
@@ -8,7 +8,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 678
+      "responseMs": 864
     },
     {
       "group": "newtoki",
@@ -17,7 +17,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 144
+      "responseMs": 225
     },
     {
       "group": "toki",
@@ -26,7 +26,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 299
+      "responseMs": 463
     },
     {
       "group": "toki",
@@ -35,7 +35,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 261
+      "responseMs": 248
     },
     {
       "group": "blacktoon",
@@ -44,7 +44,7 @@
       "baseUrl": "https://blacktoon417.com",
       "ok": true,
       "reason": "",
-      "responseMs": 207
+      "responseMs": 368
     },
     {
       "group": "jjaptoon",
@@ -53,7 +53,7 @@
       "baseUrl": "https://www.jjaptoon004.com",
       "ok": true,
       "reason": "",
-      "responseMs": 193
+      "responseMs": 225
     },
     {
       "group": "sbxh",
@@ -62,7 +62,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1094
+      "responseMs": 839
     },
     {
       "group": "sbxh",
@@ -71,7 +71,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 301
+      "responseMs": 420
     },
     {
       "group": "wfwf",
@@ -80,7 +80,7 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 677
+      "responseMs": 1030
     },
     {
       "group": "wfwf",
@@ -89,7 +89,7 @@
       "baseUrl": "https://wfwf435.com",
       "ok": true,
       "reason": "",
-      "responseMs": 848
+      "responseMs": 297
     },
     {
       "group": "11toon",
@@ -98,7 +98,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 6527
+      "responseMs": 6957
     },
     {
       "group": "naver",
@@ -107,7 +107,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 852
+      "responseMs": 638
     }
   ]
 }
