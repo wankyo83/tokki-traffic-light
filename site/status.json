@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-09T09:50:52.691Z",
+  "checkedAt": "2026-08-09T10:18:40.115Z",
   "services": [
     {
       "group": "newtoki",
@@ -24,7 +24,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 385
+      "responseMs": 455
     },
     {
       "group": "toki",
@@ -33,7 +33,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 129
+      "responseMs": 215
     },
     {
       "group": "blacktoon",
@@ -42,7 +42,7 @@
       "baseUrl": "https://blacktoon417.com",
       "ok": true,
       "reason": "",
-      "responseMs": 187
+      "responseMs": 161
     },
     {
       "group": "jjaptoon",
@@ -51,7 +51,7 @@
       "baseUrl": "https://www.jjaptoon004.com",
       "ok": true,
       "reason": "",
-      "responseMs": 259
+      "responseMs": 95
     },
     {
       "group": "sbxh",
@@ -60,7 +60,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1028
+      "responseMs": 876
     },
     {
       "group": "sbxh",
@@ -69,7 +69,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 484
+      "responseMs": 391
     },
     {
       "group": "wfwf",
@@ -78,7 +78,7 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 728
+      "responseMs": 886
     },
     {
       "group": "wfwf",
@@ -87,7 +87,7 @@
       "baseUrl": "https://wfwf435.com",
       "ok": true,
       "reason": "",
-      "responseMs": 777
+      "responseMs": 824
     },
     {
       "group": "11toon",
@@ -96,7 +96,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 5096
+      "responseMs": 9085
     },
     {
       "group": "naver",
@@ -105,7 +105,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 804
+      "responseMs": 556
     }
   ]
 }
