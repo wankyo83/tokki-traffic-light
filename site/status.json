@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-10T23:21:50.337Z",
+  "checkedAt": "2026-08-10T23:56:12.805Z",
   "services": [
     {
       "group": "newtoki",
@@ -8,7 +8,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 1138
+      "responseMs": 1287
     },
     {
       "group": "newtoki",
@@ -17,7 +17,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 429
+      "responseMs": 832
     },
     {
       "group": "toki",
@@ -26,7 +26,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 483
+      "responseMs": 462
     },
     {
       "group": "toki",
@@ -35,7 +35,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 227
+      "responseMs": 154
     },
     {
       "group": "blacktoon",
@@ -44,7 +44,7 @@
       "baseUrl": "https://blacktoon417.com",
       "ok": true,
       "reason": "",
-      "responseMs": 147
+      "responseMs": 330
     },
     {
       "group": "jjaptoon",
@@ -61,7 +61,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1105
+      "responseMs": 977
     },
     {
       "group": "sbxh",
@@ -70,7 +70,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 486
+      "responseMs": 624
     },
     {
       "group": "wfwf",
@@ -79,7 +79,7 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 610
+      "responseMs": 749
     },
     {
       "group": "wfwf",
@@ -88,7 +88,7 @@
       "baseUrl": "https://wfwf436.com",
       "ok": true,
       "reason": "",
-      "responseMs": 797
+      "responseMs": 274
     },
     {
       "group": "11toon",
@@ -97,7 +97,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1833
+      "responseMs": 6203
     },
     {
       "group": "naver",
@@ -106,7 +106,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1267
+      "responseMs": 955
     }
   ]
 }
