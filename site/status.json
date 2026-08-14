@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-14T17:59:19.994Z",
+  "checkedAt": "2026-08-14T19:06:22.614Z",
   "services": [
     {
       "group": "newtoki",
@@ -8,7 +8,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 1070
+      "responseMs": 994
     },
     {
       "group": "newtoki",
@@ -17,7 +17,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 368
+      "responseMs": 376
     },
     {
       "group": "toki",
@@ -26,7 +26,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 134
+      "responseMs": 437
     },
     {
       "group": "toki",
@@ -35,7 +35,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 237
+      "responseMs": 277
     },
     {
       "group": "blacktoon",
@@ -44,7 +44,7 @@
       "baseUrl": "https://blacktoon417.com",
       "ok": true,
       "reason": "",
-      "responseMs": 218
+      "responseMs": 185
     },
     {
       "group": "jjaptoon",
@@ -53,7 +53,7 @@
       "baseUrl": "https://www.jjaptoon004.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1208
+      "responseMs": 1046
     },
     {
       "group": "sbxh",
@@ -62,7 +62,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 953
+      "responseMs": 798
     },
     {
       "group": "sbxh",
@@ -71,7 +71,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 433
+      "responseMs": 365
     },
     {
       "group": "wfwf",
@@ -80,16 +80,16 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 941
+      "responseMs": 960
     },
     {
       "group": "wfwf",
       "name": "WFWF 만화",
-      "url": "https://wfwf437.com/",
-      "baseUrl": "https://wfwf437.com",
+      "url": "https://wfwf438.com/",
+      "baseUrl": "https://wfwf438.com",
       "ok": true,
       "reason": "",
-      "responseMs": 773
+      "responseMs": 262
     },
     {
       "group": "11toon",
@@ -98,7 +98,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1430
+      "responseMs": 3684
     },
     {
       "group": "naver",
@@ -107,7 +107,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 706
+      "responseMs": 873
     }
   ]
 }
