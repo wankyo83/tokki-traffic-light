@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-16T18:01:09.547Z",
+  "checkedAt": "2026-08-16T18:41:40.888Z",
   "services": [
     {
       "group": "newtoki",
@@ -8,7 +8,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 1237
+      "responseMs": 10516
     },
     {
       "group": "newtoki",
@@ -17,7 +17,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 808
+      "responseMs": 10283
     },
     {
       "group": "toki",
@@ -26,7 +26,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 521
+      "responseMs": 508
     },
     {
       "group": "toki",
@@ -35,7 +35,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 171
+      "responseMs": 189
     },
     {
       "group": "blacktoon",
@@ -44,7 +44,7 @@
       "baseUrl": "https://blacktoon417.com",
       "ok": true,
       "reason": "",
-      "responseMs": 388
+      "responseMs": 474
     },
     {
       "group": "jjaptoon",
@@ -53,7 +53,7 @@
       "baseUrl": "https://www.jjaptoon004.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1205
+      "responseMs": 1617
     },
     {
       "group": "sbxh",
@@ -62,7 +62,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 995
+      "responseMs": 10488
     },
     {
       "group": "sbxh",
@@ -71,7 +71,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 428
+      "responseMs": 10190
     },
     {
       "group": "wfwf",
@@ -80,16 +80,15 @@
       "baseUrl": "https://wfwf431.com",
       "ok": true,
       "reason": "",
-      "responseMs": 769
+      "responseMs": 959
     },
     {
       "group": "wfwf",
       "name": "WFWF 만화",
-      "url": "https://wfwf439.com/",
-      "baseUrl": "https://wfwf439.com",
-      "ok": true,
-      "reason": "",
-      "responseMs": 699
+      "url": "https://wfwf431.com/",
+      "baseUrl": "https://wfwf431.com",
+      "ok": false,
+      "reason": "기본 주소부터 +10까지 확인 실패 · 사이트 또는 콘텐츠 종류가 일치하지 않습니다."
     },
     {
       "group": "11toon",
@@ -98,7 +97,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 2410
+      "responseMs": 5204
     },
     {
       "group": "naver",
@@ -107,7 +106,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 729
+      "responseMs": 784
     }
   ]
 }
