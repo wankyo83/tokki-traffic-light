@@ -29,10 +29,13 @@ function addressRow(group) {
   node.className = 'row address-row';
   const state = group.state === 'healthy' ? '정상' : group.state === 'verifying' ? '새 주소 확인 중' : group.state === 'stale' ? '마지막 정상 주소 보호 중' : '확인 필요';
   const icon = group.state === 'healthy' ? '✅' : group.state === 'unavailable' ? '❌' : '⚠️';
+  const activeAddress = group.activeBaseUrl
+    ? `<a class="url address-link" href="${escapeHtml(group.activeBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.activeBaseUrl)}</a>`
+    : '<div class="url">확정 주소 없음</div>';
   const candidate = group.candidateBaseUrl
-    ? `<div class="candidate">후보: ${escapeHtml(group.candidateBaseUrl)} · ${group.candidateConfirmations}/${group.candidateConfirmationsRequired}회 확인</div>`
+    ? `<div class="candidate">후보: <a href="${escapeHtml(group.candidateBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.candidateBaseUrl)}</a> · ${group.candidateConfirmations}/${group.candidateConfirmationsRequired}회 확인</div>`
     : '';
-  node.innerHTML = `<span class="state">${icon}</span><div class="copy"><div class="name">${escapeHtml(group.name)} <span class="badge ${escapeHtml(group.state)}">${state}</span></div><div class="url">${escapeHtml(group.activeBaseUrl || '확정 주소 없음')}</div>${candidate}</div><button class="copy-button" type="button">복사</button>`;
+  node.innerHTML = `<span class="state">${icon}</span><div class="copy"><div class="name">${escapeHtml(group.name)} <span class="badge ${escapeHtml(group.state)}">${state}</span></div>${activeAddress}${candidate}</div><button class="copy-button" type="button">복사</button>`;
   const button = node.querySelector('.copy-button');
   button.disabled = !group.activeBaseUrl;
   button.addEventListener('click', async () => {

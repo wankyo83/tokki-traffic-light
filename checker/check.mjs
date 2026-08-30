@@ -4,7 +4,11 @@ import {fileURLToPath} from 'node:url';
 
 const checkerDir = path.dirname(fileURLToPath(import.meta.url));
 const outputDir = path.resolve(checkerDir, '../site');
-const sites = JSON.parse(await fs.readFile(path.join(checkerDir, 'sites.json'), 'utf8'));
+const configuredSites = JSON.parse(await fs.readFile(path.join(checkerDir, 'sites.json'), 'utf8'));
+const requestedSiteKeys = new Set((process.env.CHECK_SITE_KEYS || '').split(',').map(value => value.trim()).filter(Boolean));
+const sites = requestedSiteKeys.size
+  ? configuredSites.filter(site => requestedSiteKeys.has(site.key))
+  : configuredSites;
 const previous = await readPreviousStatus();
 const previousServices = Array.isArray(previous.services) ? previous.services : [];
 const previousGroups = new Map((previous.groups ?? []).map(group => [group.key, group]));
@@ -114,17 +118,38 @@ const domains = {
     }])),
 };
 
-await fs.writeFile(path.join(outputDir, 'status.json'), `${JSON.stringify(status, null, 2)}\n`);
-await fs.writeFile(path.join(outputDir, 'domains.json'), `${JSON.stringify(domains, null, 2)}\n`);
+if (process.env.DRY_RUN !== 'true') {
+  await fs.writeFile(path.join(outputDir, 'status.json'), `${JSON.stringify(status, null, 2)}\n`);
+  await fs.writeFile(path.join(outputDir, 'domains.json'), `${JSON.stringify(domains, null, 2)}\n`);
+}
 console.log(JSON.stringify({checkedAt, durationMs: status.durationMs, groups}, null, 2));
 
 async function discoverBase(site, service, activeBaseUrl) {
   const candidates = candidateUrls(activeBaseUrl, site.numbered);
   const first = candidates[0];
   const firstProbe = await checkUrl(`${first}${service.path}`, site, service);
+  debug('현재 주소 검사', {site: site.key, url: `${first}${service.path}`, probe: firstProbe});
   if (firstProbe.ok) {
     const resolved = firstProbe.resolvedBaseUrl ?? first;
     return {probeBaseUrl: resolved, probe: firstProbe, reason: ''};
+  }
+
+  // 일부 사이트는 이전 번호에 실제 콘텐츠를 두고, 다음 번호에는 최신 주소만
+  // 안내한다. 안내된 주소를 그대로 믿지 않고 실제 콘텐츠 구조까지 다시 검증한다.
+  if (firstProbe.announcement) {
+    const announcedBaseUrl = firstProbe.announcedBaseUrl ?? await fetchAnnouncedBaseUrl(first, site);
+    debug('안내 주소 확인', {site: site.key, announcedBaseUrl});
+    const announcedProbe = announcedBaseUrl
+      ? await checkUrl(`${announcedBaseUrl}${service.path}`, site, service)
+      : null;
+    debug('안내된 실제 주소 검사', {site: site.key, announcedBaseUrl, probe: announcedProbe});
+    if (announcedProbe?.ok) {
+      return {
+        probeBaseUrl: announcedProbe.resolvedBaseUrl ?? announcedBaseUrl,
+        probe: announcedProbe,
+        reason: '',
+      };
+    }
   }
 
   if (isTransientFailure(firstProbe.reason) && await dnsExists(new URL(first).hostname)) {
@@ -220,12 +245,41 @@ async function checkUrlOnce(url, site, service) {
     catch { text = new TextDecoder('utf-8').decode(bytes).slice(0, 300_000); }
     const responseMs = Date.now() - started;
     if (!response.ok) return {ok: false, responseMs, reason: `HTTP ${response.status} ${response.statusText}`.trim()};
-    if (/cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text)) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
     if (!/<html|<!doctype|<body/i.test(text)) return {ok: false, responseMs, reason: '정상 웹페이지 형식이 아닙니다.'};
     const normalized = text.toLowerCase();
+    const challengeDetected = /cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text);
+    if (site.announcementMarkers?.some(marker => normalized.includes(marker.toLowerCase()))) {
+      const announcedBaseUrl = extractAnnouncedBaseUrl(text, site);
+      return {
+        ok: false,
+        responseMs,
+        announcement: true,
+        announcedBaseUrl,
+        reason: announcedBaseUrl ? `최신 주소 안내 페이지 · ${announcedBaseUrl}` : '최신 주소 안내 페이지',
+      };
+    }
     const siteMatch = site.markers.some(marker => normalized.includes(marker.toLowerCase()));
     const sectionMatch = service.markers.some(marker => normalized.includes(marker.toLowerCase()));
-    if (!siteMatch || !sectionMatch) return {ok: false, responseMs, identityMismatch: true, reason: '사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
+    if (!siteMatch || !sectionMatch) {
+      if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
+      return {ok: false, responseMs, identityMismatch: true, reason: '사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
+    }
+    if (service.requiredPatterns?.length) {
+      const patternMatches = service.requiredPatterns.reduce(
+        (total, pattern) => total + countOccurrences(normalized, pattern.toLowerCase()),
+        0,
+      );
+      const minimumPatternMatches = Number(service.minimumPatternMatches || 1);
+      if (patternMatches < minimumPatternMatches) {
+        if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
+        return {
+          ok: false,
+          responseMs,
+          identityMismatch: true,
+          reason: `카테고리·작품 목록 구조가 부족합니다. (${patternMatches}/${minimumPatternMatches})`,
+        };
+      }
+    }
     const resolvedBaseUrl = resolvedBase(response.url, site);
     if (!resolvedBaseUrl) return {ok: false, responseMs, identityMismatch: true, reason: '허용되지 않은 다른 도메인으로 이동했습니다.'};
     return {ok: true, responseMs, resolvedBaseUrl};
@@ -289,6 +343,41 @@ function resolvedBase(responseUrl, site) {
   }
 }
 
+function extractAnnouncedBaseUrl(text, site) {
+  if (!site.announcedHostPattern) return null;
+  const match = text.match(new RegExp(site.announcedHostPattern, 'i'));
+  if (!match) return null;
+  try {
+    const candidate = `https://${match[0]}`;
+    return sameDomainFamily(site.base, candidate) ? new URL(candidate).origin : null;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchAnnouncedBaseUrl(baseUrl, site) {
+  if (!site.announcementDataPath || !site.announcementDataField) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8_000);
+  try {
+    const response = await fetch(new URL(site.announcementDataPath, baseUrl), {
+      signal: controller.signal,
+      cache: 'no-store',
+      headers: {accept: 'application/json'},
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    const raw = data?.[site.announcementDataField];
+    if (typeof raw !== 'string') return null;
+    const candidate = new URL(raw).origin;
+    return sameDomainFamily(site.base, candidate) ? candidate : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function sameDomainFamily(configuredBase, candidateBase) {
   const configured = new URL(configuredBase);
   const candidate = new URL(candidateBase);
@@ -343,6 +432,21 @@ function latestTimestamp(values) {
   return values.filter(Boolean).sort().at(-1) ?? null;
 }
 
+function countOccurrences(text, search) {
+  if (!search) return 0;
+  let count = 0;
+  let position = 0;
+  while ((position = text.indexOf(search, position)) !== -1) {
+    count++;
+    position += search.length;
+  }
+  return count;
+}
+
 function delay(milliseconds) {
   return milliseconds > 0 ? new Promise(resolve => setTimeout(resolve, milliseconds)) : Promise.resolve();
+}
+
+function debug(label, value) {
+  if (process.env.DEBUG_CHECKS === 'true') console.log(`[debug] ${label}`, JSON.stringify(value));
 }
