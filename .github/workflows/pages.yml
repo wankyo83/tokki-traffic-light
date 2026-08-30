@@ -3,9 +3,8 @@ name: 사이트 검사 및 Pages 배포
 on:
   workflow_dispatch:
   schedule:
-    # GitHub Actions의 최소 예약 간격인 5분마다 실행합니다.
-    # 정각의 혼잡을 피하도록 매시 2분부터 시작합니다.
-    - cron: '2/5 * * * *'
+    # 매시 2분부터 10분 간격으로 실행해 동시 실행과 정각 혼잡을 피합니다.
+    - cron: '2/10 * * * *'
   push:
     branches: [main]
     paths:
@@ -15,7 +14,7 @@ on:
       - '.github/workflows/pages.yml'
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -32,14 +31,13 @@ jobs:
         with:
           node-version: '22'
       - name: 사이트 상태 검사
+        env:
+          PREVIOUS_STATUS_URL: https://wankyo83.github.io/tokki-traffic-light/status.json
+          SERVICE_DELAY_MS: '20000'
+          SITE_DELAY_MS: '3000'
+          CANDIDATE_CONFIRMATIONS: '2'
+          CHECK_INTERVAL_MINUTES: '10'
         run: node checker/check.mjs
-      - name: 검사 결과 저장
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add site/status.json
-          git diff --cached --quiet || git commit -m "chore: 사이트 상태 갱신"
-          git push
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

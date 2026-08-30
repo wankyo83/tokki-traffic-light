@@ -7,14 +7,17 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 h1{font-size:clamp(25px,5vw,34px);line-height:1.15;margin:0 0 5px;letter-spacing:-.04em}.hero p{margin:0;color:var(--muted);font-size:14px}
 #refresh{margin-left:auto;width:44px;height:44px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--blue);font-size:27px;cursor:pointer;box-shadow:0 2px 7px #1620320a}
 #refresh.spinning{animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-.meta{color:var(--muted);font-size:13px;margin:0 3px 14px;text-align:right}
+.meta{display:flex;justify-content:flex-end;gap:12px;color:var(--muted);font-size:13px;margin:0 3px 14px;text-align:right}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}.summary div{display:flex;align-items:baseline;justify-content:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px}.summary strong{font-size:22px}.summary span{font-size:13px;color:var(--muted)}
 .status-section{background:var(--card);border:1px solid var(--line);border-radius:20px;margin:0 0 18px;overflow:hidden;box-shadow:0 4px 18px #12213a0a}
 .status-section h2{font-size:18px;margin:0;padding:18px 20px;border-bottom:1px solid var(--line);letter-spacing:-.02em}.ok-section h2{color:var(--green)}.down-section h2{color:var(--red)}
 .rows:empty::after{content:"해당 항목 없음";display:block;padding:25px 20px;text-align:center;color:#98a2b3}
 .row{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;min-height:72px}.row:last-child{border-bottom:0}.row.link:hover{background:#f8fbff}
-.state{font-size:20px;flex:0 0 auto}.copy{min-width:0;flex:1}.name{font-weight:700;font-size:16px;margin-bottom:5px}.url{font-size:14px;color:var(--blue);word-break:break-all}.reason{font-size:13px;color:var(--red);margin-top:6px;line-height:1.45}.arrow{color:#98a2b3;font-size:22px}
+.state{font-size:20px;flex:0 0 auto}.copy{min-width:0;flex:1}.name{font-weight:700;font-size:16px;margin-bottom:5px}.url{font-size:14px;color:var(--blue);word-break:break-all}.reason{font-size:13px;color:var(--red);margin-top:6px;line-height:1.45}.reason.warning,.candidate{color:#b36a00}.candidate,.last-success{font-size:12px;margin-top:6px}.last-success{color:var(--muted)}.arrow{color:#98a2b3;font-size:22px}
+.badge{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;font-size:11px;font-weight:600;vertical-align:2px;background:#edf7ef;color:var(--green)}.badge.stale,.badge.verifying{background:#fff5dc;color:#9a6200}.badge.unavailable{background:#fff0f1;color:var(--red)}
+.copy-button{border:1px solid var(--line);background:var(--card);color:var(--blue);border-radius:9px;padding:7px 11px;cursor:pointer}.copy-button:disabled{opacity:.45;cursor:default}
 .skeleton{height:74px;background:linear-gradient(100deg,#fff 20%,#f1f4f8 45%,#fff 70%);background-size:300% 100%;animation:shimmer 1.2s infinite}@keyframes shimmer{to{background-position:-150% 0}}
 .error{padding:25px 20px;text-align:center;color:var(--red);line-height:1.6}
 footer{color:var(--muted);font-size:12px;line-height:1.6;padding:3px 7px;text-align:center}
-@media(max-width:520px){.shell{padding-top:12px}.hero{gap:12px}.logo{width:56px;height:56px;flex-basis:56px}.status-section{border-radius:17px}.row{padding:15px 16px}.status-section h2{padding:16px}.name{font-size:15px}.url{font-size:13px}}
+@media(max-width:520px){.shell{padding-top:12px}.hero{gap:12px}.logo{width:56px;height:56px;flex-basis:56px}.status-section{border-radius:17px}.row{padding:15px 16px}.status-section h2{padding:16px}.name{font-size:15px}.url{font-size:13px}.meta{display:grid;gap:3px}.address-row{align-items:flex-start}.copy-button{margin-top:1px}}
 @media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0c111b;--card:#151c28;--ink:#f2f4f7;--muted:#98a2b3;--line:#283241;--green:#5bd37c;--red:#ff7580;--blue:#83b4ff}.hero #refresh{background:#151c28}.row.link:hover{background:#192333}.skeleton{background:linear-gradient(100deg,#151c28 20%,#202a38 45%,#151c28 70%);background-size:300% 100%}}

@@ -1,121 +1,280 @@
 {
-  "checkedAt": "2026-08-30T07:19:22.072Z",
+  "schemaVersion": 2,
+  "checkedAt": "2026-08-30T07:51:47.385Z",
+  "durationMs": 86569,
+  "policy": {
+    "intervalMinutes": 10,
+    "serviceDelaySeconds": 0,
+    "candidateConfirmationsRequired": 2,
+    "preservesLastKnownGood": true
+  },
+  "groups": [
+    {
+      "key": "newtoki",
+      "name": "Newtoki",
+      "activeBaseUrl": "https://newtoki1.org",
+      "state": "stale",
+      "checkedAt": "2026-08-30T07:51:01.893Z",
+      "lastSuccessfulAt": "2026-08-30T07:21:33.431Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": "연결이 일시적으로 끊어짐"
+    },
+    {
+      "key": "toki",
+      "name": "Toki",
+      "activeBaseUrl": "https://toki31.com",
+      "state": "stale",
+      "checkedAt": "2026-08-30T07:51:42.438Z",
+      "lastSuccessfulAt": "2026-08-30T07:21:33.431Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": "연결이 일시적으로 끊어짐"
+    },
+    {
+      "key": "blacktoon",
+      "name": "Blacktoon",
+      "activeBaseUrl": "https://blacktoon421.com",
+      "state": "healthy",
+      "checkedAt": "2026-08-30T07:51:42.577Z",
+      "lastSuccessfulAt": "2026-08-30T07:51:42.577Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": ""
+    },
+    {
+      "key": "jjaptoon",
+      "name": "Jjaptoon",
+      "activeBaseUrl": "https://www.jjaptoon008.com",
+      "state": "healthy",
+      "checkedAt": "2026-08-30T07:51:43.874Z",
+      "lastSuccessfulAt": "2026-08-30T07:51:43.874Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": ""
+    },
+    {
+      "key": "sbxh",
+      "name": "SBXH",
+      "activeBaseUrl": "https://sbxh9.com",
+      "state": "healthy",
+      "checkedAt": "2026-08-30T07:51:45.106Z",
+      "lastSuccessfulAt": "2026-08-30T07:51:45.106Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": ""
+    },
+    {
+      "key": "wfwf",
+      "name": "WFWF",
+      "activeBaseUrl": "https://wfwf487.com",
+      "state": "healthy",
+      "checkedAt": "2026-08-30T07:51:45.823Z",
+      "lastSuccessfulAt": "2026-08-30T07:51:45.823Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": ""
+    },
+    {
+      "key": "11toon",
+      "name": "11toon",
+      "activeBaseUrl": "https://www.11toon.com",
+      "state": "healthy",
+      "checkedAt": "2026-08-30T07:51:46.821Z",
+      "lastSuccessfulAt": "2026-08-30T07:51:46.821Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": ""
+    },
+    {
+      "key": "naver",
+      "name": "Naver",
+      "activeBaseUrl": "https://comic.naver.com",
+      "state": "healthy",
+      "checkedAt": "2026-08-30T07:51:47.385Z",
+      "lastSuccessfulAt": "2026-08-30T07:51:47.385Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "reason": ""
+    }
+  ],
   "services": [
     {
       "group": "newtoki",
       "name": "Newtoki 웹툰",
       "url": "https://newtoki1.org/webtoon",
+      "probeUrl": "https://newtoki1.org/webtoon",
       "baseUrl": "https://newtoki1.org",
-      "ok": false,
-      "reason": "현재 주소부터 +10까지 확인 실패 · ENOTFOUND"
+      "ok": true,
+      "state": "stale",
+      "reason": "연결이 일시적으로 끊어짐",
+      "responseMs": 115,
+      "lastSuccessfulAt": "2026-08-30T07:21:33.431Z",
+      "checkedAt": "2026-08-30T07:50:41.542Z"
     },
     {
       "group": "newtoki",
       "name": "Newtoki 만화",
       "url": "https://newtoki1.org/manhwa",
+      "probeUrl": "https://newtoki1.org/manhwa",
       "baseUrl": "https://newtoki1.org",
       "ok": true,
-      "reason": "",
-      "responseMs": 6609
+      "state": "stale",
+      "reason": "연결이 일시적으로 끊어짐",
+      "responseMs": 99,
+      "lastSuccessfulAt": "2026-08-30T07:21:33.431Z",
+      "checkedAt": "2026-08-30T07:51:01.893Z"
     },
     {
       "group": "toki",
       "name": "Toki 웹툰",
       "url": "https://toki31.com/ing",
+      "probeUrl": "https://toki31.com/ing",
       "baseUrl": "https://toki31.com",
       "ok": true,
-      "reason": "",
-      "responseMs": 481
+      "state": "stale",
+      "reason": "연결이 일시적으로 끊어짐",
+      "responseMs": 44,
+      "lastSuccessfulAt": "2026-08-30T07:21:33.431Z",
+      "checkedAt": "2026-08-30T07:51:22.288Z"
     },
     {
       "group": "toki",
       "name": "Toki 만화",
       "url": "https://toki31.com/manhwa",
+      "probeUrl": "https://toki31.com/manhwa",
       "baseUrl": "https://toki31.com",
       "ok": true,
-      "reason": "",
-      "responseMs": 202
+      "state": "stale",
+      "reason": "연결이 일시적으로 끊어짐",
+      "responseMs": 44,
+      "lastSuccessfulAt": "2026-08-30T07:21:33.431Z",
+      "checkedAt": "2026-08-30T07:51:42.437Z"
     },
     {
       "group": "blacktoon",
       "name": "Blacktoon 웹툰",
       "url": "https://blacktoon421.com/",
+      "probeUrl": "https://blacktoon421.com/",
       "baseUrl": "https://blacktoon421.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 218
+      "responseMs": 138,
+      "lastSuccessfulAt": "2026-08-30T07:51:42.577Z",
+      "checkedAt": "2026-08-30T07:51:42.577Z"
     },
     {
       "group": "jjaptoon",
       "name": "Jjaptoon 웹툰",
       "url": "https://www.jjaptoon008.com/",
+      "probeUrl": "https://www.jjaptoon008.com/",
       "baseUrl": "https://www.jjaptoon008.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 583
+      "responseMs": 1297,
+      "lastSuccessfulAt": "2026-08-30T07:51:43.874Z",
+      "checkedAt": "2026-08-30T07:51:43.874Z"
     },
     {
       "group": "sbxh",
       "name": "SBXH 웹툰",
       "url": "https://sbxh9.com/ing",
+      "probeUrl": "https://sbxh9.com/ing",
       "baseUrl": "https://sbxh9.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 908
+      "responseMs": 561,
+      "lastSuccessfulAt": "2026-08-30T07:51:44.436Z",
+      "checkedAt": "2026-08-30T07:51:44.436Z"
     },
     {
       "group": "sbxh",
       "name": "SBXH 만화",
       "url": "https://sbxh9.com/manhwa",
+      "probeUrl": "https://sbxh9.com/manhwa",
       "baseUrl": "https://sbxh9.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 395
+      "responseMs": 314,
+      "lastSuccessfulAt": "2026-08-30T07:51:44.750Z",
+      "checkedAt": "2026-08-30T07:51:44.750Z"
     },
     {
       "group": "sbxh",
       "name": "SBXH 소설",
       "url": "https://sbxh9.com/novel/updates",
+      "probeUrl": "https://sbxh9.com/novel/updates",
       "baseUrl": "https://sbxh9.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 11567
+      "responseMs": 354,
+      "lastSuccessfulAt": "2026-08-30T07:51:45.105Z",
+      "checkedAt": "2026-08-30T07:51:45.105Z"
     },
     {
       "group": "wfwf",
       "name": "WFWF 웹툰",
       "url": "https://wfwf487.com/ing",
+      "probeUrl": "https://wfwf487.com/ing",
       "baseUrl": "https://wfwf487.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 433
+      "responseMs": 397,
+      "lastSuccessfulAt": "2026-08-30T07:51:45.504Z",
+      "checkedAt": "2026-08-30T07:51:45.504Z"
     },
     {
       "group": "wfwf",
       "name": "WFWF 만화",
       "url": "https://wfwf487.com/cm",
+      "probeUrl": "https://wfwf487.com/cm",
       "baseUrl": "https://wfwf487.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 208
+      "responseMs": 319,
+      "lastSuccessfulAt": "2026-08-30T07:51:45.823Z",
+      "checkedAt": "2026-08-30T07:51:45.823Z"
     },
     {
       "group": "11toon",
       "name": "11toon 만화",
       "url": "https://www.11toon.com/",
+      "probeUrl": "https://www.11toon.com/",
       "baseUrl": "https://www.11toon.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 7750
+      "responseMs": 997,
+      "lastSuccessfulAt": "2026-08-30T07:51:46.821Z",
+      "checkedAt": "2026-08-30T07:51:46.821Z"
     },
     {
       "group": "naver",
       "name": "Naver 웹툰",
       "url": "https://comic.naver.com/webtoon",
+      "probeUrl": "https://comic.naver.com/webtoon",
       "baseUrl": "https://comic.naver.com",
       "ok": true,
+      "state": "healthy",
       "reason": "",
-      "responseMs": 909
+      "responseMs": 564,
+      "lastSuccessfulAt": "2026-08-30T07:51:47.385Z",
+      "checkedAt": "2026-08-30T07:51:47.385Z"
     }
   ]
 }

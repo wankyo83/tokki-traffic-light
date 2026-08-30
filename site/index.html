@@ -20,12 +20,26 @@
       </div>
       <div>
         <h1>토끼 신호등</h1>
-        <p>확장앱 사이트 접속 상태</p>
+        <p>확장앱 최신 주소 관리 페이지</p>
       </div>
       <button id="refresh" type="button" aria-label="새로고침">↻</button>
     </header>
 
-    <div class="meta"><span id="updated">검사 결과를 불러오는 중…</span></div>
+    <div class="meta">
+      <span id="updated">검사 결과를 불러오는 중…</span>
+      <span id="duration"></span>
+    </div>
+
+    <section class="summary" aria-label="검사 요약">
+      <div><strong id="healthy-count">-</strong><span>정상</span></div>
+      <div><strong id="stale-count">-</strong><span>보호 중</span></div>
+      <div><strong id="down-count">-</strong><span>확인 필요</span></div>
+    </section>
+
+    <section class="status-section address-section">
+      <h2><span>🚦</span> 확장앱이 사용하는 최신 주소</h2>
+      <div id="addresses" class="rows"><div class="skeleton"></div></div>
+    </section>
 
     <section class="status-section ok-section">
       <h2><span>✅</span> 정상 이용 가능</h2>
@@ -38,7 +52,8 @@
     </section>
 
     <footer>
-      <p>표시는 GitHub 검사 서버 기준입니다. 통신사·VPN·지역에 따라 실제 접속 결과가 다를 수 있습니다.</p>
+      <p>중앙 검사가 실패해도 확장앱에는 마지막으로 확인된 정상 주소가 유지됩니다.</p>
+      <p>표시는 GitHub 검사 서버 기준이며 통신사·VPN·지역에 따라 실제 접속 결과가 다를 수 있습니다.</p>
     </footer>
   </main>
   <script src="app.js"></script>

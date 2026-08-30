@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-30T07:51:47.385Z",
+  "domains": {
+    "newtoki": {
+      "baseUrl": "https://newtoki1.org",
+      "status": "stale",
+      "lastConfirmedAt": "2026-08-30T07:21:33.431Z"
+    },
+    "toki": {
+      "baseUrl": "https://toki31.com",
+      "status": "stale",
+      "lastConfirmedAt": "2026-08-30T07:21:33.431Z"
+    },
+    "blacktoon": {
+      "baseUrl": "https://blacktoon421.com",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-08-30T07:51:42.577Z"
+    },
+    "jjaptoon": {
+      "baseUrl": "https://www.jjaptoon008.com",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-08-30T07:51:43.874Z"
+    },
+    "sbxh": {
+      "baseUrl": "https://sbxh9.com",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-08-30T07:51:45.106Z"
+    },
+    "wfwf": {
+      "baseUrl": "https://wfwf487.com",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-08-30T07:51:45.823Z"
+    },
+    "11toon": {
+      "baseUrl": "https://www.11toon.com",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-08-30T07:51:46.821Z"
+    },
+    "naver": {
+      "baseUrl": "https://comic.naver.com",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-08-30T07:51:47.385Z"
+    }
+  }
+}
