@@ -30,6 +30,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
+      - name: 브라우저 검사 도구 준비
+        run: npm ci
       - name: 사이트 상태 검사
         env:
           PREVIOUS_STATUS_URL: https://wankyo83.github.io/tokki-traffic-light/status.json
@@ -38,6 +41,8 @@ jobs:
           CANDIDATE_CONFIRMATIONS: '2'
           CHECK_INTERVAL_MINUTES: '10'
           DEBUG_CHECKS: 'true'
+          BROWSER_FALLBACK: 'true'
+          CHROME_PATH: /usr/bin/google-chrome
         run: node checker/check.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

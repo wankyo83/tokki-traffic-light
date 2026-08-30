@@ -20,6 +20,8 @@ const serviceDelayMs = numberFromEnv('SERVICE_DELAY_MS', 20_000);
 const siteDelayMs = numberFromEnv('SITE_DELAY_MS', 3_000);
 const candidateConfirmationsRequired = numberFromEnv('CANDIDATE_CONFIRMATIONS', 2);
 const intervalMinutes = numberFromEnv('CHECK_INTERVAL_MINUTES', 10);
+const browserFallbackEnabled = process.env.BROWSER_FALLBACK === 'true';
+let browserInstancePromise = null;
 
 for (let siteIndex = 0; siteIndex < sites.length; siteIndex++) {
   const site = sites[siteIndex];
@@ -90,6 +92,8 @@ for (let siteIndex = 0; siteIndex < sites.length; siteIndex++) {
 
   if (siteIndex < sites.length - 1) await delay(siteDelayMs);
 }
+
+await closeBrowser();
 
 const checkedAt = new Date().toISOString();
 const status = {
@@ -191,7 +195,7 @@ async function discoverBase(site, service, activeBaseUrl) {
   return {
     probeBaseUrl: first,
     probe: lastProbe,
-    reason: `현재 주소부터 +10까지 확인 실패 · ${readableReason(lastProbe.reason)}`,
+    reason: `현재 주소 확인 실패: ${readableReason(firstProbe.reason)} · 다음 번호 +10까지 정상 사이트 없음`,
   };
 }
 
@@ -238,13 +242,13 @@ async function checkUrl(url, site, service, {quick = false} = {}) {
   let result;
   for (const retryDelay of retryDelays) {
     if (retryDelay) await delay(retryDelay);
-    result = await checkUrlOnce(url, site, service);
+    result = await checkUrlOnce(url, site, service, {quick});
     if (result.ok || result.identityMismatch || !isTransientFailure(result.reason)) return result;
   }
   return result;
 }
 
-async function checkUrlOnce(url, site, service) {
+async function checkUrlOnce(url, site, service, {quick = false} = {}) {
   const started = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12_000);
@@ -257,6 +261,10 @@ async function checkUrlOnce(url, site, service) {
         accept: 'text/html,application/xhtml+xml',
       },
     });
+    if (response.status === 403 && browserFallbackEnabled) {
+      debug('일반 요청 403 · 브라우저 보조 검사', {site: site.key, url});
+      return await checkUrlWithBrowser(url, site, service, started, {quick});
+    }
     const bytes = await response.arrayBuffer();
     const charset = response.headers.get('content-type')?.match(/charset\s*=\s*["']?([^;"'\s]+)/i)?.[1] || 'utf-8';
     let text;
@@ -264,44 +272,12 @@ async function checkUrlOnce(url, site, service) {
     catch { text = new TextDecoder('utf-8').decode(bytes).slice(0, 300_000); }
     const responseMs = Date.now() - started;
     if (!response.ok) return {ok: false, responseMs, reason: `HTTP ${response.status} ${response.statusText}`.trim()};
-    if (!/<html|<!doctype|<body/i.test(text)) return {ok: false, responseMs, reason: '정상 웹페이지 형식이 아닙니다.'};
-    const normalized = text.toLowerCase();
-    const challengeDetected = /cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text);
-    if (site.announcementMarkers?.some(marker => normalized.includes(marker.toLowerCase()))) {
-      const announcedBaseUrl = extractAnnouncedBaseUrl(text, site);
-      return {
-        ok: false,
-        responseMs,
-        announcement: true,
-        announcedBaseUrl,
-        reason: announcedBaseUrl ? `최신 주소 안내 페이지 · ${announcedBaseUrl}` : '최신 주소 안내 페이지',
-      };
+    const result = validateHtml(text, response.url, site, service, responseMs);
+    if (!result.ok && result.reason === 'Cloudflare 브라우저 인증이 필요합니다.' && browserFallbackEnabled) {
+      debug('브라우저 인증 화면 · 브라우저 보조 검사', {site: site.key, url});
+      return await checkUrlWithBrowser(url, site, service, started, {quick});
     }
-    const siteMatch = site.markers.some(marker => normalized.includes(marker.toLowerCase()));
-    const sectionMatch = service.markers.some(marker => normalized.includes(marker.toLowerCase()));
-    if (!siteMatch || !sectionMatch) {
-      if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
-      return {ok: false, responseMs, identityMismatch: true, reason: '사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
-    }
-    if (service.requiredPatterns?.length) {
-      const patternMatches = service.requiredPatterns.reduce(
-        (total, pattern) => total + countOccurrences(normalized, pattern.toLowerCase()),
-        0,
-      );
-      const minimumPatternMatches = Number(service.minimumPatternMatches || 1);
-      if (patternMatches < minimumPatternMatches) {
-        if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
-        return {
-          ok: false,
-          responseMs,
-          identityMismatch: true,
-          reason: `카테고리·작품 목록 구조가 부족합니다. (${patternMatches}/${minimumPatternMatches})`,
-        };
-      }
-    }
-    const resolvedBaseUrl = resolvedBase(response.url, site);
-    if (!resolvedBaseUrl) return {ok: false, responseMs, identityMismatch: true, reason: '허용되지 않은 다른 도메인으로 이동했습니다.'};
-    return {ok: true, responseMs, resolvedBaseUrl};
+    return result;
   } catch (error) {
     const responseMs = Date.now() - started;
     if (error.name === 'AbortError') return {ok: false, responseMs, reason: '응답 시간 초과'};
@@ -309,6 +285,89 @@ async function checkUrlOnce(url, site, service) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+function validateHtml(text, responseUrl, site, service, responseMs) {
+  if (!/<html|<!doctype|<body/i.test(text)) return {ok: false, responseMs, reason: '정상 웹페이지 형식이 아닙니다.'};
+  const normalized = text.toLowerCase();
+  const challengeDetected = /cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text);
+  if (site.announcementMarkers?.some(marker => normalized.includes(marker.toLowerCase()))) {
+    const announcedBaseUrl = extractAnnouncedBaseUrl(text, site);
+    return {
+      ok: false,
+      responseMs,
+      announcement: true,
+      announcedBaseUrl,
+      reason: announcedBaseUrl ? `최신 주소 안내 페이지 · ${announcedBaseUrl}` : '최신 주소 안내 페이지',
+    };
+  }
+  const siteMatch = site.markers.some(marker => normalized.includes(marker.toLowerCase()));
+  const sectionMatch = service.markers.some(marker => normalized.includes(marker.toLowerCase()));
+  if (!siteMatch || !sectionMatch) {
+    if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
+    return {ok: false, responseMs, identityMismatch: true, reason: '사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
+  }
+  if (service.requiredPatterns?.length) {
+    const patternMatches = service.requiredPatterns.reduce(
+      (total, pattern) => total + countOccurrences(normalized, pattern.toLowerCase()),
+      0,
+    );
+    const minimumPatternMatches = Number(service.minimumPatternMatches || 1);
+    if (patternMatches < minimumPatternMatches) {
+      if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
+      return {
+        ok: false,
+        responseMs,
+        identityMismatch: true,
+        reason: `카테고리·작품 목록 구조가 부족합니다. (${patternMatches}/${minimumPatternMatches})`,
+      };
+    }
+  }
+  const resolvedBaseUrl = resolvedBase(responseUrl, site);
+  if (!resolvedBaseUrl) return {ok: false, responseMs, identityMismatch: true, reason: '허용되지 않은 다른 도메인으로 이동했습니다.'};
+  return {ok: true, responseMs, resolvedBaseUrl};
+}
+
+async function checkUrlWithBrowser(url, site, service, started, {quick = false} = {}) {
+  let context;
+  try {
+    const browser = await getBrowser();
+    context = await browser.newContext({
+      locale: 'ko-KR',
+      timezoneId: 'Asia/Seoul',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127 Safari/537.36',
+      viewport: {width: 1365, height: 900},
+    });
+    const page = await context.newPage();
+    await page.goto(url, {waitUntil: 'domcontentloaded', timeout: quick ? 12_000 : 25_000});
+    await page.waitForTimeout(quick ? 1_500 : 3_000);
+    const text = (await page.content()).slice(0, 500_000);
+    const responseMs = Date.now() - started;
+    const result = validateHtml(text, page.url(), site, service, responseMs);
+    debug('브라우저 보조 검사 결과', {site: site.key, url, result});
+    return result;
+  } catch (error) {
+    return {ok: false, responseMs: Date.now() - started, reason: error.name === 'TimeoutError' ? '브라우저 검사 시간 초과' : `브라우저 검사 실패: ${error.message}`};
+  } finally {
+    await context?.close().catch(() => {});
+  }
+}
+
+async function getBrowser() {
+  if (!browserInstancePromise) {
+    browserInstancePromise = import('playwright-core').then(({chromium}) => chromium.launch({
+      executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome',
+      headless: true,
+      args: ['--no-sandbox', '--disable-dev-shm-usage'],
+    }));
+  }
+  return await browserInstancePromise;
+}
+
+async function closeBrowser() {
+  if (!browserInstancePromise) return;
+  try { await (await browserInstancePromise).close(); }
+  catch {}
 }
 
 async function readPreviousStatus() {
