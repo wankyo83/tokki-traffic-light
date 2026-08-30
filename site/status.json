@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-30T01:35:56.810Z",
+  "checkedAt": "2026-08-30T07:17:35.961Z",
   "services": [
     {
       "group": "newtoki",
@@ -8,7 +8,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 1284
+      "responseMs": 46
     },
     {
       "group": "newtoki",
@@ -17,7 +17,7 @@
       "baseUrl": "https://newtoki1.org",
       "ok": true,
       "reason": "",
-      "responseMs": 395
+      "responseMs": 449
     },
     {
       "group": "toki",
@@ -26,7 +26,7 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 528
+      "responseMs": 113
     },
     {
       "group": "toki",
@@ -35,16 +35,16 @@
       "baseUrl": "https://toki31.com",
       "ok": true,
       "reason": "",
-      "responseMs": 354
+      "responseMs": 615
     },
     {
       "group": "blacktoon",
       "name": "Blacktoon 웹툰",
-      "url": "https://blacktoon417.com/",
-      "baseUrl": "https://blacktoon417.com",
+      "url": "https://blacktoon421.com/",
+      "baseUrl": "https://blacktoon421.com",
       "ok": true,
       "reason": "",
-      "responseMs": 674
+      "responseMs": 35
     },
     {
       "group": "jjaptoon",
@@ -53,7 +53,7 @@
       "baseUrl": "https://www.jjaptoon008.com",
       "ok": true,
       "reason": "",
-      "responseMs": 596
+      "responseMs": 797
     },
     {
       "group": "sbxh",
@@ -62,7 +62,7 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 932
+      "responseMs": 43
     },
     {
       "group": "sbxh",
@@ -71,24 +71,34 @@
       "baseUrl": "https://sbxh9.com",
       "ok": true,
       "reason": "",
-      "responseMs": 453
+      "responseMs": 45
+    },
+    {
+      "group": "sbxh",
+      "name": "SBXH 소설",
+      "url": "https://sbxh9.com/novel/updates",
+      "baseUrl": "https://sbxh9.com",
+      "ok": true,
+      "reason": "",
+      "responseMs": 46
     },
     {
       "group": "wfwf",
       "name": "WFWF 웹툰",
-      "url": "https://wfwf431.com/ing",
-      "baseUrl": "https://wfwf431.com",
+      "url": "https://wfwf487.com/ing",
+      "baseUrl": "https://wfwf487.com",
       "ok": true,
       "reason": "",
-      "responseMs": 774
+      "responseMs": 404
     },
     {
       "group": "wfwf",
       "name": "WFWF 만화",
-      "url": "https://wfwf431.com/",
-      "baseUrl": "https://wfwf431.com",
-      "ok": false,
-      "reason": "기본 주소부터 +10까지 확인 실패 · 사이트 또는 콘텐츠 종류가 일치하지 않습니다."
+      "url": "https://wfwf487.com/cm",
+      "baseUrl": "https://wfwf487.com",
+      "ok": true,
+      "reason": "",
+      "responseMs": 309
     },
     {
       "group": "11toon",
@@ -97,7 +107,7 @@
       "baseUrl": "https://www.11toon.com",
       "ok": true,
       "reason": "",
-      "responseMs": 3871
+      "responseMs": 963
     },
     {
       "group": "naver",
@@ -106,7 +116,7 @@
       "baseUrl": "https://comic.naver.com",
       "ok": true,
       "reason": "",
-      "responseMs": 1402
+      "responseMs": 238
     }
   ]
 }

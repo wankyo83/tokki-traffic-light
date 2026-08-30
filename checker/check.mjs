@@ -1,11 +1,13 @@
 import fs from 'node:fs/promises';
 
 const sites = JSON.parse(await fs.readFile(new URL('./sites.json', import.meta.url), 'utf8'));
+const previousServices = await readPreviousServices();
 const services = [];
 
 for (const site of sites) {
+  let currentBase = previousBaseFor(site) ?? site.base;
   for (const service of site.services) {
-    const candidates = candidateUrls(site.base, site.numbered);
+    const candidates = candidateUrls(currentBase, site.numbered);
     let selected = null;
     let lastFailure = '사이트에 연결할 수 없습니다.';
     let defaultProbe = null;
@@ -15,7 +17,7 @@ for (const site of sites) {
       const probe = await checkUrl(candidate + service.path, site, service);
       if (index === 0) defaultProbe = probe;
       if (probe.ok) {
-        selected = {baseUrl: candidate, probe};
+        selected = {baseUrl: probe.resolvedBaseUrl ?? candidate, probe};
         break;
       }
       lastFailure = probe.reason;
@@ -23,14 +25,15 @@ for (const site of sites) {
 
     // GitHub 서버에서만 차단된 기본 주소는 DNS가 살아 있으면 유지한다.
     // 번호 후보 주소는 반드시 사이트 고유 문구와 콘텐츠 구조가 확인돼야 채택한다.
-    if (!selected && defaultProbe && isRunnerLimited(defaultProbe) && await dnsExists(new URL(site.base).hostname)) {
-      selected = {baseUrl: site.base, probe: {...defaultProbe, ok:true, limited:true}};
+    if (!selected && defaultProbe && isRunnerLimited(defaultProbe) && await dnsExists(new URL(currentBase).hostname)) {
+      selected = {baseUrl: currentBase, probe: {...defaultProbe, ok:true, limited:true}};
     }
 
     if (!selected) {
-      services.push({group:site.key,name:service.name,url:site.base + service.path,baseUrl:site.base,ok:false,reason:`기본 주소부터 +10까지 확인 실패 · ${lastFailure}`});
+      services.push({group:site.key,name:service.name,url:currentBase + service.path,baseUrl:currentBase,ok:false,reason:`현재 주소부터 +10까지 확인 실패 · ${lastFailure}`});
       continue;
     }
+    currentBase = selected.baseUrl;
     const url = selected.baseUrl + service.path;
     const result = selected.probe;
     services.push({group:site.key,name:service.name,url,baseUrl:selected.baseUrl,ok:result.ok,reason:result.ok ? '' : result.reason,responseMs:result.responseMs});
@@ -55,6 +58,16 @@ function candidateUrls(base, numbered) {
 }
 
 async function checkUrl(url, site, service) {
+  let result;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    result = await checkUrlOnce(url, site, service);
+    if (result.ok || result.identityMismatch || !isTransientFailure(result.reason)) return result;
+    await new Promise(resolve => setTimeout(resolve, 300));
+  }
+  return result;
+}
+
+async function checkUrlOnce(url, site, service) {
   const started = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
@@ -73,12 +86,63 @@ async function checkUrl(url, site, service) {
     const siteMatch = site.markers.some(marker => normalized.includes(marker.toLowerCase()));
     const sectionMatch = service.markers.some(marker => normalized.includes(marker.toLowerCase()));
     if (!siteMatch || !sectionMatch) return {ok:false,responseMs,identityMismatch:true,reason:'사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
-    return {ok:true,responseMs};
+    const resolvedBaseUrl = resolvedBase(response.url, site);
+    if (!resolvedBaseUrl) return {ok:false,responseMs,identityMismatch:true,reason:'허용되지 않은 다른 도메인으로 이동했습니다.'};
+    return {ok:true,responseMs,resolvedBaseUrl};
   } catch (error) {
     const responseMs = Date.now() - started;
     if (error.name === 'AbortError') return {ok:false,responseMs,reason:'응답 시간 초과'};
     return {ok:false,responseMs,reason:error.cause?.code || error.message};
   } finally { clearTimeout(timer); }
+}
+
+function isTransientFailure(reason) {
+  return /^(ENOTFOUND|EAI_AGAIN|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|응답 시간 초과|fetch failed)$/i.test(reason);
+}
+
+async function readPreviousServices() {
+  try {
+    const previous = JSON.parse(await fs.readFile(new URL('../site/status.json', import.meta.url), 'utf8'));
+    return Array.isArray(previous.services) ? previous.services : [];
+  } catch {
+    return [];
+  }
+}
+
+function previousBaseFor(site) {
+  const previous = previousServices.find(service => service.group === site.key && service.ok && service.baseUrl);
+  if (!previous || !sameDomainFamily(site.base, previous.baseUrl)) return null;
+  const configuredNumber = domainNumber(site.base);
+  const previousNumber = domainNumber(previous.baseUrl);
+  if (configuredNumber !== null && previousNumber !== null && previousNumber < configuredNumber) return null;
+  return previous.baseUrl;
+}
+
+function resolvedBase(responseUrl, site) {
+  try {
+    const base = new URL(responseUrl).origin;
+    return sameDomainFamily(site.base, base) ? base : null;
+  } catch {
+    return null;
+  }
+}
+
+function sameDomainFamily(configuredBase, candidateBase) {
+  const configured = new URL(configuredBase);
+  const candidate = new URL(candidateBase);
+  if (candidate.protocol !== 'https:') return false;
+  const configuredHost = configured.hostname.replace(/^www\./i, '');
+  const candidateHost = candidate.hostname.replace(/^www\./i, '');
+  const numbered = configuredHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
+  if (!numbered) return configuredHost === candidateHost;
+  const candidateNumbered = candidateHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
+  return Boolean(candidateNumbered && numbered[1] === candidateNumbered[1] && numbered[3] === candidateNumbered[3]);
+}
+
+function domainNumber(base) {
+  const host = new URL(base).hostname.replace(/^www\./i, '');
+  const match = host.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
+  return match ? Number(match[2]) : null;
 }
 
 async function dnsExists(hostname) {

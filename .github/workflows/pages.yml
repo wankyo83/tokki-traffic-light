@@ -3,7 +3,9 @@ name: 사이트 검사 및 Pages 배포
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    # GitHub Actions의 최소 예약 간격인 5분마다 실행합니다.
+    # 정각의 혼잡을 피하도록 매시 2분부터 시작합니다.
+    - cron: '2/5 * * * *'
   push:
     branches: [main]
     paths:
