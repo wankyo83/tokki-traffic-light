@@ -33,11 +33,8 @@ jobs:
       - name: 사이트 상태 검사
         env:
           PREVIOUS_STATUS_URL: https://wankyo83.github.io/tokki-traffic-light/status.json
-          SERVICE_DELAY_MS: '20000'
-          SITE_DELAY_MS: '3000'
           CANDIDATE_CONFIRMATIONS: '2'
           CHECK_INTERVAL_MINUTES: '10'
-          DEBUG_CHECKS: 'true'
         run: node checker/check.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

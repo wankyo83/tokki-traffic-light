@@ -10,100 +10,53 @@ const sites = requestedSiteKeys.size
   ? configuredSites.filter(site => requestedSiteKeys.has(site.key))
   : configuredSites;
 const previous = await readPreviousStatus();
-const previousServices = Array.isArray(previous.services) ? previous.services : [];
 const previousGroups = new Map((previous.groups ?? []).map(group => [group.key, group]));
-const services = [];
+const candidateConfirmationsRequired = numberFromEnv('CANDIDATE_CONFIRMATIONS', 2);
+const intervalMinutes = numberFromEnv('CHECK_INTERVAL_MINUTES', 10);
 const groups = [];
 const cycleStarted = Date.now();
 
-const serviceDelayMs = numberFromEnv('SERVICE_DELAY_MS', 20_000);
-const siteDelayMs = numberFromEnv('SITE_DELAY_MS', 3_000);
-const candidateConfirmationsRequired = numberFromEnv('CANDIDATE_CONFIRMATIONS', 2);
-const intervalMinutes = numberFromEnv('CHECK_INTERVAL_MINUTES', 10);
-
-for (let siteIndex = 0; siteIndex < sites.length; siteIndex++) {
-  const site = sites[siteIndex];
+for (const site of sites) {
   const previousGroup = previousGroups.get(site.key);
   const activeBaseUrl = previousActiveBase(site, previousGroup);
-  const primary = site.services[0];
-  const discovery = await discoverBase(site, primary, activeBaseUrl);
-  const candidateState = chooseActiveBase(activeBaseUrl, discovery, previousGroup);
-  const probeBaseUrl = candidateState.probeBaseUrl;
-  const groupServices = [];
-
-  for (let serviceIndex = 0; serviceIndex < site.services.length; serviceIndex++) {
-    const service = site.services[serviceIndex];
-    if (serviceIndex > 0) await delay(serviceDelayMs);
-
-    const probe = serviceIndex === 0 && discovery.probeBaseUrl === probeBaseUrl
-      ? discovery.probe
-      : await checkUrl(`${probeBaseUrl}${service.path}`, site, service);
-
-    const priorService = previousServices.find(item => item.group === site.key && item.name === service.name);
-    const transient = !probe.ok && isTransientFailure(probe.reason);
-    const lastSuccessfulAt = probe.ok
-      ? new Date().toISOString()
-      : priorService?.lastSuccessfulAt ?? (priorService?.ok ? previous.checkedAt : null);
-
-    const item = {
-      group: site.key,
-      name: service.name,
-      url: `${candidateState.activeBaseUrl}${service.path}`,
-      probeUrl: `${probeBaseUrl}${service.path}`,
-      baseUrl: candidateState.activeBaseUrl,
-      ok: probe.ok || Boolean(transient && priorService?.ok),
-      state: probe.ok ? (candidateState.verifying ? 'verifying' : 'healthy') : (transient && priorService?.ok ? 'stale' : 'unavailable'),
-      reason: probe.ok ? '' : readableReason(probe.reason),
-      responseMs: probe.responseMs,
-      lastSuccessfulAt,
-      checkedAt: new Date().toISOString(),
-    };
-
-    groupServices.push(item);
-    services.push(item);
-  }
-
-  const allHealthy = groupServices.every(item => item.state === 'healthy');
-  const hasUsableAddress = Boolean(candidateState.activeBaseUrl);
-  const state = candidateState.verifying
-    ? 'verifying'
-    : allHealthy
-      ? 'healthy'
-      : hasUsableAddress
-        ? 'stale'
-        : 'unavailable';
+  const result = site.source
+    ? await discoverFromSource(site)
+    : await checkFixedAddress(site);
+  const selected = chooseActiveBase(activeBaseUrl, result, previousGroup);
+  const checkedAt = new Date().toISOString();
 
   groups.push({
     key: site.key,
     name: site.name,
-    activeBaseUrl: candidateState.activeBaseUrl,
-    state,
-    checkedAt: new Date().toISOString(),
-    lastSuccessfulAt: allHealthy
-      ? new Date().toISOString()
-      : latestTimestamp(groupServices.map(item => item.lastSuccessfulAt)) ?? previousGroup?.lastSuccessfulAt ?? null,
-    candidateBaseUrl: candidateState.candidateBaseUrl,
-    candidateConfirmations: candidateState.candidateConfirmations,
+    activeBaseUrl: selected.activeBaseUrl,
+    state: result.ok ? (selected.verifying ? 'verifying' : 'healthy') : (selected.activeBaseUrl ? 'stale' : 'unavailable'),
+    checkedAt,
+    lastSuccessfulAt: result.ok ? checkedAt : previousGroup?.lastSuccessfulAt ?? null,
+    candidateBaseUrl: selected.candidateBaseUrl,
+    candidateConfirmations: selected.candidateConfirmations,
     candidateConfirmationsRequired,
-    reason: candidateState.reason,
+    sourceName: site.source?.name ?? site.check?.name ?? '주소 확인',
+    sourceUrl: site.source?.url ?? site.check?.url ?? site.base,
+    sourceType: site.source?.type ?? 'direct',
+    errorCode: result.ok ? '' : result.errorCode,
+    reason: selected.verifying ? `새 주소 확인 중 (${selected.candidateConfirmations}/${candidateConfirmationsRequired})` : result.reason,
   });
-
-  if (siteIndex < sites.length - 1) await delay(siteDelayMs);
 }
 
 const checkedAt = new Date().toISOString();
 const status = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   checkedAt,
   durationMs: Date.now() - cycleStarted,
   policy: {
     intervalMinutes,
-    serviceDelaySeconds: serviceDelayMs / 1000,
     candidateConfirmationsRequired,
     preservesLastKnownGood: true,
+    addressSourcesOnly: true,
+    sequentialNumberSearch: false,
   },
   groups,
-  services,
+  services: [],
 };
 
 const domains = {
@@ -124,88 +77,193 @@ if (process.env.DRY_RUN !== 'true') {
 }
 console.log(JSON.stringify({checkedAt, durationMs: status.durationMs, groups}, null, 2));
 
-async function discoverBase(site, service, activeBaseUrl) {
-  const candidates = candidateUrls(activeBaseUrl, site.numbered);
-  const first = candidates[0];
+async function discoverFromSource(site) {
+  const started = Date.now();
+  const source = site.source;
+  const fetched = await fetchSource(source);
+  if (!fetched.ok) return {...fetched, responseMs: Date.now() - started};
 
-  // 공식 주소 안내 데이터가 있는 사이트는 일반 페이지보다 먼저 확인한다.
-  // 안내 값 자체는 신뢰하지 않고 실제 작품 목록까지 통과해야 후보가 된다.
-  if (site.announcementDataPath) {
-    const announcedBaseUrl = await fetchAnnouncedBaseUrl(first, site);
-    debug('공식 주소 데이터 우선 확인', {site: site.key, announcedBaseUrl});
-    if (announcedBaseUrl && announcedBaseUrl !== activeBaseUrl) {
-      const announcedProbe = await checkUrl(`${announcedBaseUrl}${service.path}`, site, service);
-      debug('공식 주소의 실제 콘텐츠 검사', {site: site.key, announcedBaseUrl, probe: announcedProbe});
-      if (announcedProbe.ok) {
-        return {
-          probeBaseUrl: announcedProbe.resolvedBaseUrl ?? announcedBaseUrl,
-          probe: announcedProbe,
-          reason: '',
-        };
-      }
-    }
+  const normalized = fetched.text.toLowerCase();
+  const missingMarker = (source.markers ?? []).find(marker => !normalized.includes(marker.toLowerCase()));
+  if (missingMarker) {
+    return {
+      ok: false,
+      errorCode: 'SOURCE_FORMAT',
+      reason: `주소 안내 페이지 형식이 달라졌습니다. (${missingMarker})`,
+      responseMs: Date.now() - started,
+    };
   }
 
-  const firstProbe = await checkUrl(`${first}${service.path}`, site, service);
-  debug('현재 주소 검사', {site: site.key, url: `${first}${service.path}`, probe: firstProbe});
-  if (firstProbe.ok) {
-    const resolved = firstProbe.resolvedBaseUrl ?? first;
-    return {probeBaseUrl: resolved, probe: firstProbe, reason: ''};
+  const baseUrl = source.type === 'telegram'
+    ? extractLatestTelegramAddress(fetched.text, source)
+    : extractGuideAddress(fetched.text, source);
+  if (!baseUrl) {
+    return {
+      ok: false,
+      errorCode: 'ADDRESS_NOT_FOUND',
+      reason: '안내 페이지에서 허용된 최신 주소 링크를 찾지 못했습니다.',
+      responseMs: Date.now() - started,
+    };
+  }
+  if (!sameDomainFamily(site.base, baseUrl)) {
+    return {
+      ok: false,
+      errorCode: 'DOMAIN_MISMATCH',
+      reason: '안내된 주소가 허용된 도메인 형식과 일치하지 않습니다.',
+      responseMs: Date.now() - started,
+    };
   }
 
-  // 일부 사이트는 이전 번호에 실제 콘텐츠를 두고, 다음 번호에는 최신 주소만
-  // 안내한다. 안내된 주소를 그대로 믿지 않고 실제 콘텐츠 구조까지 다시 검증한다.
-  if (firstProbe.announcement) {
-    const announcedBaseUrl = firstProbe.announcedBaseUrl ?? await fetchAnnouncedBaseUrl(first, site);
-    debug('안내 주소 확인', {site: site.key, announcedBaseUrl});
-    const announcedProbe = announcedBaseUrl
-      ? await checkUrl(`${announcedBaseUrl}${service.path}`, site, service)
-      : null;
-    debug('안내된 실제 주소 검사', {site: site.key, announcedBaseUrl, probe: announcedProbe});
-    if (announcedProbe?.ok) {
-      return {
-        probeBaseUrl: announcedProbe.resolvedBaseUrl ?? announcedBaseUrl,
-        probe: announcedProbe,
-        reason: '',
-      };
-    }
-  }
-
-  if (isTransientFailure(firstProbe.reason) && await dnsExists(new URL(first).hostname)) {
-    return {probeBaseUrl: first, probe: firstProbe, reason: readableReason(firstProbe.reason), transient: true};
-  }
-
-  if (!site.numbered) {
-    return {probeBaseUrl: first, probe: firstProbe, reason: readableReason(firstProbe.reason)};
-  }
-
-  let lastProbe = firstProbe;
-  for (const candidate of candidates.slice(1)) {
-    const probe = await checkUrl(`${candidate}${service.path}`, site, service, {quick: true});
-    lastProbe = probe;
-    if (probe.ok) {
-      return {probeBaseUrl: probe.resolvedBaseUrl ?? candidate, probe, reason: ''};
-    }
-  }
-
-  return {
-    probeBaseUrl: first,
-    probe: lastProbe,
-    reason: `현재 주소부터 +10까지 확인 실패 · ${readableReason(lastProbe.reason)}`,
-  };
+  return {ok: true, baseUrl, responseMs: Date.now() - started, reason: '', errorCode: ''};
 }
 
-function chooseActiveBase(activeBaseUrl, discovery, previousGroup) {
-  const discovered = discovery.probe.ok ? discovery.probeBaseUrl : null;
-  if (!discovered || discovered === activeBaseUrl) {
+async function checkFixedAddress(site) {
+  const started = Date.now();
+  const target = site.check?.url ?? site.base;
+  const fetched = await fetchHtml(target);
+  if (!fetched.ok) return {...fetched, responseMs: Date.now() - started};
+  const normalized = fetched.text.toLowerCase();
+  const missingMarker = (site.check?.markers ?? []).find(marker => !normalized.includes(marker.toLowerCase()));
+  if (missingMarker) {
+    return {
+      ok: false,
+      errorCode: 'CONTENT_MISMATCH',
+      reason: `고정 주소는 열렸지만 예상한 사이트 내용이 없습니다. (${missingMarker})`,
+      responseMs: Date.now() - started,
+    };
+  }
+  return {ok: true, baseUrl: site.base, responseMs: Date.now() - started, reason: '', errorCode: ''};
+}
+
+async function fetchSource(source) {
+  const urls = [source.url, ...(source.fallbackUrls ?? [])];
+  let lastResult;
+  for (const url of urls) {
+    const allowPlainText = url.startsWith('https://r.jina.ai/');
+    lastResult = await fetchHtml(url, {allowPlainText});
+    if (lastResult.ok) return lastResult;
+  }
+  return lastResult;
+}
+
+async function fetchHtml(url, {allowPlainText = false} = {}) {
+  let lastResult;
+  for (const delayMs of [0, 3_000]) {
+    if (delayMs) await delay(delayMs);
+    lastResult = await fetchHtmlOnce(url, {allowPlainText});
+    if (lastResult.ok || !isRetryable(lastResult)) return lastResult;
+  }
+  return lastResult;
+}
+
+async function fetchHtmlOnce(url, {allowPlainText = false} = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const response = await fetch(url, {
+      redirect: 'follow',
+      signal: controller.signal,
+      cache: 'no-store',
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/127 Safari/537.36',
+        accept: 'text/html,application/xhtml+xml',
+      },
+    });
+    if (!response.ok) {
+      return {
+        ok: false,
+        errorCode: `HTTP_${response.status}`,
+        reason: `HTTP ${response.status} ${response.statusText}`.trim(),
+      };
+    }
+    const bytes = await response.arrayBuffer();
+    const charset = response.headers.get('content-type')?.match(/charset\s*=\s*["']?([^;"'\s]+)/i)?.[1] || 'utf-8';
+    let text;
+    try { text = new TextDecoder(charset).decode(bytes); }
+    catch { text = new TextDecoder('utf-8').decode(bytes); }
+    if (!allowPlainText && !/<html|<!doctype|<body/i.test(text)) {
+      return {ok: false, errorCode: 'INVALID_HTML', reason: '정상 HTML 페이지 형식이 아닙니다.'};
+    }
+    return {ok: true, text: text.slice(0, 1_000_000)};
+  } catch (error) {
+    if (error.name === 'AbortError') return {ok: false, errorCode: 'TIMEOUT', reason: '응답 시간 초과'};
+    const code = error.cause?.code || 'NETWORK';
+    return {ok: false, errorCode: code, reason: readableNetworkReason(code, error.message)};
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function extractGuideAddress(html, source) {
+  const sourceOrigin = new URL(source.url).origin;
+  for (const href of [...extractHrefs(html), ...extractAbsoluteUrls(html)]) {
+    const baseUrl = normalizeCandidate(href, source.url, source.hostPattern);
+    if (baseUrl && baseUrl !== sourceOrigin) return baseUrl;
+  }
+  return null;
+}
+
+function extractLatestTelegramAddress(html, source) {
+  const postPattern = new RegExp(`data-post=["']${escapeRegExp(source.channel)}/(\\d+)["']`, 'gi');
+  const posts = [...html.matchAll(postPattern)];
+  const candidates = [];
+  for (let index = 0; index < posts.length; index++) {
+    const start = posts[index].index;
+    const end = posts[index + 1]?.index ?? html.length;
+    const chunk = html.slice(start, end);
+    const postNumber = Number(posts[index][1]);
+    for (const rawUrl of extractAbsoluteUrls(chunk)) {
+      const baseUrl = normalizeCandidate(rawUrl, source.url, source.hostPattern);
+      if (baseUrl) candidates.push({postNumber, baseUrl});
+    }
+  }
+  candidates.sort((a, b) => b.postNumber - a.postNumber);
+  return candidates[0]?.baseUrl ?? null;
+}
+
+function extractHrefs(html) {
+  return [...html.matchAll(/href\s*=\s*["']([^"']+)["']/gi)].map(match => decodeHtmlUrl(match[1]));
+}
+
+function extractAbsoluteUrls(html) {
+  return [...html.matchAll(/https?:\/\/[^\s"'<>]+/gi)].map(match => decodeHtmlUrl(match[0]));
+}
+
+function decodeHtmlUrl(value) {
+  return value
+    .replace(/&amp;/gi, '&')
+    .replace(/&#x2F;/gi, '/')
+    .replace(/&#47;/gi, '/')
+    .replace(/[),.;]+$/g, '');
+}
+
+function normalizeCandidate(value, sourceUrl, hostPattern) {
+  try {
+    const candidate = new URL(value, sourceUrl);
+    if (!new RegExp(hostPattern, 'i').test(candidate.hostname)) return null;
+    candidate.protocol = 'https:';
+    candidate.pathname = '/';
+    candidate.search = '';
+    candidate.hash = '';
+    return candidate.origin;
+  } catch {
+    return null;
+  }
+}
+
+function chooseActiveBase(activeBaseUrl, result, previousGroup) {
+  if (!result.ok) {
     return {
       activeBaseUrl,
-      probeBaseUrl: activeBaseUrl,
-      candidateBaseUrl: null,
-      candidateConfirmations: 0,
+      candidateBaseUrl: previousGroup?.candidateBaseUrl ?? null,
+      candidateConfirmations: Number(previousGroup?.candidateConfirmations || 0),
       verifying: false,
-      reason: discovery.reason,
     };
+  }
+
+  const discovered = result.baseUrl;
+  if (discovered === activeBaseUrl) {
+    return {activeBaseUrl, candidateBaseUrl: null, candidateConfirmations: 0, verifying: false};
   }
 
   const previousCount = previousGroup?.candidateBaseUrl === discovered
@@ -213,109 +271,22 @@ function chooseActiveBase(activeBaseUrl, discovery, previousGroup) {
     : 0;
   const confirmations = previousCount + 1;
   if (confirmations >= candidateConfirmationsRequired) {
-    return {
-      activeBaseUrl: discovered,
-      probeBaseUrl: discovered,
-      candidateBaseUrl: null,
-      candidateConfirmations: 0,
-      verifying: false,
-      reason: '',
-    };
+    return {activeBaseUrl: discovered, candidateBaseUrl: null, candidateConfirmations: 0, verifying: false};
   }
-
   return {
     activeBaseUrl,
-    probeBaseUrl: discovered,
     candidateBaseUrl: discovered,
     candidateConfirmations: confirmations,
     verifying: true,
-    reason: `새 주소 확인 중 (${confirmations}/${candidateConfirmationsRequired})`,
   };
-}
-
-async function checkUrl(url, site, service, {quick = false} = {}) {
-  const retryDelays = quick ? [0] : [0, 5_000, 15_000];
-  let result;
-  for (const retryDelay of retryDelays) {
-    if (retryDelay) await delay(retryDelay);
-    result = await checkUrlOnce(url, site, service);
-    if (result.ok || result.identityMismatch || !isTransientFailure(result.reason)) return result;
-  }
-  return result;
-}
-
-async function checkUrlOnce(url, site, service) {
-  const started = Date.now();
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 12_000);
-  try {
-    const response = await fetch(url, {
-      redirect: 'follow',
-      signal: controller.signal,
-      headers: {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/127 Safari/537.36',
-        accept: 'text/html,application/xhtml+xml',
-      },
-    });
-    const bytes = await response.arrayBuffer();
-    const charset = response.headers.get('content-type')?.match(/charset\s*=\s*["']?([^;"'\s]+)/i)?.[1] || 'utf-8';
-    let text;
-    try { text = new TextDecoder(charset).decode(bytes).slice(0, 300_000); }
-    catch { text = new TextDecoder('utf-8').decode(bytes).slice(0, 300_000); }
-    const responseMs = Date.now() - started;
-    if (!response.ok) return {ok: false, responseMs, reason: `HTTP ${response.status} ${response.statusText}`.trim()};
-    if (!/<html|<!doctype|<body/i.test(text)) return {ok: false, responseMs, reason: '정상 웹페이지 형식이 아닙니다.'};
-    const normalized = text.toLowerCase();
-    const challengeDetected = /cf-chl-|challenge-platform|just a moment|cloudflare ray id/i.test(text);
-    if (site.announcementMarkers?.some(marker => normalized.includes(marker.toLowerCase()))) {
-      const announcedBaseUrl = extractAnnouncedBaseUrl(text, site);
-      return {
-        ok: false,
-        responseMs,
-        announcement: true,
-        announcedBaseUrl,
-        reason: announcedBaseUrl ? `최신 주소 안내 페이지 · ${announcedBaseUrl}` : '최신 주소 안내 페이지',
-      };
-    }
-    const siteMatch = site.markers.some(marker => normalized.includes(marker.toLowerCase()));
-    const sectionMatch = service.markers.some(marker => normalized.includes(marker.toLowerCase()));
-    if (!siteMatch || !sectionMatch) {
-      if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
-      return {ok: false, responseMs, identityMismatch: true, reason: '사이트 또는 콘텐츠 종류가 일치하지 않습니다.'};
-    }
-    if (service.requiredPatterns?.length) {
-      const patternMatches = service.requiredPatterns.reduce(
-        (total, pattern) => total + countOccurrences(normalized, pattern.toLowerCase()),
-        0,
-      );
-      const minimumPatternMatches = Number(service.minimumPatternMatches || 1);
-      if (patternMatches < minimumPatternMatches) {
-        if (challengeDetected) return {ok: false, responseMs, reason: 'Cloudflare 브라우저 인증이 필요합니다.'};
-        return {
-          ok: false,
-          responseMs,
-          identityMismatch: true,
-          reason: `카테고리·작품 목록 구조가 부족합니다. (${patternMatches}/${minimumPatternMatches})`,
-        };
-      }
-    }
-    const resolvedBaseUrl = resolvedBase(response.url, site);
-    if (!resolvedBaseUrl) return {ok: false, responseMs, identityMismatch: true, reason: '허용되지 않은 다른 도메인으로 이동했습니다.'};
-    return {ok: true, responseMs, resolvedBaseUrl};
-  } catch (error) {
-    const responseMs = Date.now() - started;
-    if (error.name === 'AbortError') return {ok: false, responseMs, reason: '응답 시간 초과'};
-    return {ok: false, responseMs, reason: error.cause?.code || error.message};
-  } finally {
-    clearTimeout(timer);
-  }
 }
 
 async function readPreviousStatus() {
   const remoteUrl = process.env.PREVIOUS_STATUS_URL;
   if (remoteUrl) {
     try {
-      const response = await fetch(`${remoteUrl}${remoteUrl.includes('?') ? '&' : '?'}t=${Date.now()}`, {headers: {accept: 'application/json'}});
+      const separator = remoteUrl.includes('?') ? '&' : '?';
+      const response = await fetch(`${remoteUrl}${separator}t=${Date.now()}`, {headers: {accept: 'application/json'}});
       if (response.ok) return await response.json();
     } catch (error) {
       console.warn(`이전 공개 상태를 읽지 못해 저장소 상태를 사용합니다: ${error.message}`);
@@ -324,122 +295,44 @@ async function readPreviousStatus() {
   try {
     return JSON.parse(await fs.readFile(path.join(outputDir, 'status.json'), 'utf8'));
   } catch {
-    return {groups: [], services: []};
+    return {groups: []};
   }
 }
 
 function previousActiveBase(site, previousGroup) {
-  const previousBase = previousGroup?.activeBaseUrl
-    ?? previousServices.find(service => service.group === site.key && service.baseUrl)?.baseUrl;
+  const previousBase = previousGroup?.activeBaseUrl;
   if (!previousBase || !sameDomainFamily(site.base, previousBase)) return site.base;
-  const configuredNumber = domainNumber(site.base);
-  const previousNumber = domainNumber(previousBase);
-  if (configuredNumber !== null && previousNumber !== null && previousNumber < configuredNumber) return site.base;
   return previousBase;
 }
 
-function candidateUrls(base, numbered) {
-  if (!numbered) return [base];
-  const url = new URL(base);
-  const match = url.hostname.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
-  if (!match) return [base];
-  const [, prefix, digits, suffix] = match;
-  const start = Number(digits);
-  return Array.from({length: 11}, (_, index) => {
-    const number = String(start + index).padStart(digits.length, '0');
-    const candidate = new URL(base);
-    candidate.hostname = `${prefix}${number}${suffix}`;
-    return candidate.origin;
-  });
-}
-
-function resolvedBase(responseUrl, site) {
-  try {
-    const base = new URL(responseUrl).origin;
-    return sameDomainFamily(site.base, base) ? base : null;
-  } catch {
-    return null;
-  }
-}
-
-function extractAnnouncedBaseUrl(text, site) {
-  if (!site.announcedHostPattern) return null;
-  const match = text.match(new RegExp(site.announcedHostPattern, 'i'));
-  if (!match) return null;
-  try {
-    const candidate = `https://${match[0]}`;
-    return sameDomainFamily(site.base, candidate) ? new URL(candidate).origin : null;
-  } catch {
-    return null;
-  }
-}
-
-async function fetchAnnouncedBaseUrl(baseUrl, site) {
-  if (!site.announcementDataPath || !site.announcementDataField) return null;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8_000);
-  try {
-    const response = await fetch(new URL(site.announcementDataPath, baseUrl), {
-      signal: controller.signal,
-      cache: 'no-store',
-      headers: {accept: 'application/json'},
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
-    const raw = data?.[site.announcementDataField];
-    if (typeof raw !== 'string') return null;
-    const candidate = new URL(raw).origin;
-    return sameDomainFamily(site.base, candidate) ? candidate : null;
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
 function sameDomainFamily(configuredBase, candidateBase) {
-  const configured = new URL(configuredBase);
-  const candidate = new URL(candidateBase);
-  if (candidate.protocol !== 'https:') return false;
-  const configuredHost = configured.hostname.replace(/^www\./i, '');
-  const candidateHost = candidate.hostname.replace(/^www\./i, '');
-  const numbered = configuredHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
-  if (!numbered) return configuredHost === candidateHost;
-  const candidateNumbered = candidateHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
-  return Boolean(candidateNumbered && numbered[1] === candidateNumbered[1] && numbered[3] === candidateNumbered[3]);
-}
-
-function domainNumber(base) {
-  const host = new URL(base).hostname.replace(/^www\./i, '');
-  const match = host.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
-  return match ? Number(match[2]) : null;
-}
-
-async function dnsExists(hostname) {
   try {
-    const response = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(hostname)}&type=A`, {headers: {accept: 'application/dns-json'}});
-    if (!response.ok) return false;
-    const data = await response.json();
-    return data.Status === 0 && Array.isArray(data.Answer) && data.Answer.some(answer => answer.type === 1);
+    const configuredHost = new URL(configuredBase).hostname.replace(/^www\./i, '');
+    const candidateHost = new URL(candidateBase).hostname.replace(/^www\./i, '');
+    const configuredNumbered = configuredHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
+    if (!configuredNumbered) return configuredHost === candidateHost;
+    const candidateNumbered = candidateHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
+    return Boolean(candidateNumbered
+      && configuredNumbered[1] === candidateNumbered[1]
+      && configuredNumbered[3] === candidateNumbered[3]);
   } catch {
-    return true;
+    return false;
   }
 }
 
-function isTransientFailure(reason) {
-  return /^(ENOTFOUND|EAI_AGAIN|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|응답 시간 초과|fetch failed)$/i.test(reason);
+function isRetryable(result) {
+  return ['TIMEOUT', 'NETWORK', 'EAI_AGAIN', 'ECONNRESET', 'ETIMEDOUT', 'UND_ERR_CONNECT_TIMEOUT', 'HTTP_500', 'HTTP_502', 'HTTP_503', 'HTTP_504'].includes(result.errorCode);
 }
 
-function readableReason(reason) {
+function readableNetworkReason(code, fallback) {
   const messages = {
-    ENOTFOUND: '검사 서버의 순간적인 DNS 조회 실패',
-    EAI_AGAIN: '검사 서버의 순간적인 DNS 조회 지연',
-    ECONNRESET: '연결이 일시적으로 끊어짐',
-    ETIMEDOUT: '연결 시간 초과',
-    UND_ERR_CONNECT_TIMEOUT: '연결 시간 초과',
-    'fetch failed': '검사 서버의 일시적인 연결 실패',
+    ENOTFOUND: 'DNS에서 주소를 찾지 못했습니다.',
+    EAI_AGAIN: 'DNS 조회가 일시적으로 지연됐습니다.',
+    ECONNRESET: '연결이 일시적으로 끊어졌습니다.',
+    ETIMEDOUT: '연결 시간이 초과됐습니다.',
+    UND_ERR_CONNECT_TIMEOUT: '연결 시간이 초과됐습니다.',
   };
-  return messages[reason] ?? reason ?? '사이트에 연결할 수 없습니다.';
+  return messages[code] ?? fallback ?? '주소 확인 중 네트워크 오류가 발생했습니다.';
 }
 
 function numberFromEnv(name, fallback) {
@@ -447,25 +340,10 @@ function numberFromEnv(name, fallback) {
   return Number.isFinite(value) && value >= 0 ? value : fallback;
 }
 
-function latestTimestamp(values) {
-  return values.filter(Boolean).sort().at(-1) ?? null;
-}
-
-function countOccurrences(text, search) {
-  if (!search) return 0;
-  let count = 0;
-  let position = 0;
-  while ((position = text.indexOf(search, position)) !== -1) {
-    count++;
-    position += search.length;
-  }
-  return count;
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function delay(milliseconds) {
   return milliseconds > 0 ? new Promise(resolve => setTimeout(resolve, milliseconds)) : Promise.resolve();
-}
-
-function debug(label, value) {
-  if (process.env.DEBUG_CHECKS === 'true') console.log(`[debug] ${label}`, JSON.stringify(value));
 }

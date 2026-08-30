@@ -32,28 +32,18 @@
 
     <section class="summary" aria-label="검사 요약">
       <div><strong id="healthy-count">-</strong><span>정상</span></div>
-      <div><strong id="stale-count">-</strong><span>보호 중</span></div>
-      <div><strong id="down-count">-</strong><span>확인 필요</span></div>
+      <div><strong id="verifying-count">-</strong><span>확인 중</span></div>
+      <div><strong id="blocked-count">-</strong><span>접속 차단</span></div>
     </section>
 
     <section class="status-section address-section">
-      <h2><span>🚦</span> 확장앱이 사용하는 최신 주소</h2>
+      <h2><span>🚦</span> 중앙 신호등 최신 주소</h2>
       <div id="addresses" class="rows"><div class="skeleton"></div></div>
     </section>
 
-    <section class="status-section ok-section">
-      <h2><span>✅</span> 정상 이용 가능</h2>
-      <div id="available" class="rows"><div class="skeleton"></div></div>
-    </section>
-
-    <section class="status-section down-section">
-      <h2><span>❌</span> 현재 이용 불가</h2>
-      <div id="unavailable" class="rows"><div class="skeleton"></div></div>
-    </section>
-
     <footer>
-      <p>중앙 검사가 실패해도 확장앱에는 마지막으로 확인된 정상 주소가 유지됩니다.</p>
-      <p>표시는 GitHub 검사 서버 기준이며 통신사·VPN·지역에 따라 실제 접속 결과가 다를 수 있습니다.</p>
+      <p>주소 출처에 연결하지 못해도 마지막으로 확인된 주소는 유지됩니다.</p>
+      <p>안내 페이지 기반 항목은 최신 주소 확인 상태이며, 대상 콘텐츠 사이트의 접속 상태를 뜻하지 않습니다.</p>
     </footer>
   </main>
   <script src="app.js"></script>

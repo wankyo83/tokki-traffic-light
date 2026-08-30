@@ -1,10 +1,96 @@
 [
-  {"key":"newtoki","name":"Newtoki","base":"https://newtoki1.org","numbered":true,"markers":["뉴토끼","마나토끼"],"services":[{"name":"Newtoki 웹툰","path":"/webtoon","markers":["웹툰","webtoon"],"requiredPatterns":["/webtoon/"],"minimumPatternMatches":3},{"name":"Newtoki 만화","path":"/manhwa","markers":["만화","manhwa","마나토끼"],"requiredPatterns":["/manhwa/"],"minimumPatternMatches":3}]},
-  {"key":"toki","name":"Toki","base":"https://toki31.com","numbered":true,"markers":["뉴토끼","마나토끼"],"services":[{"name":"Toki 웹툰","path":"/ing","markers":["웹툰","webtoon"],"requiredPatterns":["/webtoon/"],"minimumPatternMatches":3},{"name":"Toki 만화","path":"/manhwa","markers":["만화","manhwa","마나토끼"],"requiredPatterns":["/manhwa/"],"minimumPatternMatches":3}]},
-  {"key":"blacktoon","name":"Blacktoon","base":"https://blacktoon417.com","numbered":true,"markers":["blacktoon","블랙툰"],"services":[{"name":"Blacktoon 웹툰","path":"/","markers":["웹툰","webtoon"],"requiredPatterns":["/data/webtoon/webtoon_"],"minimumPatternMatches":1}]},
-  {"key":"jjaptoon","name":"Jjaptoon","base":"https://www.jjaptoon004.com","numbered":true,"markers":["짭툰","jjaptoon"],"announcementMarkers":["공식 최신 주소","최신 주소는 항상 이 페이지"],"announcedHostPattern":"(?:www\\.)?jjaptoon\\d+\\.com","announcementDataPath":"/data/domain.json","announcementDataField":"domain","services":[{"name":"Jjaptoon 웹툰","path":"/","markers":["웹툰","webtoon"],"requiredPatterns":["/comics/"],"minimumPatternMatches":3}]},
-  {"key":"sbxh","name":"SBXH","base":"https://sbxh9.com","numbered":true,"markers":["뉴토끼","마나토끼","북토끼","sbxh"],"services":[{"name":"SBXH 웹툰","path":"/ing","markers":["웹툰","webtoon"],"requiredPatterns":["/webtoon/"],"minimumPatternMatches":3},{"name":"SBXH 만화","path":"/manhwa","markers":["만화","manhwa","마나토끼"],"requiredPatterns":["/manhwa/"],"minimumPatternMatches":3},{"name":"SBXH 소설","path":"/novel/updates","markers":["소설","novel","북토끼"],"requiredPatterns":["/novel/"],"minimumPatternMatches":3}]},
-  {"key":"wfwf","name":"WFWF","base":"https://wfwf487.com","numbered":true,"markers":["늑대닷컴","wfwf"],"services":[{"name":"WFWF 웹툰","path":"/ing","markers":["웹툰","webtoon"],"requiredPatterns":["/list?toon=","/list/?toon="],"minimumPatternMatches":3},{"name":"WFWF 만화","path":"/cm","markers":["만화","manhwa","망가"],"requiredPatterns":["/cl?toon=","/cl/?toon="],"minimumPatternMatches":3}]},
-  {"key":"11toon","name":"11toon","base":"https://www.11toon.com","numbered":false,"markers":["11toon"],"services":[{"name":"11toon 만화","path":"/bbs/board.php?bo_table=toon_c&is_over=0","markers":["만화","manga","toon"],"requiredPatterns":["data-id="],"minimumPatternMatches":3}]},
-  {"key":"naver","name":"Naver","base":"https://comic.naver.com","numbered":false,"markers":["네이버","naver"],"services":[{"name":"Naver 웹툰","path":"/webtoon","markers":["웹툰","webtoon"]}]}
+  {
+    "key": "newtoki",
+    "name": "뉴토끼",
+    "base": "https://newtoki1.org",
+    "source": {
+      "type": "guide",
+      "name": "뉴토끼 주소 안내",
+      "url": "https://xn--h10b90bby9a7jkc4f.com/",
+      "markers": ["실시간주소", "고정주소", "구버전주소"],
+      "hostPattern": "^(?:www\\.)?newtoki\\d+\\.org$"
+    }
+  },
+  {
+    "key": "toki",
+    "name": "토끼",
+    "base": "https://toki31.com",
+    "source": {
+      "type": "guide",
+      "name": "뉴토끼 주소 안내",
+      "url": "https://xn--h10b90bby9a7jkc4f.com/",
+      "markers": ["실시간주소", "고정주소", "구버전주소"],
+      "hostPattern": "^(?:www\\.)?toki\\d+\\.com$"
+    }
+  },
+  {
+    "key": "sbxh",
+    "name": "SBXH",
+    "base": "https://sbxh9.com",
+    "source": {
+      "type": "guide",
+      "name": "뉴토끼 주소 안내",
+      "url": "https://xn--h10b90bby9a7jkc4f.com/",
+      "markers": ["실시간주소", "고정주소", "구버전주소"],
+      "hostPattern": "^(?:www\\.)?sbxh\\d+\\.com$"
+    }
+  },
+  {
+    "key": "wfwf",
+    "name": "WFWF",
+    "base": "https://wfwf487.com",
+    "source": {
+      "type": "guide",
+      "name": "늑대닷컴 주소 안내",
+      "url": "https://wfwf411.com/",
+      "fallbackUrls": ["https://r.jina.ai/https://wfwf411.com/"],
+      "markers": ["늑대닷컴 접속 주소 안내", "새로운 주소로 이동"],
+      "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$"
+    }
+  },
+  {
+    "key": "blacktoon",
+    "name": "블랙툰",
+    "base": "https://blacktoon421.com",
+    "source": {
+      "type": "guide",
+      "name": "블랙툰 주소 안내",
+      "url": "https://www.blacktoonurls.com/address-collection",
+      "markers": ["블랙툰(BlackToon)", "블랙툰 바로가기"],
+      "hostPattern": "^(?:www\\.)?blacktoon\\d+\\.com$"
+    }
+  },
+  {
+    "key": "jjaptoon",
+    "name": "짭툰",
+    "base": "https://www.jjaptoon007.com",
+    "source": {
+      "type": "telegram",
+      "name": "짭툰 공식 텔레그램",
+      "url": "https://t.me/s/jjaptoon003?before=999999999",
+      "markers": ["짭툰- jjapToon", "짭툰 공식 주소안내"],
+      "channel": "jjaptoon003",
+      "hostPattern": "^(?:www\\.)?jjaptoon\\d+\\.com$"
+    }
+  },
+  {
+    "key": "11toon",
+    "name": "11툰",
+    "base": "https://11toon.com",
+    "check": {
+      "name": "고정 주소 직접 확인",
+      "url": "https://11toon.com/",
+      "markers": ["11toon", "최신만화"]
+    }
+  },
+  {
+    "key": "naver",
+    "name": "네이버 웹툰",
+    "base": "https://comic.naver.com",
+    "check": {
+      "name": "고정 주소 직접 확인",
+      "url": "https://comic.naver.com/webtoon",
+      "markers": ["네이버", "웹툰"]
+    }
+  }
 ]
