@@ -37,6 +37,7 @@ jobs:
           SITE_DELAY_MS: '3000'
           CANDIDATE_CONFIRMATIONS: '2'
           CHECK_INTERVAL_MINUTES: '10'
+          DEBUG_CHECKS: 'true'
         run: node checker/check.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

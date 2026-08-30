@@ -127,6 +127,25 @@ console.log(JSON.stringify({checkedAt, durationMs: status.durationMs, groups}, n
 async function discoverBase(site, service, activeBaseUrl) {
   const candidates = candidateUrls(activeBaseUrl, site.numbered);
   const first = candidates[0];
+
+  // 공식 주소 안내 데이터가 있는 사이트는 일반 페이지보다 먼저 확인한다.
+  // 안내 값 자체는 신뢰하지 않고 실제 작품 목록까지 통과해야 후보가 된다.
+  if (site.announcementDataPath) {
+    const announcedBaseUrl = await fetchAnnouncedBaseUrl(first, site);
+    debug('공식 주소 데이터 우선 확인', {site: site.key, announcedBaseUrl});
+    if (announcedBaseUrl && announcedBaseUrl !== activeBaseUrl) {
+      const announcedProbe = await checkUrl(`${announcedBaseUrl}${service.path}`, site, service);
+      debug('공식 주소의 실제 콘텐츠 검사', {site: site.key, announcedBaseUrl, probe: announcedProbe});
+      if (announcedProbe.ok) {
+        return {
+          probeBaseUrl: announcedProbe.resolvedBaseUrl ?? announcedBaseUrl,
+          probe: announcedProbe,
+          reason: '',
+        };
+      }
+    }
+  }
+
   const firstProbe = await checkUrl(`${first}${service.path}`, site, service);
   debug('현재 주소 검사', {site: site.key, url: `${first}${service.path}`, probe: firstProbe});
   if (firstProbe.ok) {
