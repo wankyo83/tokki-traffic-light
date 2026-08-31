@@ -94,9 +94,12 @@ async function discoverFromSource(site) {
     };
   }
 
-  const baseUrl = source.type === 'telegram'
+  const redirectedBaseUrl = source.useFinalUrl
+    ? normalizeCandidate(fetched.finalUrl, source.url, source.hostPattern)
+    : null;
+  const baseUrl = redirectedBaseUrl ?? (source.type === 'telegram'
     ? extractLatestTelegramAddress(fetched.text, source)
-    : extractGuideAddress(fetched.text, source);
+    : extractGuideAddress(fetched.text, source));
   if (!baseUrl) {
     return {
       ok: false,
@@ -184,7 +187,7 @@ async function fetchHtmlOnce(url, {allowPlainText = false} = {}) {
     if (!allowPlainText && !/<html|<!doctype|<body/i.test(text)) {
       return {ok: false, errorCode: 'INVALID_HTML', reason: '정상 HTML 페이지 형식이 아닙니다.'};
     }
-    return {ok: true, text: text.slice(0, 1_000_000)};
+    return {ok: true, text: text.slice(0, 1_000_000), finalUrl: response.url};
   } catch (error) {
     if (error.name === 'AbortError') return {ok: false, errorCode: 'TIMEOUT', reason: '응답 시간 초과'};
     const code = error.cause?.code || 'NETWORK';

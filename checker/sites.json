@@ -92,5 +92,18 @@
       "url": "https://comic.naver.com/webtoon",
       "markers": ["네이버", "웹툰"]
     }
+  },
+  {
+    "key": "goodtoon",
+    "name": "굿툰",
+    "base": "https://www.goodtoon002.com",
+    "source": {
+      "type": "guide",
+      "name": "굿툰 주소 안내",
+      "url": "https://goodtoon.top/",
+      "useFinalUrl": true,
+      "markers": ["웹툰", "연재", "완결"],
+      "hostPattern": "^(?:www\\.)?goodtoon\\d+\\.com$"
+    }
   }
 ]
