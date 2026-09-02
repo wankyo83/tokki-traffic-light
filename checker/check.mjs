@@ -117,6 +117,29 @@ async function discoverFromSource(site) {
     };
   }
 
+  if (source.targetCheck) {
+    const targetUrl = new URL(source.targetCheck.path || '/', baseUrl).toString();
+    const target = await fetchHtml(targetUrl);
+    if (!target.ok) {
+      return {
+        ...target,
+        reason: `안내된 최신 주소의 작품 목록을 확인하지 못했습니다. ${target.reason}`.trim(),
+        responseMs: Date.now() - started,
+      };
+    }
+    const targetText = target.text.toLowerCase();
+    const missingTargetMarker = (source.targetCheck.markers ?? [])
+      .find(marker => !targetText.includes(marker.toLowerCase()));
+    if (missingTargetMarker) {
+      return {
+        ok: false,
+        errorCode: 'TARGET_CONTENT_MISMATCH',
+        reason: `안내된 주소는 열렸지만 정상 작품 목록이 아닙니다. (${missingTargetMarker})`,
+        responseMs: Date.now() - started,
+      };
+    }
+  }
+
   return {ok: true, baseUrl, responseMs: Date.now() - started, reason: '', errorCode: ''};
 }
 

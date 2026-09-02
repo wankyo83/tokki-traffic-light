@@ -105,5 +105,21 @@
       "markers": ["웹툰", "연재", "완결"],
       "hostPattern": "^(?:www\\.)?goodtoon\\d+\\.com$"
     }
+  },
+  {
+    "key": "newxtoon",
+    "name": "뉴엑스툰",
+    "base": "https://newxtoon1.com",
+    "source": {
+      "type": "guide",
+      "name": "뉴엑스툰 주소 안내",
+      "url": "https://xn--vg1b002axlc8ts.com/",
+      "markers": ["뉴엑스툰", "최신", "주소"],
+      "hostPattern": "^(?:www\\.)?newxtoon\\d+\\.com$",
+      "targetCheck": {
+        "path": "/comics",
+        "markers": ["작품 목록", "일반만화", "상세 필터"]
+      }
+    }
   }
 ]
