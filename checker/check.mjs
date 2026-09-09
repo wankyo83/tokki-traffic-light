@@ -237,14 +237,31 @@ function extractLatestTelegramAddress(html, source) {
     const start = posts[index].index;
     const end = posts[index + 1]?.index ?? html.length;
     const chunk = html.slice(start, end);
+    const candidateChunk = selectTelegramAddressSection(chunk, source);
     const postNumber = Number(posts[index][1]);
-    for (const rawUrl of extractAbsoluteUrls(chunk)) {
+    for (const rawUrl of extractAbsoluteUrls(candidateChunk)) {
       const baseUrl = normalizeCandidate(rawUrl, source.url, source.hostPattern);
       if (baseUrl) candidates.push({postNumber, baseUrl});
     }
   }
   candidates.sort((a, b) => b.postNumber - a.postNumber);
   return candidates[0]?.baseUrl ?? null;
+}
+
+function selectTelegramAddressSection(chunk, source) {
+  if (!source.preferredLabel) return chunk;
+
+  const normalized = chunk.toLowerCase();
+  const label = source.preferredLabel.toLowerCase();
+  const start = normalized.indexOf(label);
+  if (start < 0) return '';
+
+  let end = chunk.length;
+  for (const stopLabel of source.stopLabels ?? []) {
+    const stop = normalized.indexOf(stopLabel.toLowerCase(), start + label.length);
+    if (stop >= 0 && stop < end) end = stop;
+  }
+  return chunk.slice(start, end);
 }
 
 function extractHrefs(html) {

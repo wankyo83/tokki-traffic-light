@@ -45,6 +45,8 @@
       "url": "https://t.me/s/wfwf_com",
       "markers": ["늑대닷컴 공식채널", "늑대닷컴 주소"],
       "channel": "wfwf_com",
+      "preferredLabel": "늑대닷컴 주소",
+      "stopLabels": ["늑대닷컴2 주소"],
       "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$"
     }
   },
@@ -98,11 +100,11 @@
     "name": "굿툰",
     "base": "https://www.goodtoon002.com",
     "source": {
-      "type": "guide",
-      "name": "굿툰 주소 안내",
-      "url": "https://goodtoon.top/",
-      "useFinalUrl": true,
-      "markers": ["웹툰", "연재", "완결"],
+      "type": "telegram",
+      "name": "굿툰 공식 텔레그램",
+      "url": "https://t.me/s/goodtoon_url",
+      "markers": ["goodtoon.top"],
+      "channel": "goodtoon_url",
       "hostPattern": "^(?:www\\.)?goodtoon\\d+\\.com$"
     }
   },
