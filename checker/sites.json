@@ -38,13 +38,13 @@
   {
     "key": "wfwf",
     "name": "WFWF",
-    "base": "https://wfwf487.com",
+    "base": "https://wfwf494.com",
     "source": {
-      "type": "guide",
-      "name": "늑대닷컴 주소 안내",
-      "url": "https://wfwf411.com/",
-      "fallbackUrls": ["https://r.jina.ai/https://wfwf411.com/"],
-      "markers": ["늑대닷컴 접속 주소 안내", "새로운 주소로 이동"],
+      "type": "telegram",
+      "name": "늑대닷컴 공식 텔레그램",
+      "url": "https://t.me/s/wfwf_com",
+      "markers": ["늑대닷컴 공식채널", "늑대닷컴 주소"],
+      "channel": "wfwf_com",
       "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$"
     }
   },

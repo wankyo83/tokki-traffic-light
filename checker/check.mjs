@@ -326,6 +326,8 @@ async function readPreviousStatus() {
 }
 
 function previousActiveBase(site, previousGroup) {
+  const configuredSourceUrl = site.source?.url ?? site.check?.url ?? site.base;
+  if (previousGroup?.sourceUrl && previousGroup.sourceUrl !== configuredSourceUrl) return site.base;
   const previousBase = previousGroup?.activeBaseUrl;
   if (!previousBase || !sameDomainFamily(site.base, previousBase)) return site.base;
   return previousBase;
