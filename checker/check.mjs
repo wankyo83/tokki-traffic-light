@@ -223,7 +223,7 @@ async function fetchHtmlOnce(url, {allowPlainText = false} = {}) {
 
 function extractGuideAddress(html, source) {
   const sourceOrigin = new URL(source.url).origin;
-  const candidates = [...extractHrefs(html), ...extractAbsoluteUrls(html)]
+  const candidates = [...extractHrefs(html), ...extractMarkdownLinkTargets(html), ...extractAbsoluteUrls(html)]
     .map(href => normalizeCandidate(href, source.url, source.hostPattern))
     .filter(baseUrl => baseUrl && baseUrl !== sourceOrigin);
   for (const preferredHost of source.preferredHosts ?? []) {
@@ -273,6 +273,10 @@ function selectTelegramAddressSection(chunk, source) {
 
 function extractHrefs(html) {
   return [...html.matchAll(/href\s*=\s*["']([^"']+)["']/gi)].map(match => decodeHtmlUrl(match[1]));
+}
+
+function extractMarkdownLinkTargets(text) {
+  return [...text.matchAll(/\]\((https?:\/\/[^)\s]+)\)/gi)].map(match => decodeHtmlUrl(match[1]));
 }
 
 function extractAbsoluteUrls(html) {
