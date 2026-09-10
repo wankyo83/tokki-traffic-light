@@ -155,5 +155,19 @@
       "channel": "ohli24net",
       "hostPattern": "^(?:www\\.)?ohli24\\.net$"
     }
+  },
+  {
+    "key": "tvroom",
+    "name": "티비룸",
+    "category": "media",
+    "base": "https://tvroom32.org",
+    "source": {
+      "type": "telegram",
+      "name": "티비룸 공식 텔레그램",
+      "url": "https://t.me/s/tvroom8282",
+      "markers": ["티비룸", "새로운 주소"],
+      "channel": "tvroom8282",
+      "hostPattern": "^(?:www\\.)?tvroom\\d+\\.org$"
+    }
   }
 ]

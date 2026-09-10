@@ -104,6 +104,23 @@
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 2,
       "reason": ""
+    },
+    {
+      "key": "tvroom",
+      "name": "티비룸",
+      "category": "media",
+      "activeBaseUrl": "https://tvroom32.org",
+      "state": "healthy",
+      "checkedAt": "2026-09-10T23:00:22.592Z",
+      "lastSuccessfulAt": "2026-09-10T23:00:22.592Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 2,
+      "sourceName": "티비룸 공식 텔레그램",
+      "sourceUrl": "https://t.me/s/tvroom8282",
+      "sourceType": "telegram",
+      "errorCode": "",
+      "reason": ""
     }
   ],
   "services": [

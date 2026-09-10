@@ -41,6 +41,11 @@
       "baseUrl": "https://comic.naver.com",
       "status": "healthy",
       "lastConfirmedAt": "2026-08-30T07:51:47.385Z"
+    },
+    "tvroom": {
+      "baseUrl": "https://tvroom32.org",
+      "status": "healthy",
+      "lastConfirmedAt": "2026-09-10T23:00:22.592Z"
     }
   }
 }
