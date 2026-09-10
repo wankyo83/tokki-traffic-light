@@ -48,11 +48,7 @@
       "name": "늑대닷컴 주소 안내",
       "url": "https://a14c.com/",
       "markers": ["늑대닷컴", "늑대닷컴2"],
-      "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$",
-      "targetCheck": {
-        "path": "/",
-        "markers": ["작품명 검색", "최신순"]
-      }
+      "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$"
     }
   },
   {
@@ -140,8 +136,7 @@
       "type": "guide",
       "name": "Linkkf 공식 X",
       "url": "https://x.com/linkkfcom",
-      "fetchUrls": ["https://r.jina.ai/https://x.com/linkkfcom", "https://x.com/linkkfcom"],
-      "fallbackUrls": ["https://r.jina.ai/https://x.com/linkkfcom"],
+      "fetchUrls": ["https://r.jina.ai/https://twitter.com/linkkfcom", "https://x.com/linkkfcom"],
       "markers": ["Linkkf.app", "Linkkf.com", "Linkkf.tv"],
       "preferredHosts": ["linkkf.tv", "linkkf.app", "linkkf.com"],
       "hostPattern": "^(?:www\\.)?linkkf\\.(?:tv|app|com|net|live)$"
@@ -158,11 +153,7 @@
       "url": "https://t.me/s/ohli24net?before=999999999",
       "markers": ["애니24", "OHLI24"],
       "channel": "ohli24net",
-      "hostPattern": "^(?:www\\.)?ohli24\\.net$",
-      "targetCheck": {
-        "path": "/ing",
-        "markers": ["방영중 애니", "요일별 애니"]
-      }
+      "hostPattern": "^(?:www\\.)?ohli24\\.net$"
     }
   }
 ]

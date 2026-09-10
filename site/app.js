@@ -13,8 +13,8 @@ function addressRow(group) {
   const stateView = {
     healthy: {icon: '✅', label: '정상', badge: 'healthy'},
     verifying: {icon: '🔄', label: '새 주소 확인 중', badge: 'verifying'},
-    stale: {icon: '⚠️', label: '접속 차단', badge: 'stale'},
-    unavailable: {icon: '❌', label: '접속 차단', badge: 'unavailable'},
+    stale: {icon: '⚠️', label: '참조처 확인 실패', badge: 'stale'},
+    unavailable: {icon: '❌', label: '확정 주소 없음', badge: 'unavailable'},
   }[group.state] ?? {icon: '⚠️', label: '확인 필요', badge: 'stale'};
   const activeAddress = group.activeBaseUrl
     ? `<a class="url address-link" href="${escapeHtml(group.activeBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.activeBaseUrl)}</a>`
