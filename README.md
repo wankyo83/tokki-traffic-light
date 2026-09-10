@@ -3,7 +3,7 @@
 웹툰·만화 확장앱이 사용하는 최신 주소를 한곳에서 확인하기 위한 GitHub Pages입니다.
 
 - Newtoki·Toki·SBXH는 `뉴토끼우회.com`의 구버전·실시간·고정 주소 링크를 각각 사용합니다.
-- WFWF는 공식 텔레그램의 `늑대닷컴 주소` 항목만 사용하고 `늑대닷컴2 주소`는 제외합니다.
+- WFWF는 `a14c.com`의 `늑대닷컴` 주소 중 `wfwf숫자.com`만 사용하고 `늑대닷컴2`의 `wftoon` 주소는 제외합니다.
 - Blacktoon은 `blacktoonurls.com/address-collection`의 블랙툰 바로가기 링크를 사용합니다.
 - Jjaptoon은 공식 텔레그램 공개 페이지에서 주소가 포함된 가장 최근 게시물을 사용합니다.
 - 11toon과 Naver는 정해진 고정 주소의 접속 여부만 확인합니다.

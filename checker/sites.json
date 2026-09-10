@@ -42,16 +42,17 @@
     "key": "wfwf",
     "name": "WFWF",
     "category": "manga",
-    "base": "https://wfwf494.com",
+    "base": "https://wfwf496.com",
     "source": {
-      "type": "telegram",
-      "name": "늑대닷컴 공식 텔레그램",
-      "url": "https://t.me/s/wfwf_com",
-      "markers": ["늑대닷컴 공식채널", "늑대닷컴 주소"],
-      "channel": "wfwf_com",
-      "preferredLabel": "늑대닷컴 주소",
-      "stopLabels": ["늑대닷컴2 주소"],
-      "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$"
+      "type": "guide",
+      "name": "늑대닷컴 주소 안내",
+      "url": "https://a14c.com/",
+      "markers": ["늑대닷컴", "늑대닷컴2"],
+      "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$",
+      "targetCheck": {
+        "path": "/",
+        "markers": ["작품명 검색", "최신순"]
+      }
     }
   },
   {
