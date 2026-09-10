@@ -142,11 +142,7 @@
       "fallbackUrls": ["https://r.jina.ai/https://x.com/linkkfcom"],
       "markers": ["Linkkf.app", "Linkkf.com", "Linkkf.tv"],
       "preferredHosts": ["linkkf.tv", "linkkf.app", "linkkf.com"],
-      "hostPattern": "^(?:www\\.)?linkkf\\.(?:tv|app|com|net|live)$",
-      "targetCheck": {
-        "path": "/",
-        "markers": ["Linkkf 애니 TV"]
-      }
+      "hostPattern": "^(?:www\\.)?linkkf\\.(?:tv|app|com|net|live)$"
     }
   }
 ]
