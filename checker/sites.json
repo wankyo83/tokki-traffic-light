@@ -139,6 +139,7 @@
       "type": "guide",
       "name": "Linkkf 공식 X",
       "url": "https://x.com/linkkfcom",
+      "fetchUrls": ["https://r.jina.ai/https://x.com/linkkfcom", "https://x.com/linkkfcom"],
       "fallbackUrls": ["https://r.jina.ai/https://x.com/linkkfcom"],
       "markers": ["Linkkf.app", "Linkkf.com", "Linkkf.tv"],
       "preferredHosts": ["linkkf.tv", "linkkf.app", "linkkf.com"],

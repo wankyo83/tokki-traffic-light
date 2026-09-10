@@ -163,7 +163,7 @@ async function checkFixedAddress(site) {
 }
 
 async function fetchSource(source) {
-  const urls = [source.url, ...(source.fallbackUrls ?? [])];
+  const urls = source.fetchUrls ?? [source.url, ...(source.fallbackUrls ?? [])];
   let lastResult;
   for (const url of urls) {
     const allowPlainText = url.startsWith('https://r.jina.ai/');
