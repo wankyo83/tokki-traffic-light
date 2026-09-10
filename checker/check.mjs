@@ -28,6 +28,7 @@ for (const site of sites) {
   groups.push({
     key: site.key,
     name: site.name,
+    category: site.category ?? 'manga',
     activeBaseUrl: selected.activeBaseUrl,
     state: result.ok ? (selected.verifying ? 'verifying' : 'healthy') : (selected.activeBaseUrl ? 'stale' : 'unavailable'),
     checkedAt,
@@ -108,7 +109,7 @@ async function discoverFromSource(site) {
       responseMs: Date.now() - started,
     };
   }
-  if (!sameDomainFamily(site.base, baseUrl)) {
+  if (!sameDomainFamily(site.base, baseUrl, source.hostPattern)) {
     return {
       ok: false,
       errorCode: 'DOMAIN_MISMATCH',
@@ -222,9 +223,15 @@ async function fetchHtmlOnce(url, {allowPlainText = false} = {}) {
 
 function extractGuideAddress(html, source) {
   const sourceOrigin = new URL(source.url).origin;
-  for (const href of [...extractHrefs(html), ...extractAbsoluteUrls(html)]) {
-    const baseUrl = normalizeCandidate(href, source.url, source.hostPattern);
-    if (baseUrl && baseUrl !== sourceOrigin) return baseUrl;
+  const candidates = [...extractHrefs(html), ...extractAbsoluteUrls(html)]
+    .map(href => normalizeCandidate(href, source.url, source.hostPattern))
+    .filter(baseUrl => baseUrl && baseUrl !== sourceOrigin);
+  for (const preferredHost of source.preferredHosts ?? []) {
+    const preferred = candidates.find(baseUrl => new URL(baseUrl).hostname.replace(/^www\./i, '') === preferredHost.replace(/^www\./i, ''));
+    if (preferred) return preferred;
+  }
+  for (const baseUrl of candidates) {
+    return baseUrl;
   }
   return null;
 }
@@ -346,14 +353,15 @@ function previousActiveBase(site, previousGroup) {
   const configuredSourceUrl = site.source?.url ?? site.check?.url ?? site.base;
   if (previousGroup?.sourceUrl && previousGroup.sourceUrl !== configuredSourceUrl) return site.base;
   const previousBase = previousGroup?.activeBaseUrl;
-  if (!previousBase || !sameDomainFamily(site.base, previousBase)) return site.base;
+  if (!previousBase || !sameDomainFamily(site.base, previousBase, site.source?.hostPattern)) return site.base;
   return previousBase;
 }
 
-function sameDomainFamily(configuredBase, candidateBase) {
+function sameDomainFamily(configuredBase, candidateBase, hostPattern) {
   try {
     const configuredHost = new URL(configuredBase).hostname.replace(/^www\./i, '');
     const candidateHost = new URL(candidateBase).hostname.replace(/^www\./i, '');
+    if (hostPattern && new RegExp(hostPattern, 'i').test(candidateHost)) return true;
     const configuredNumbered = configuredHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
     if (!configuredNumbered) return configuredHost === candidateHost;
     const candidateNumbered = candidateHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);

@@ -2,6 +2,7 @@
   {
     "key": "newtoki",
     "name": "뉴토끼",
+    "category": "manga",
     "base": "https://newtoki1.org",
     "source": {
       "type": "guide",
@@ -14,6 +15,7 @@
   {
     "key": "toki",
     "name": "토끼",
+    "category": "manga",
     "base": "https://toki31.com",
     "source": {
       "type": "guide",
@@ -26,6 +28,7 @@
   {
     "key": "sbxh",
     "name": "SBXH",
+    "category": "manga",
     "base": "https://sbxh9.com",
     "source": {
       "type": "guide",
@@ -38,6 +41,7 @@
   {
     "key": "wfwf",
     "name": "WFWF",
+    "category": "manga",
     "base": "https://wfwf494.com",
     "source": {
       "type": "telegram",
@@ -53,6 +57,7 @@
   {
     "key": "blacktoon",
     "name": "블랙툰",
+    "category": "manga",
     "base": "https://blacktoon421.com",
     "source": {
       "type": "guide",
@@ -65,6 +70,7 @@
   {
     "key": "jjaptoon",
     "name": "짭툰",
+    "category": "manga",
     "base": "https://www.jjaptoon007.com",
     "source": {
       "type": "telegram",
@@ -78,6 +84,7 @@
   {
     "key": "11toon",
     "name": "11툰",
+    "category": "manga",
     "base": "https://11toon.com",
     "check": {
       "name": "고정 주소 직접 확인",
@@ -88,6 +95,7 @@
   {
     "key": "naver",
     "name": "네이버 웹툰",
+    "category": "manga",
     "base": "https://comic.naver.com",
     "check": {
       "name": "고정 주소 직접 확인",
@@ -98,6 +106,7 @@
   {
     "key": "goodtoon",
     "name": "굿툰",
+    "category": "manga",
     "base": "https://www.goodtoon002.com",
     "source": {
       "type": "telegram",
@@ -111,6 +120,7 @@
   {
     "key": "newxtoon",
     "name": "뉴엑스툰",
+    "category": "manga",
     "base": "https://newxtoon1.com",
     "source": {
       "type": "guide",
@@ -118,6 +128,25 @@
       "url": "https://xn--vg1b002axlc8ts.com/",
       "markers": ["뉴엑스툰", "최신", "주소"],
       "hostPattern": "^(?:www\\.)?newxtoon\\d+\\.com$"
+    }
+  },
+  {
+    "key": "linkkf",
+    "name": "Linkkf",
+    "category": "media",
+    "base": "https://linkkf.tv",
+    "source": {
+      "type": "guide",
+      "name": "Linkkf 공식 X",
+      "url": "https://x.com/linkkfcom",
+      "fallbackUrls": ["https://r.jina.ai/https://x.com/linkkfcom"],
+      "markers": ["Linkkf.app", "Linkkf.com", "Linkkf.tv"],
+      "preferredHosts": ["linkkf.tv", "linkkf.app", "linkkf.com"],
+      "hostPattern": "^(?:www\\.)?linkkf\\.(?:tv|app|com|net|live)$",
+      "targetCheck": {
+        "path": "/",
+        "markers": ["Linkkf 애니 TV"]
+      }
     }
   }
 ]

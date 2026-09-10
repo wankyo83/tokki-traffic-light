@@ -1,4 +1,5 @@
-const addresses = document.querySelector('#addresses');
+const mangaAddresses = document.querySelector('#manga-addresses');
+const mediaAddresses = document.querySelector('#media-addresses');
 const updated = document.querySelector('#updated');
 const duration = document.querySelector('#duration');
 const refresh = document.querySelector('#refresh');
@@ -57,7 +58,11 @@ async function load() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     const groups = data.groups || [];
-    addresses.replaceChildren(...groups.map(addressRow));
+    const mediaKeys = new Set(['linkkf']);
+    const mediaGroups = groups.filter(group => group.category === 'media' || mediaKeys.has(group.key));
+    const mangaGroups = groups.filter(group => group.category !== 'media' && !mediaKeys.has(group.key));
+    mangaAddresses.replaceChildren(...mangaGroups.map(addressRow));
+    mediaAddresses.replaceChildren(...mediaGroups.map(addressRow));
     const time = new Date(data.checkedAt);
     updated.textContent = `최근 주소 확인: ${time.toLocaleString('ko-KR')}`;
     duration.textContent = data.durationMs ? `소요: ${Math.round(data.durationMs / 1000)}초` : '';
@@ -65,7 +70,9 @@ async function load() {
     verifyingCount.textContent = groups.filter(group => group.state === 'verifying').length;
     blockedCount.textContent = groups.filter(group => group.state === 'stale' || group.state === 'unavailable').length;
   } catch (error) {
-    addresses.innerHTML = `<div class="error">주소 확인 결과를 불러오지 못했습니다.<br>${escapeHtml(error.message)}</div>`;
+    const errorView = `<div class="error">주소 확인 결과를 불러오지 못했습니다.<br>${escapeHtml(error.message)}</div>`;
+    mangaAddresses.innerHTML = errorView;
+    mediaAddresses.innerHTML = errorView;
     updated.textContent = '주소 확인 결과 불러오기 실패';
     duration.textContent = '';
   } finally {
