@@ -58,7 +58,7 @@ async function load() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     const groups = data.groups || [];
-    const mediaKeys = new Set(['linkkf']);
+    const mediaKeys = new Set(['linkkf', 'ani24']);
     const mediaGroups = groups.filter(group => group.category === 'media' || mediaKeys.has(group.key));
     const mangaGroups = groups.filter(group => group.category !== 'media' && !mediaKeys.has(group.key));
     mangaAddresses.replaceChildren(...mangaGroups.map(addressRow));

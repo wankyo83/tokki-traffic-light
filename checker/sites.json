@@ -145,5 +145,23 @@
       "preferredHosts": ["linkkf.tv", "linkkf.app", "linkkf.com"],
       "hostPattern": "^(?:www\\.)?linkkf\\.(?:tv|app|com|net|live)$"
     }
+  },
+  {
+    "key": "ani24",
+    "name": "애니24",
+    "category": "media",
+    "base": "https://www.ohli24.net",
+    "source": {
+      "type": "telegram",
+      "name": "애니24 공식 텔레그램",
+      "url": "https://t.me/s/ohli24net?before=999999999",
+      "markers": ["애니24", "OHLI24"],
+      "channel": "ohli24net",
+      "hostPattern": "^(?:www\\.)?ohli24\\.net$",
+      "targetCheck": {
+        "path": "/ing",
+        "markers": ["방영중 애니", "요일별 애니"]
+      }
+    }
   }
 ]
