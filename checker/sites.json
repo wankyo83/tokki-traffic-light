@@ -58,9 +58,9 @@
     "base": "https://blacktoon421.com",
     "source": {
       "type": "guide",
-      "name": "블랙툰 주소 안내",
-      "url": "https://www.blacktoonurls.com/address-collection",
-      "markers": ["블랙툰(BlackToon)", "블랙툰 바로가기"],
+      "name": "블랙툰 공식 URL",
+      "url": "https://blacktoonurl.net/",
+      "markers": ["블랙툰URL", "블랙툰 Black", "바로가기"],
       "hostPattern": "^(?:www\\.)?blacktoon\\d+\\.com$"
     }
   },
