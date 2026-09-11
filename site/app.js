@@ -12,6 +12,7 @@ function addressRow(group) {
   node.className = 'row address-row';
   const stateView = {
     healthy: {icon: '✅', label: '정상', badge: 'healthy'},
+    manual: {icon: '📌', label: '수동 등록', badge: 'healthy'},
     verifying: {icon: '🔄', label: '새 주소 확인 중', badge: 'verifying'},
     stale: {icon: '⚠️', label: '참조처 확인 실패', badge: 'stale'},
     unavailable: {icon: '❌', label: '확정 주소 없음', badge: 'unavailable'},

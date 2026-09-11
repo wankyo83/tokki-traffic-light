@@ -169,5 +169,14 @@
       "channel": "tvroom8282",
       "hostPattern": "^(?:www\\.)?tvroom\\d+\\.org$"
     }
+  },
+  {
+    "key": "anilife",
+    "name": "애니라이프",
+    "category": "media",
+    "base": "https://anilife01.tv",
+    "manual": {
+      "name": "현재 주소 수동 등록"
+    }
   }
 ]

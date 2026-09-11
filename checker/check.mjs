@@ -19,9 +19,11 @@ const cycleStarted = Date.now();
 for (const site of sites) {
   const previousGroup = previousGroups.get(site.key);
   const activeBaseUrl = previousActiveBase(site, previousGroup);
-  const result = site.source
-    ? await discoverFromSource(site)
-    : await checkFixedAddress(site);
+  const result = site.manual
+    ? {ok: true, manual: true, baseUrl: site.base, responseMs: 0, reason: '', errorCode: ''}
+    : site.source
+      ? await discoverFromSource(site)
+      : await checkFixedAddress(site);
   const selected = chooseActiveBase(activeBaseUrl, result, previousGroup);
   const checkedAt = new Date().toISOString();
 
@@ -30,15 +32,15 @@ for (const site of sites) {
     name: site.name,
     category: site.category ?? 'manga',
     activeBaseUrl: selected.activeBaseUrl,
-    state: result.ok ? (selected.verifying ? 'verifying' : 'healthy') : (selected.activeBaseUrl ? 'stale' : 'unavailable'),
+    state: result.manual ? 'manual' : result.ok ? (selected.verifying ? 'verifying' : 'healthy') : (selected.activeBaseUrl ? 'stale' : 'unavailable'),
     checkedAt,
     lastSuccessfulAt: result.ok ? checkedAt : previousGroup?.lastSuccessfulAt ?? null,
     candidateBaseUrl: selected.candidateBaseUrl,
     candidateConfirmations: selected.candidateConfirmations,
     candidateConfirmationsRequired,
-    sourceName: site.source?.name ?? site.check?.name ?? '주소 확인',
-    sourceUrl: site.source?.url ?? site.check?.url ?? site.base,
-    sourceType: site.source?.type ?? 'direct',
+    sourceName: site.manual?.name ?? site.source?.name ?? site.check?.name ?? '주소 확인',
+    sourceUrl: site.manual?.url ?? site.source?.url ?? site.check?.url ?? site.base,
+    sourceType: site.manual ? 'manual' : site.source?.type ?? 'direct',
     errorCode: result.ok ? '' : result.errorCode,
     reason: selected.verifying ? `새 주소 확인 중 (${selected.candidateConfirmations}/${candidateConfirmationsRequired})` : result.reason,
   });
