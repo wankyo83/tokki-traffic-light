@@ -171,6 +171,22 @@
     }
   },
   {
+    "key": "tvwiki",
+    "name": "티비위키",
+    "category": "media",
+    "base": "https://tvwiki49.net",
+    "source": {
+      "type": "telegram",
+      "name": "티비위키 공식 텔레그램",
+      "url": "https://t.me/s/tvwiki_url",
+      "markers": ["티비위키 실시간 접속주소"],
+      "channel": "tvwiki_url",
+      "preferredLabel": "티비위키 실시간 접속주소",
+      "stopLabels": ["티비위키 차단", "우회 접속 방법"],
+      "hostPattern": "^(?:www\\.)?tvwiki\\d+\\.net$"
+    }
+  },
+  {
     "key": "anilife",
     "name": "애니라이프",
     "category": "media",

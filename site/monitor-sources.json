@@ -127,6 +127,14 @@
       "enabled": true
     },
     {
+      "id": "tvwiki",
+      "name": "티비위키",
+      "domainKey": "tvwiki",
+      "baseUrl": "https://tvwiki49.net",
+      "category": "media",
+      "enabled": true
+    },
+    {
       "id": "anilife",
       "name": "애니라이프",
       "domainKey": "anilife",
