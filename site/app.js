@@ -21,7 +21,7 @@ function addressRow(group) {
     ? `<a class="url address-link" href="${escapeHtml(group.activeBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.activeBaseUrl)}</a>`
     : '<div class="url">확정 주소 없음</div>';
   const candidate = group.candidateBaseUrl
-    ? `<div class="candidate">새 주소 후보: <a href="${escapeHtml(group.candidateBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.candidateBaseUrl)}</a> · ${group.candidateConfirmations}/${group.candidateConfirmationsRequired}회 확인</div>`
+    ? `<div class="candidate">새 주소 후보: <a href="${escapeHtml(group.candidateBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.candidateBaseUrl)}</a> · 직접 확인 필요</div>`
     : '';
   const error = group.reason && group.state !== 'healthy'
     ? `<div class="reason ${group.state === 'verifying' ? 'warning' : ''}">${group.errorCode ? `${escapeHtml(group.errorCode)} · ` : ''}${escapeHtml(group.reason)}</div>`

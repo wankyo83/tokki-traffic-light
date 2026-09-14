@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {chooseTrustedAddress, matchesAllowedHost, normalizeOrigin, sameDomainFamily} from './address-policy.mjs';
 
 const checkerDir = path.dirname(fileURLToPath(import.meta.url));
 const outputDir = path.resolve(checkerDir, '../site');
@@ -11,7 +12,6 @@ const sites = requestedSiteKeys.size
   : configuredSites;
 const previous = await readPreviousStatus();
 const previousGroups = new Map((previous.groups ?? []).map(group => [group.key, group]));
-const candidateConfirmationsRequired = numberFromEnv('CANDIDATE_CONFIRMATIONS', 2);
 const intervalMinutes = numberFromEnv('CHECK_INTERVAL_MINUTES', 10);
 const groups = [];
 const cycleStarted = Date.now();
@@ -24,7 +24,7 @@ for (const site of sites) {
     : site.source
       ? await discoverFromSource(site)
       : await checkFixedAddress(site);
-  const selected = chooseActiveBase(activeBaseUrl, result, previousGroup);
+  const selected = chooseTrustedAddress(site, activeBaseUrl, result, previousGroup);
   const checkedAt = new Date().toISOString();
 
   groups.push({
@@ -37,12 +37,13 @@ for (const site of sites) {
     lastSuccessfulAt: result.ok ? checkedAt : previousGroup?.lastSuccessfulAt ?? null,
     candidateBaseUrl: selected.candidateBaseUrl,
     candidateConfirmations: selected.candidateConfirmations,
-    candidateConfirmationsRequired,
+    candidateConfirmationsRequired: 0,
+    candidateRequiresManualApproval: selected.manualReview,
     sourceName: site.manual?.name ?? site.source?.name ?? site.check?.name ?? '주소 확인',
     sourceUrl: site.manual?.url ?? site.source?.url ?? site.check?.url ?? site.base,
     sourceType: site.manual ? 'manual' : site.source?.type ?? 'direct',
     errorCode: result.ok ? '' : result.errorCode,
-    reason: selected.verifying ? `새 주소 확인 중 (${selected.candidateConfirmations}/${candidateConfirmationsRequired})` : result.reason,
+    reason: selected.verifying ? '도메인 형식이 변경되어 직접 확인이 필요합니다.' : result.reason,
   });
 }
 
@@ -53,10 +54,12 @@ const status = {
   durationMs: Date.now() - cycleStarted,
   policy: {
     intervalMinutes,
-    candidateConfirmationsRequired,
+    candidateConfirmationsRequired: 0,
     preservesLastKnownGood: true,
     addressSourcesOnly: true,
     sequentialNumberSearch: false,
+    sameFamilyAutoPromotion: true,
+    crossFamilyRequiresManualApproval: true,
   },
   groups,
   services: [],
@@ -111,15 +114,6 @@ async function discoverFromSource(site) {
       responseMs: Date.now() - started,
     };
   }
-  if (!sameDomainFamily(site.base, baseUrl, source.hostPattern)) {
-    return {
-      ok: false,
-      errorCode: 'DOMAIN_MISMATCH',
-      reason: '안내된 주소가 허용된 도메인 형식과 일치하지 않습니다.',
-      responseMs: Date.now() - started,
-    };
-  }
-
   return {ok: true, baseUrl, responseMs: Date.now() - started, reason: '', errorCode: ''};
 }
 
@@ -202,17 +196,15 @@ async function fetchHtmlOnce(url, {allowPlainText = false} = {}) {
 
 function extractGuideAddress(html, source) {
   const sourceOrigin = new URL(source.url).origin;
-  const candidates = [...extractHrefs(html), ...extractMarkdownLinkTargets(html), ...extractAbsoluteUrls(html)]
-    .map(href => normalizeCandidate(href, source.url, source.hostPattern))
-    .filter(baseUrl => baseUrl && baseUrl !== sourceOrigin);
+  const candidates = uniqueOrigins([...extractHrefs(html), ...extractMarkdownLinkTargets(html), ...extractAbsoluteUrls(html)], source)
+    .filter(baseUrl => baseUrl !== sourceOrigin);
   for (const preferredHost of source.preferredHosts ?? []) {
     const preferred = candidates.find(baseUrl => new URL(baseUrl).hostname.replace(/^www\./i, '') === preferredHost.replace(/^www\./i, ''));
     if (preferred) return preferred;
   }
-  for (const baseUrl of candidates) {
-    return baseUrl;
-  }
-  return null;
+  return candidates.find(baseUrl => matchesAllowedHost(baseUrl, source.hostPattern))
+    ?? candidates.find(baseUrl => isReviewableExternalAddress(baseUrl, source))
+    ?? null;
 }
 
 function extractLatestTelegramAddress(html, source) {
@@ -225,13 +217,14 @@ function extractLatestTelegramAddress(html, source) {
     const chunk = html.slice(start, end);
     const candidateChunk = selectTelegramAddressSection(chunk, source);
     const postNumber = Number(posts[index][1]);
-    for (const rawUrl of extractAbsoluteUrls(candidateChunk)) {
-      const baseUrl = normalizeCandidate(rawUrl, source.url, source.hostPattern);
-      if (baseUrl) candidates.push({postNumber, baseUrl});
+    for (const baseUrl of uniqueOrigins([...extractHrefs(candidateChunk), ...extractMarkdownLinkTargets(candidateChunk), ...extractAbsoluteUrls(candidateChunk)], source)) {
+      if (isReviewableExternalAddress(baseUrl, source)) candidates.push({postNumber, baseUrl, allowed: matchesAllowedHost(baseUrl, source.hostPattern)});
     }
   }
-  candidates.sort((a, b) => b.postNumber - a.postNumber);
-  return candidates[0]?.baseUrl ?? null;
+  candidates.sort((a, b) => b.postNumber - a.postNumber || Number(b.allowed) - Number(a.allowed));
+  const latestPost = candidates[0]?.postNumber;
+  const latest = candidates.filter(value => value.postNumber === latestPost);
+  return latest.find(value => value.allowed)?.baseUrl ?? latest[0]?.baseUrl ?? null;
 }
 
 function selectTelegramAddressSection(chunk, source) {
@@ -271,47 +264,31 @@ function decodeHtmlUrl(value) {
 }
 
 function normalizeCandidate(value, sourceUrl, hostPattern) {
-  try {
-    const candidate = new URL(value, sourceUrl);
-    if (!new RegExp(hostPattern, 'i').test(candidate.hostname)) return null;
-    candidate.protocol = 'https:';
-    candidate.pathname = '/';
-    candidate.search = '';
-    candidate.hash = '';
-    return candidate.origin;
-  } catch {
-    return null;
-  }
+  const candidate = normalizeOrigin(value, sourceUrl);
+  return candidate && matchesAllowedHost(candidate, hostPattern) ? candidate : null;
 }
 
-function chooseActiveBase(activeBaseUrl, result, previousGroup) {
-  if (!result.ok) {
-    return {
-      activeBaseUrl,
-      candidateBaseUrl: previousGroup?.candidateBaseUrl ?? null,
-      candidateConfirmations: Number(previousGroup?.candidateConfirmations || 0),
-      verifying: false,
-    };
+function uniqueOrigins(values, source) {
+  const seen = new Set();
+  const result = [];
+  for (const value of values) {
+    const origin = normalizeOrigin(value, source.url);
+    if (!origin || seen.has(origin)) continue;
+    seen.add(origin);
+    result.push(origin);
   }
+  return result;
+}
 
-  const discovered = result.baseUrl;
-  if (discovered === activeBaseUrl) {
-    return {activeBaseUrl, candidateBaseUrl: null, candidateConfirmations: 0, verifying: false};
+function isReviewableExternalAddress(baseUrl, source) {
+  try {
+    const host = new URL(baseUrl).hostname.replace(/^www\./i, '').toLowerCase();
+    const sourceHost = new URL(source.url).hostname.replace(/^www\./i, '').toLowerCase();
+    if (host === sourceHost) return false;
+    return !/(^|\.)(twitter\.com|x\.com|t\.me|telegram\.(?:me|org)|telesco\.pe|telegra\.ph|facebook\.com|instagram\.com|youtube\.com|youtu\.be|naver\.com|kakao\.com|github\.com)$/i.test(host);
+  } catch {
+    return false;
   }
-
-  const previousCount = previousGroup?.candidateBaseUrl === discovered
-    ? Number(previousGroup.candidateConfirmations || 0)
-    : 0;
-  const confirmations = previousCount + 1;
-  if (confirmations >= candidateConfirmationsRequired) {
-    return {activeBaseUrl: discovered, candidateBaseUrl: null, candidateConfirmations: 0, verifying: false};
-  }
-  return {
-    activeBaseUrl,
-    candidateBaseUrl: discovered,
-    candidateConfirmations: confirmations,
-    verifying: true,
-  };
 }
 
 async function readPreviousStatus() {
@@ -338,22 +315,6 @@ function previousActiveBase(site, previousGroup) {
   const previousBase = previousGroup?.activeBaseUrl;
   if (!previousBase || !sameDomainFamily(site.base, previousBase, site.source?.hostPattern)) return site.base;
   return previousBase;
-}
-
-function sameDomainFamily(configuredBase, candidateBase, hostPattern) {
-  try {
-    const configuredHost = new URL(configuredBase).hostname.replace(/^www\./i, '');
-    const candidateHost = new URL(candidateBase).hostname.replace(/^www\./i, '');
-    if (hostPattern && new RegExp(hostPattern, 'i').test(candidateHost)) return true;
-    const configuredNumbered = configuredHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
-    if (!configuredNumbered) return configuredHost === candidateHost;
-    const candidateNumbered = candidateHost.match(/^(.*?)(\d+)(\.[a-z.]+)$/i);
-    return Boolean(candidateNumbered
-      && configuredNumbered[1] === candidateNumbered[1]
-      && configuredNumbered[3] === candidateNumbered[3]);
-  } catch {
-    return false;
-  }
 }
 
 function isRetryable(result) {

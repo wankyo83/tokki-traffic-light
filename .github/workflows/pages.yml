@@ -3,8 +3,8 @@ name: 사이트 검사 및 Pages 배포
 on:
   workflow_dispatch:
   schedule:
-    # 매시 2분부터 10분 간격으로 실행해 동시 실행과 정각 혼잡을 피합니다.
-    - cron: '2/10 * * * *'
+    # 10분마다 실행합니다. 분 값을 명시해 스케줄러 해석 차이를 피합니다.
+    - cron: '2,12,22,32,42,52 * * * *'
   push:
     branches: [main]
     paths:
@@ -33,7 +33,6 @@ jobs:
       - name: 사이트 상태 검사
         env:
           PREVIOUS_STATUS_URL: https://wankyo83.github.io/tokki-traffic-light/status.json
-          CANDIDATE_CONFIRMATIONS: '2'
           CHECK_INTERVAL_MINUTES: '10'
         run: node checker/check.mjs
       - uses: actions/configure-pages@v5
