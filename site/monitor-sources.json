@@ -68,7 +68,7 @@
       "domainKey": "jjaptoon",
       "baseUrl": "https://www.jjaptoon007.com",
       "category": "webtoon",
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "11toon",
