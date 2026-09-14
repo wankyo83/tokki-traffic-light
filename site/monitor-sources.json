@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "categories": {
+    "webtoon": {
+      "name": "웹툰"
+    },
+    "manga": {
+      "name": "만화"
+    },
+    "novel": {
+      "name": "소설"
+    },
+    "media": {
+      "name": "미디어"
+    }
+  },
+  "sources": [
+    {
+      "id": "newtoki",
+      "name": "Newtoki",
+      "domainKey": "newtoki",
+      "baseUrl": "https://newtoki1.org",
+      "categories": ["webtoon", "manga", "novel"],
+      "adapter": "tokki",
+      "variant": "newtoki",
+      "enabled": true
+    },
+    {
+      "id": "toki",
+      "name": "Toki",
+      "domainKey": "toki",
+      "baseUrl": "https://toki31.com",
+      "categories": ["webtoon", "manga", "novel"],
+      "adapter": "tokki",
+      "variant": "toki",
+      "enabled": true
+    },
+    {
+      "id": "sbxh",
+      "name": "SBXH",
+      "domainKey": "sbxh",
+      "baseUrl": "https://sbxh9.com",
+      "categories": ["webtoon", "manga", "novel"],
+      "adapter": "tokki",
+      "variant": "sbxh",
+      "enabled": true
+    },
+    {
+      "id": "wfwf",
+      "name": "WFWF",
+      "domainKey": "wfwf",
+      "baseUrl": "https://wfwf496.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "blacktoon",
+      "name": "블랙툰",
+      "domainKey": "blacktoon",
+      "baseUrl": "https://blacktoon421.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "jjaptoon",
+      "name": "짭툰",
+      "domainKey": "jjaptoon",
+      "baseUrl": "https://www.jjaptoon007.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "11toon",
+      "name": "11툰",
+      "domainKey": "11toon",
+      "baseUrl": "https://11toon.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "naver",
+      "name": "네이버 웹툰",
+      "domainKey": "naver",
+      "baseUrl": "https://comic.naver.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "goodtoon",
+      "name": "굿툰",
+      "domainKey": "goodtoon",
+      "baseUrl": "https://www.goodtoon002.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "newxtoon",
+      "name": "뉴엑스툰",
+      "domainKey": "newxtoon",
+      "baseUrl": "https://newxtoon1.com",
+      "category": "webtoon",
+      "enabled": true
+    },
+    {
+      "id": "linkkf",
+      "name": "Linkkf",
+      "domainKey": "linkkf",
+      "baseUrl": "https://linkkf.tv",
+      "category": "media",
+      "enabled": true
+    },
+    {
+      "id": "ani24",
+      "name": "애니24",
+      "domainKey": "ani24",
+      "baseUrl": "https://www.ohli24.net",
+      "category": "media",
+      "enabled": true
+    },
+    {
+      "id": "tvroom",
+      "name": "티비룸",
+      "domainKey": "tvroom",
+      "baseUrl": "https://tvroom32.org",
+      "category": "media",
+      "enabled": true
+    },
+    {
+      "id": "anilife",
+      "name": "애니라이프",
+      "domainKey": "anilife",
+      "baseUrl": "https://anilife01.tv",
+      "category": "media",
+      "enabled": true
+    }
+  ]
+}
