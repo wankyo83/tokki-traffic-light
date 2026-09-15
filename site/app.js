@@ -1,12 +1,62 @@
 const mangaAddresses = document.querySelector('#manga-addresses');
 const mediaAddresses = document.querySelector('#media-addresses');
 const updated = document.querySelector('#updated');
+const updatedAge = document.querySelector('#updated-age');
 const duration = document.querySelector('#duration');
+const freshnessWarning = document.querySelector('#freshness-warning');
 const refresh = document.querySelector('#refresh');
 const healthyCount = document.querySelector('#healthy-count');
 const verifyingCount = document.querySelector('#verifying-count');
 const blockedCount = document.querySelector('#blocked-count');
 const verificationStatusUrl = 'https://dc-toki-mangayomi-total-toki-manga-test.pages.dev/status/address-verification.json';
+const expectedGitHubIntervalMinutes = 10;
+const delayedAfterMinutes = 30;
+const criticalAfterMinutes = 60;
+
+function relativeAge(milliseconds) {
+  const minutes = Math.max(0, Math.floor(milliseconds / 60_000));
+  if (minutes < 1) return '방금 전';
+  if (minutes < 60) return `${minutes}분 전`;
+  const hours = Math.floor(minutes / 60);
+  const remainder = minutes % 60;
+  if (hours < 24) return remainder ? `${hours}시간 ${remainder}분 전` : `${hours}시간 전`;
+  const days = Math.floor(hours / 24);
+  return `${days}일 ${hours % 24}시간 전`;
+}
+
+function showGitHubFreshness(checkedAt) {
+  const checkedTime = new Date(checkedAt);
+  const ageMs = Date.now() - checkedTime.getTime();
+  const ageMinutes = ageMs / 60_000;
+  const valid = Number.isFinite(checkedTime.getTime()) && ageMs >= -60_000;
+
+  if (!valid) {
+    updated.textContent = 'GitHub 최신 주소 검사: 시간 정보 없음';
+    updatedAge.textContent = '';
+    updatedAge.className = 'freshness-critical';
+    freshnessWarning.hidden = false;
+    freshnessWarning.className = 'freshness-warning critical';
+    freshnessWarning.textContent = 'GitHub 최신 주소 검사 시각을 확인할 수 없습니다.';
+    return;
+  }
+
+  updated.textContent = `GitHub 최신 주소 검사: ${checkedTime.toLocaleString('ko-KR')}`;
+  updatedAge.textContent = `마지막 검사 ${relativeAge(ageMs)} · 예정 주기 ${expectedGitHubIntervalMinutes}분`;
+  updatedAge.className = ageMinutes >= criticalAfterMinutes
+    ? 'freshness-critical'
+    : ageMinutes >= delayedAfterMinutes ? 'freshness-late' : '';
+
+  if (ageMinutes < delayedAfterMinutes) {
+    freshnessWarning.hidden = true;
+    freshnessWarning.textContent = '';
+    freshnessWarning.className = 'freshness-warning';
+    return;
+  }
+
+  freshnessWarning.hidden = false;
+  freshnessWarning.className = `freshness-warning${ageMinutes >= criticalAfterMinutes ? ' critical' : ''}`;
+  freshnessWarning.textContent = `GitHub 최신 주소 검사가 ${relativeAge(ageMs)}에 실행된 뒤 갱신되지 않았습니다. 아래 주소는 마지막 확인 결과입니다.`;
+}
 
 function verificationView(group, verification) {
   if (!verification) return {label: 'NAS 확인 대기', badge: 'nas-pending', detail: '아직 NAS 직접 확인 결과가 없습니다.'};
@@ -102,8 +152,7 @@ async function load() {
     const mangaGroups = groups.filter(group => group.category !== 'media' && !mediaKeys.has(group.key));
     mangaAddresses.replaceChildren(...mangaGroups.map(group => addressRow(group, verificationByKey.get(group.key))));
     mediaAddresses.replaceChildren(...mediaGroups.map(group => addressRow(group, verificationByKey.get(group.key))));
-    const time = new Date(data.checkedAt);
-    updated.textContent = `최근 주소 확인: ${time.toLocaleString('ko-KR')}`;
+    showGitHubFreshness(data.checkedAt);
     const nasTime = verificationData?.checks?.length && verificationData.generatedAt
       ? `NAS 직접 확인: ${new Date(verificationData.generatedAt).toLocaleString('ko-KR')}`
       : 'NAS 직접 확인: 첫 결과 대기 중';
@@ -116,6 +165,11 @@ async function load() {
     mangaAddresses.innerHTML = errorView;
     mediaAddresses.innerHTML = errorView;
     updated.textContent = '주소 확인 결과 불러오기 실패';
+    updatedAge.textContent = '';
+    updatedAge.className = 'freshness-critical';
+    freshnessWarning.hidden = false;
+    freshnessWarning.className = 'freshness-warning critical';
+    freshnessWarning.textContent = 'GitHub 최신 주소 검사 결과를 불러오지 못했습니다.';
     duration.textContent = '';
   } finally {
     refresh.classList.remove('spinning');

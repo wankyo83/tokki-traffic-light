@@ -1,0 +1,6 @@
+name = "tokki-traffic-light-scheduler"
+main = "worker.mjs"
+compatibility_date = "2026-09-16"
+
+[triggers]
+crons = ["*/5 * * * *"]
