@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "rules": {
+    "newtoki": {
+      "hostPattern": "^(?:www\\.)?newtoki\\d+\\.org$",
+      "brandAny": ["뉴토끼", "newtoki"],
+      "structureAny": ["웹툰", "만화", "소설", "장르", "최신"]
+    },
+    "toki": {
+      "hostPattern": "^(?:www\\.)?toki\\d+\\.com$",
+      "brandAny": ["뉴토끼", "toki"],
+      "structureAny": ["웹툰", "만화", "소설", "장르", "최신"]
+    },
+    "sbxh": {
+      "hostPattern": "^(?:www\\.)?sbxh\\d+\\.com$",
+      "brandAny": ["sbxh"],
+      "structureAny": ["웹툰", "만화", "소설", "장르", "최신"]
+    },
+    "wfwf": {
+      "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$",
+      "brandAny": ["늑대닷컴", "wfwf"],
+      "structureAny": ["웹툰", "만화", "장르", "연재", "최신"]
+    },
+    "blacktoon": {
+      "hostPattern": "^(?:www\\.)?blacktoon\\d+\\.com$",
+      "brandAny": ["블랙툰", "blacktoon"],
+      "structureAny": ["웹툰", "만화", "장르", "연재", "최신"]
+    },
+    "jjaptoon": {
+      "hostPattern": "^(?:www\\.)?jjaptoon\\d+\\.com$",
+      "brandAny": ["짭툰", "jjaptoon"],
+      "structureAny": ["웹툰", "만화", "장르", "연재", "최신"]
+    },
+    "11toon": {
+      "hostPattern": "^(?:www\\.)?11toon\\.com$",
+      "brandAny": ["11툰", "11toon"],
+      "structureAny": ["웹툰", "만화", "최신만화", "장르"]
+    },
+    "naver": {
+      "hostPattern": "^comic\\.naver\\.com$",
+      "brandAny": ["네이버 웹툰", "naver webtoon"],
+      "structureAny": ["요일별", "웹툰", "도전만화", "작품"]
+    },
+    "goodtoon": {
+      "hostPattern": "^(?:www\\.)?goodtoon\\d+\\.com$",
+      "brandAny": ["굿툰", "goodtoon"],
+      "structureAny": ["웹툰", "만화", "장르", "연재", "최신"]
+    },
+    "newxtoon": {
+      "hostPattern": "^(?:www\\.)?newxtoon\\d+\\.com$",
+      "brandAny": ["뉴엑스툰", "newxtoon"],
+      "structureAny": ["웹툰", "만화", "장르", "연재", "최신"]
+    },
+    "linkkf": {
+      "hostPattern": "^(?:www\\.)?linkkf\\.(?:tv|app|com|net|live)$",
+      "brandAny": ["linkkf"],
+      "structureAny": ["애니", "anime", "방영중", "장르", "episode"]
+    },
+    "ani24": {
+      "hostPattern": "^(?:www\\.)?ohli24\\.net$",
+      "brandAny": ["애니24", "ohli24"],
+      "structureAny": ["애니", "방영중", "장르", "에피소드", "episode"]
+    },
+    "tvroom": {
+      "hostPattern": "^(?:www\\.)?tvroom\\d+\\.org$",
+      "brandAny": ["티비룸", "tvroom"],
+      "structureAny": ["드라마", "영화", "예능", "애니", "최신"]
+    },
+    "tvwiki": {
+      "hostPattern": "^(?:www\\.)?tvwiki\\d+\\.net$",
+      "brandAny": ["티비위키", "tvwiki"],
+      "structureAny": ["인기영상", "카테고리", "드라마", "영화", "예능", "애니"]
+    },
+    "anilife": {
+      "hostPattern": "^(?:www\\.)?anilife\\d*\\.tv$",
+      "brandAny": ["애니라이프", "anilife"],
+      "structureAny": ["애니", "방영중", "장르", "에피소드", "episode"]
+    }
+  }
+}
+
+
