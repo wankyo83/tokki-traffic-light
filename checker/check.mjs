@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {chooseTrustedAddress, matchesAllowedHost, normalizeOrigin, sameDomainFamily} from './address-policy.mjs';
+import {chooseTrustedAddress, extractGatewayTarget, matchesAllowedHost, normalizeOrigin, sameDomainFamily} from './address-policy.mjs';
 
 const checkerDir = path.dirname(fileURLToPath(import.meta.url));
 const outputDir = path.resolve(checkerDir, '../site');
@@ -103,10 +103,10 @@ async function discoverFromSource(site) {
   const redirectedBaseUrl = source.useFinalUrl
     ? normalizeCandidate(fetched.finalUrl, source.url, source.hostPattern)
     : null;
-  const baseUrl = redirectedBaseUrl ?? (source.type === 'telegram'
+  const discoveredBaseUrl = redirectedBaseUrl ?? (source.type === 'telegram'
     ? extractLatestTelegramAddress(fetched.text, source)
     : extractGuideAddress(fetched.text, source));
-  if (!baseUrl) {
+  if (!discoveredBaseUrl) {
     return {
       ok: false,
       errorCode: 'ADDRESS_NOT_FOUND',
@@ -114,7 +114,26 @@ async function discoverFromSource(site) {
       responseMs: Date.now() - started,
     };
   }
+  const resolved = source.resolveGateway
+    ? await resolveGatewayAddress(discoveredBaseUrl, source.resolveGateway)
+    : {ok: true, baseUrl: discoveredBaseUrl};
+  if (!resolved.ok) return {...resolved, responseMs: Date.now() - started};
+  const baseUrl = resolved.baseUrl;
   return {ok: true, baseUrl, responseMs: Date.now() - started, reason: '', errorCode: ''};
+}
+
+async function resolveGatewayAddress(gatewayUrl, rule) {
+  const fetched = await fetchHtml(gatewayUrl);
+  if (!fetched.ok) return fetched;
+  const baseUrl = extractGatewayTarget(fetched, gatewayUrl, rule);
+  if (!baseUrl) {
+    return {
+      ok: false,
+      errorCode: 'GATEWAY_TARGET_NOT_FOUND',
+      reason: '우회 주소에서 허용된 실제 접속 주소를 찾지 못했습니다.',
+    };
+  }
+  return {ok: true, baseUrl, reason: '', errorCode: ''};
 }
 
 async function checkFixedAddress(site) {
@@ -184,7 +203,12 @@ async function fetchHtmlOnce(url, {allowPlainText = false} = {}) {
     if (!allowPlainText && !/<html|<!doctype|<body/i.test(text)) {
       return {ok: false, errorCode: 'INVALID_HTML', reason: '정상 HTML 페이지 형식이 아닙니다.'};
     }
-    return {ok: true, text: text.slice(0, 1_000_000), finalUrl: response.url};
+    return {
+      ok: true,
+      text: text.slice(0, 1_000_000),
+      finalUrl: response.url,
+      setCookie: response.headers.get('set-cookie') ?? '',
+    };
   } catch (error) {
     if (error.name === 'AbortError') return {ok: false, errorCode: 'TIMEOUT', reason: '응답 시간 초과'};
     const code = error.cause?.code || 'NETWORK';
@@ -313,6 +337,7 @@ function previousActiveBase(site, previousGroup) {
   const configuredSourceUrl = site.source?.url ?? site.check?.url ?? site.base;
   if (previousGroup?.sourceUrl && previousGroup.sourceUrl !== configuredSourceUrl) return site.base;
   const previousBase = previousGroup?.activeBaseUrl;
+  if (previousBase && site.source?.publishHostPattern && !matchesAllowedHost(previousBase, site.source.publishHostPattern)) return site.base;
   if (!previousBase || !sameDomainFamily(site.base, previousBase, site.source?.hostPattern)) return site.base;
   return previousBase;
 }

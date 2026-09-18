@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {chooseTrustedAddress, sameDomainFamily} from './address-policy.mjs';
+import {chooseTrustedAddress, extractGatewayTarget, sameDomainFamily} from './address-policy.mjs';
 
 const blacktoon = {
   base: 'https://blacktoon07.com',
@@ -11,7 +11,7 @@ assert.equal(sameDomainFamily(blacktoon.base, 'https://blacktoon422.net', blackt
 assert.equal(sameDomainFamily(blacktoon.base, 'https://newblacktoon422.com', blacktoon.source.hostPattern), false);
 
 const tvwiki = {
-  base: 'https://tvwiki.store',
+  base: 'https://tvwiki50.net',
   source: {hostPattern: '^(?:www\\.)?(?:tvwiki\\d+\\.net|tvwiki\\.store)$'},
 };
 
@@ -19,6 +19,23 @@ assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki50.net', tvwiki.source
 assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki50.com', tvwiki.source.hostPattern), false);
 assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki.store', tvwiki.source.hostPattern), true);
 assert.equal(sameDomainFamily(tvwiki.base, 'https://fake-tvwiki.store', tvwiki.source.hostPattern), false);
+
+const tvwikiGatewayRule = {
+  cookieName: 'wikimove_tgt',
+  hostPattern: '^(?:www\\.)?tvwiki\\d+\\.net$',
+};
+assert.equal(
+  extractGatewayTarget({setCookie: 'wikimove_tgt=tvwiki50.net; path=/; HttpOnly'}, 'https://tvwiki.store', tvwikiGatewayRule),
+  'https://tvwiki50.net',
+);
+assert.equal(
+  extractGatewayTarget({setCookie: 'wikimove_tgt=https%3A%2F%2Ftvwiki51.net; path=/'}, 'https://tvwiki.store', tvwikiGatewayRule),
+  'https://tvwiki51.net',
+);
+assert.equal(
+  extractGatewayTarget({setCookie: 'wikimove_tgt=evil.example; path=/'}, 'https://tvwiki.store', tvwikiGatewayRule),
+  null,
+);
 
 assert.deepEqual(
   chooseTrustedAddress(blacktoon, 'https://blacktoon07.com', {ok: true, baseUrl: 'https://blacktoon422.com'}),

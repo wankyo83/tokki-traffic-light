@@ -20,6 +20,26 @@ export function matchesAllowedHost(value, hostPattern) {
   }
 }
 
+export function extractGatewayTarget({setCookie = '', finalUrl = ''}, gatewayUrl, {cookieName, hostPattern}) {
+  const candidates = [];
+  if (cookieName) {
+    const cookiePattern = new RegExp(`(?:^|[,;]\\s*)${escapeRegExp(cookieName)}=\"?([^;,\"\\s]+)`, 'i');
+    const cookieValue = setCookie.match(cookiePattern)?.[1];
+    if (cookieValue) {
+      try { candidates.push(decodeURIComponent(cookieValue)); }
+      catch { candidates.push(cookieValue); }
+    }
+  }
+  if (finalUrl) candidates.push(finalUrl);
+
+  for (const value of candidates) {
+    const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+    const candidate = normalizeOrigin(withScheme, gatewayUrl);
+    if (candidate && matchesAllowedHost(candidate, hostPattern)) return candidate;
+  }
+  return null;
+}
+
 export function sameDomainFamily(configuredBase, candidateBase, hostPattern) {
   try {
     const configuredHost = new URL(configuredBase).hostname.replace(/^www\./i, '');
@@ -75,4 +95,8 @@ export function chooseTrustedAddress(site, activeBaseUrl, result, previousGroup)
     verifying: true,
     manualReview: true,
   };
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
