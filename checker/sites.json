@@ -174,16 +174,16 @@
     "key": "tvwiki",
     "name": "티비위키",
     "category": "media",
-    "base": "https://tvwiki49.net",
+    "base": "https://tvwiki.store",
     "source": {
       "type": "telegram",
       "name": "티비위키 공식 텔레그램",
       "url": "https://t.me/s/tvwiki_url",
-      "markers": ["티비위키 실시간 접속주소"],
+      "markers": ["티비위키 우회 주소"],
       "channel": "tvwiki_url",
-      "preferredLabel": "티비위키 실시간 접속주소",
-      "stopLabels": ["티비위키 차단", "우회 접속 방법"],
-      "hostPattern": "^(?:www\\.)?tvwiki\\d+\\.net$"
+      "preferredLabel": "티비위키 우회 주소",
+      "stopLabels": ["티비위키 실시간 접속주소", "티비위키 차단", "우회 접속 방법"],
+      "hostPattern": "^(?:www\\.)?(?:tvwiki\\d+\\.net|tvwiki\\.store)$"
     }
   },
   {

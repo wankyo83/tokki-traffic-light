@@ -130,7 +130,7 @@
       "id": "tvwiki",
       "name": "티비위키",
       "domainKey": "tvwiki",
-      "baseUrl": "https://tvwiki49.net",
+      "baseUrl": "https://tvwiki.store",
       "category": "media",
       "enabled": true
     },

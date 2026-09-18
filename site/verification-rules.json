@@ -67,7 +67,7 @@
       "structureAny": ["드라마", "영화", "예능", "애니", "최신"]
     },
     "tvwiki": {
-      "hostPattern": "^(?:www\\.)?tvwiki\\d+\\.net$",
+      "hostPattern": "^(?:www\\.)?(?:tvwiki\\d+\\.net|tvwiki\\.store)$",
       "brandAny": ["티비위키", "tvwiki"],
       "structureAny": ["인기영상", "카테고리", "드라마", "영화", "예능", "애니"]
     },
@@ -78,5 +78,4 @@
     }
   }
 }
-
 

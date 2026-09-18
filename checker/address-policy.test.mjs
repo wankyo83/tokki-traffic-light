@@ -11,13 +11,14 @@ assert.equal(sameDomainFamily(blacktoon.base, 'https://blacktoon422.net', blackt
 assert.equal(sameDomainFamily(blacktoon.base, 'https://newblacktoon422.com', blacktoon.source.hostPattern), false);
 
 const tvwiki = {
-  base: 'https://tvwiki49.net',
-  source: {hostPattern: '^(?:www\\.)?tvwiki\\d+\\.net$'},
+  base: 'https://tvwiki.store',
+  source: {hostPattern: '^(?:www\\.)?(?:tvwiki\\d+\\.net|tvwiki\\.store)$'},
 };
 
 assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki50.net', tvwiki.source.hostPattern), true);
 assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki50.com', tvwiki.source.hostPattern), false);
-assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki.store', tvwiki.source.hostPattern), false);
+assert.equal(sameDomainFamily(tvwiki.base, 'https://tvwiki.store', tvwiki.source.hostPattern), true);
+assert.equal(sameDomainFamily(tvwiki.base, 'https://fake-tvwiki.store', tvwiki.source.hostPattern), false);
 
 assert.deepEqual(
   chooseTrustedAddress(blacktoon, 'https://blacktoon07.com', {ok: true, baseUrl: 'https://blacktoon422.com'}),
