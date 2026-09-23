@@ -42,12 +42,15 @@
     "key": "wfwf",
     "name": "WFWF",
     "category": "manga",
-    "base": "https://wfwf496.com",
+    "base": "https://wfwf505.com",
     "source": {
-      "type": "guide",
-      "name": "늑대닷컴 주소 안내",
-      "url": "https://a14c.com/",
-      "markers": ["늑대닷컴", "늑대닷컴2"],
+      "type": "telegram",
+      "name": "늑대닷컴 공식채널",
+      "url": "https://t.me/s/wftoon",
+      "channel": "wftoon",
+      "markers": ["늑대닷컴 주소"],
+      "preferredLabel": "늑대닷컴 주소",
+      "stopLabels": ["늑대닷컴2 주소"],
       "hostPattern": "^(?:www\\.)?wfwf\\d+\\.com$"
     }
   },
