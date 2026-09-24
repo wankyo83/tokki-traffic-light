@@ -16,7 +16,11 @@
     "key": "toki",
     "name": "토끼",
     "category": "manga",
-    "base": "https://toki31.com",
+    "base": "https://toki32.com",
+    "manual": {
+      "name": "주소 안내 장애 중 수동 지정",
+      "url": "https://toki32.com"
+    },
     "source": {
       "type": "guide",
       "name": "뉴토끼 주소 안내",

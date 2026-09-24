@@ -30,7 +30,7 @@
       "id": "toki",
       "name": "Toki",
       "domainKey": "toki",
-      "baseUrl": "https://toki31.com",
+      "baseUrl": "https://toki32.com",
       "categories": ["webtoon", "manga", "novel"],
       "adapter": "tokki",
       "variant": "toki",
