@@ -181,7 +181,11 @@
     "key": "tvwiki",
     "name": "티비위키",
     "category": "media",
-    "base": "https://tvwiki50.net",
+    "base": "https://tvwiki51.net",
+    "manual": {
+      "name": "공식 안내 확인 후 수동 지정",
+      "url": "https://t.me/s/tvwiki_url"
+    },
     "source": {
       "type": "telegram",
       "name": "티비위키 공식 텔레그램",
