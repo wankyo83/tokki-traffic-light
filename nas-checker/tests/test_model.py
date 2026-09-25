@@ -49,6 +49,10 @@ class ModelTests(unittest.TestCase):
         result, _ = validate_page("11toon", "https://11toon.com", "", "", [link], "<html></html>", 404)
         self.assertIsNone(result)
 
+    def test_www_alias_category_link(self):
+        result, _ = validate_page("wfwf", "https://www.wfwf505.com/", "", "", [{"href": "https://wfwf505.com/end"}], "<html></html>")
+        self.assertEqual(result, "https://www.wfwf505.com")
+
     def test_tvwiki_uses_latest_realtime_label_not_bypass_address(self):
         site = {"key": "tvwiki", "source": {"preferredLabel": "티비위키 실시간 접속주소", "strictPreferredLabel": True}}
         messages = [

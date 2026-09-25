@@ -82,7 +82,7 @@ def matches_category(base_url, candidate_url, category_path):
     base = urlsplit(base_url)
     candidate = urlsplit(candidate_url)
     expected = urlsplit(category_path)
-    if candidate.hostname != base.hostname or candidate.scheme != "https":
+    if not candidate.hostname or candidate.hostname.removeprefix("www.") != base.hostname.removeprefix("www.") or candidate.scheme != "https":
         return False
     if unquote(candidate.path).rstrip("/") != unquote(expected.path).rstrip("/"):
         return False
