@@ -49,7 +49,7 @@ def host_candidates(key, text):
 
 
 def numeric_candidates(key, current, count=10, start_offset=1):
-    """Try a small forward window; jjaptoon additionally allows its known reset range."""
+    """Try only the next numbered addresses in the current site's family."""
     try:
         current = validate_url(key, current)
     except ValueError:
@@ -61,8 +61,6 @@ def numeric_candidates(key, current, count=10, start_offset=1):
     number = int(match["number"])
     width = len(match["number"])
     candidates = [f"https://{match['prefix']}{value:0{width}d}{match['suffix']}" for value in range(number + start_offset, number + start_offset + count)]
-    if key == "jjaptoon" and number > 10 and start_offset == 1:
-        candidates += [f"https://{match['prefix']}{value:03d}{match['suffix']}" for value in range(1, 11)]
     return [url for url in candidates if url != current]
 
 

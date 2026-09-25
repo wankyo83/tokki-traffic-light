@@ -20,7 +20,7 @@
       </div>
       <div>
         <h1>토끼 신호등</h1>
-        <p>확장앱 최신 주소 관리 페이지</p>
+        <p>확장앱 최신 주소 확인 페이지</p>
       </div>
       <button id="refresh" type="button" aria-label="새로고침">↻</button>
     </header>
@@ -33,22 +33,10 @@
       <span id="duration"></span>
     </div>
 
-    <details class="admin-panel">
-      <summary>관리자 수동 주소 확인</summary>
-      <p>새 주소를 제출하면 NAS가 Camoufox로 사이트를 검증합니다. 검증 전에는 공개 주소가 바뀌지 않습니다.</p>
-      <label>NAS HTTPS 관리 주소 <input id="admin-api" type="url" placeholder="https://wankyo.synology.me:8793"></label>
-      <label>관리 토큰 <input id="admin-token" type="password" autocomplete="off" placeholder="NAS .env의 ADMIN_TOKEN"></label>
-      <label>사이트 <select id="admin-site"></select></label>
-      <label>새 사이트 주소 <input id="admin-url" type="url" placeholder="https://..."></label>
-      <button id="admin-submit" type="button">검증 요청</button>
-      <span id="admin-result" role="status"></span>
-      <p class="admin-help">이 HTTPS 페이지에서는 NAS의 HTTP 주소를 직접 호출할 수 없습니다. Synology HTTPS 역방향 프록시가 필요합니다. 관리 토큰은 브라우저에 저장하지 않습니다.</p>
-    </details>
-
     <section class="summary" aria-label="검사 요약">
       <div><strong id="healthy-count">-</strong><span>정상</span></div>
       <div><strong id="verifying-count">-</strong><span>확인 중</span></div>
-      <div><strong id="blocked-count">-</strong><span>참조처 오류</span></div>
+      <div><strong id="blocked-count">-</strong><span>확인 실패</span></div>
     </section>
 
     <div class="address-grid">

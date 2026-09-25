@@ -18,8 +18,9 @@ class ModelTests(unittest.TestCase):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 validate_url("toki", url)
 
-    def test_numbers_and_reset(self):
+    def test_numbers_are_limited_to_next_ten(self):
         self.assertEqual(numeric_candidates("toki", "https://toki32.com"), [f"https://toki{n}.com" for n in range(33, 43)])
+        self.assertEqual(numeric_candidates("jjaptoon", "https://www.jjaptoon031.com"), [f"https://www.jjaptoon{n:03d}.com" for n in range(32, 42)])
         self.assertFalse(automatic_regression("jjaptoon", "https://jjaptoon31.com", "https://jjaptoon007.com"))
         self.assertTrue(automatic_regression("toki", "https://toki32.com", "https://toki31.com"))
 
@@ -47,8 +48,10 @@ class FakeBrowser:
         self.results = results
         self.guide = guide or []
         self.tried = []
+        self.discoveries = 0
 
     async def discover(self, site):
+        self.discoveries += 1
         return self.guide, "guide failed" if not self.guide else "guide read"
 
     async def verify(self, key, url, **_):
@@ -79,42 +82,53 @@ class ServiceTests(unittest.TestCase):
 
     def test_source_down_preserves_current(self):
         browser = FakeBrowser({})
-        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", None))
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertIsNone(result[0])
-        self.assertIn("https://toki33.com", browser.tried)
+        self.assertEqual(browser.tried, ["https://toki32.com"] + [f"https://toki{n}.com" for n in range(33, 43)])
+        self.assertEqual(result[4]["source"]["state"], "failed")
+        self.assertEqual(result[4]["numeric"]["state"], "failed")
+        self.assertEqual(result[4]["numeric"]["checked"], 10)
         second = FakeBrowser({})
-        asyncio.run(self.service._check_site(second, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", None))
-        self.assertIn("https://toki43.com", second.tried)
+        asyncio.run(self.service._check_site(second, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
+        self.assertEqual(second.tried, browser.tried)
 
     def test_redirect_to_next_verified(self):
         browser = FakeBrowser({"https://toki32.com": "https://toki33.com"})
-        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", None))
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(result[0], "https://toki33.com")
+        self.assertEqual(browser.discoveries, 0)
 
     def test_working_current_skips_number_scan(self):
         browser = FakeBrowser({"https://toki32.com": "https://toki32.com", "https://toki33.com": "https://toki33.com"})
-        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", None))
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(result[0], "https://toki32.com")
         self.assertNotIn("https://toki33.com", browser.tried)
+        self.assertEqual(browser.discoveries, 0)
 
     def test_working_current_kept_if_numbered_candidates_fail(self):
         browser = FakeBrowser({"https://toki32.com": "https://toki32.com"})
-        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", None))
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(result[0], "https://toki32.com")
 
     def test_old_guide_rejected(self):
         browser = FakeBrowser({"https://toki31.com": "https://toki31.com", "https://toki32.com": "https://toki32.com"}, ["https://toki31.com"])
-        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", None))
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(result[0], "https://toki32.com")
         self.assertNotIn("https://toki31.com", browser.tried)
 
-    def test_manual_must_verify(self):
-        self.service.submit("toki", "https://toki33.com")
-        self.assertEqual(self.service.pending["toki"]["url"], "https://toki33.com")
-        with self.assertRaises(ValueError):
-            self.service.submit("toki", "https://evil.test")
-        result = asyncio.run(self.service._check_site(FakeBrowser({"https://toki33.com": "https://toki33.com"}), {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com", "https://toki33.com"))
-        self.assertTrue(result[4])
+    def test_source_candidate_then_numeric_success(self):
+        browser = FakeBrowser({"https://toki35.com": "https://toki35.com"}, ["https://toki34.com"])
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
+        self.assertEqual(result[0], "https://toki35.com")
+        self.assertEqual(result[4]["source"]["state"], "failed")
+        self.assertEqual(result[4]["numeric"]["state"], "healthy")
+
+    def test_source_success_stops_numeric_scan(self):
+        browser = FakeBrowser({"https://toki34.com": "https://toki34.com"}, ["https://toki34.com"])
+        result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
+        self.assertEqual(browser.tried, ["https://toki32.com", "https://toki34.com"])
+        self.assertEqual(result[4]["source"]["state"], "healthy")
+        self.assertEqual(result[4]["numeric"]["state"], "skipped")
 
     def test_all_fail_preserves_every_published_address(self):
         from signal_nas.model import SITES
@@ -131,6 +145,8 @@ class ServiceTests(unittest.TestCase):
             updated, status = asyncio.run(self.service._run_async(document, old_status))
         self.assertEqual({key: item["baseUrl"] for key, item in updated["domains"].items()}, examples)
         self.assertEqual(len(status["groups"]), len(SITES))
+        self.assertEqual(status["policy"]["numericSearchMaxOffset"], 10)
+        self.assertEqual(status["groups"][1]["checks"]["numeric"]["state"], "failed")
         self.assertEqual(self.service.snapshot()["completedSites"], len(SITES))
 
 

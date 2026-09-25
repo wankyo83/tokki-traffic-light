@@ -87,9 +87,7 @@ def make_handler(service):
                 self._send(200, public_overview(service.snapshot()))
                 return
             if self.path == "/":
-                from .model import SITES
-                html = ADMIN_HTML.replace("%KEYS%", json.dumps([[s["key"], s["name"]] for s in SITES], ensure_ascii=False))
-                self._send(200, html.encode("utf-8"), "text/html; charset=utf-8")
+                self._send(200, ADMIN_HTML.encode("utf-8"), "text/html; charset=utf-8")
                 return
             if not self._authorized():
                 self._send(401, {"error": "관리 토큰이 필요합니다."})
@@ -103,7 +101,7 @@ def make_handler(service):
             if not self._authorized():
                 self._send(401, {"error": "관리 토큰이 필요합니다."})
                 return
-            if self.path not in ("/api/manual-candidate", "/api/run"):
+            if self.path != "/api/run":
                 self._send(404, {"error": "not found"})
                 return
             try:
@@ -111,12 +109,8 @@ def make_handler(service):
                 if length > 2048 or length < 0:
                     raise ValueError("request too large")
                 value = json.loads(self.rfile.read(length) or b"{}")
-                if self.path == "/api/run":
-                    service.wake.set()
-                    self._send(202, {"queued": True})
-                else:
-                    url = service.submit(value.get("key"), value.get("url"))
-                    self._send(202, {"queued": True, "url": url})
+                service.wake.set()
+                self._send(202, {"queued": True})
             except (ValueError, TypeError, json.JSONDecodeError) as exc:
                 self._send(400, {"error": str(exc)[:200]})
 

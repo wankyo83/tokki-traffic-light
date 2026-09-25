@@ -11,13 +11,6 @@ const blockedCount = document.querySelector('#blocked-count');
 const expectedGitHubIntervalMinutes = 60;
 const delayedAfterMinutes = 90;
 const criticalAfterMinutes = 150;
-const adminApi = document.querySelector('#admin-api');
-const adminToken = document.querySelector('#admin-token');
-const adminSite = document.querySelector('#admin-site');
-const adminUrl = document.querySelector('#admin-url');
-const adminSubmit = document.querySelector('#admin-submit');
-const adminResult = document.querySelector('#admin-result');
-adminApi.value = localStorage.getItem('tokki-admin-api') || '';
 
 function relativeAge(milliseconds) {
   const minutes = Math.max(0, Math.floor(milliseconds / 60_000));
@@ -71,7 +64,7 @@ function addressRow(group) {
     healthy: {icon: '✅', label: '정상', badge: 'healthy'},
     manual: {icon: '📌', label: '수동 등록', badge: 'healthy'},
     verifying: {icon: '🔄', label: '새 주소 확인 중', badge: 'verifying'},
-    stale: {icon: '⚠️', label: '참조처 확인 실패', badge: 'stale'},
+    stale: {icon: '⚠️', label: '확인 실패 · 기존 주소 유지', badge: 'stale'},
     unavailable: {icon: '❌', label: '확정 주소 없음', badge: 'unavailable'},
   }[group.state] ?? {icon: '⚠️', label: '확인 필요', badge: 'stale'};
   const activeAddress = group.activeBaseUrl
@@ -80,9 +73,31 @@ function addressRow(group) {
   const candidate = group.candidateBaseUrl
     ? `<div class="candidate">새 주소 후보: <a href="${escapeHtml(group.candidateBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.candidateBaseUrl)}</a> · 직접 확인 필요</div>`
     : '';
-  const error = group.reason && (group.state !== 'healthy' || /guide unavailable|guide challenged|failed/i.test(group.reason))
-    ? `<div class="reason ${group.state === 'verifying' ? 'warning' : ''}">${group.errorCode ? `${escapeHtml(group.errorCode)} · ` : ''}${escapeHtml(group.reason)}</div>`
-    : '';
+  const checks = group.checks;
+  const stageMessages = [];
+  if (checks?.current?.state === 'failed') {
+    stageMessages.push(`등록 주소 확인 실패: ${checks.current.detail || '사이트 검증 실패'}`);
+  }
+  if (checks?.source?.state === 'failed') {
+    stageMessages.push(`참조처 확인 실패: ${checks.source.detail || '유효한 주소를 찾지 못함'}`);
+  }
+  if (checks?.source?.state === 'healthy') {
+    stageMessages.push('참조처 주소 검증 성공');
+  }
+  if (checks?.numeric?.state === 'failed') {
+    stageMessages.push(`다음 번호 +1~+10 확인 실패 (${checks.numeric.checked || 0}개) · 기존 주소 유지`);
+  }
+  if (checks?.numeric?.state === 'healthy') {
+    stageMessages.push(`다음 번호 검증 성공 (${checks.numeric.checked || 0}번째 후보)`);
+  }
+  if (checks?.numeric?.state === 'unavailable') {
+    stageMessages.push('다음 번호 후보가 없어 기존 주소 유지');
+  }
+  const error = checks
+    ? stageMessages.map(message => `<div class="reason ${group.state === 'healthy' ? 'warning' : ''}">${escapeHtml(message)}</div>`).join('')
+    : group.reason && group.state !== 'healthy'
+      ? `<div class="reason">${group.errorCode ? `${escapeHtml(group.errorCode)} · ` : ''}${escapeHtml(group.reason)}</div>`
+      : '';
   const source = group.sourceUrl
     ? `<a class="source-link" href="${escapeHtml(group.sourceUrl)}" target="_blank" rel="noopener noreferrer">주소 출처: ${escapeHtml(group.sourceName || '안내 페이지')}</a>`
     : '';
@@ -117,14 +132,6 @@ async function load() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     const groups = data.groups || [];
-    const selectedSite = adminSite.value;
-    adminSite.replaceChildren(...groups.map(group => {
-      const option = document.createElement('option');
-      option.value = group.key;
-      option.textContent = group.name;
-      return option;
-    }));
-    if (groups.some(group => group.key === selectedSite)) adminSite.value = selectedSite;
     const mediaKeys = new Set(['linkkf', 'ani24', 'tvroom', 'tvwiki', 'anilife']);
     const mediaGroups = groups.filter(group => group.category === 'media' || mediaKeys.has(group.key));
     const mangaGroups = groups.filter(group => group.category !== 'media' && !mediaKeys.has(group.key));
@@ -152,28 +159,5 @@ async function load() {
 }
 
 refresh.addEventListener('click', load);
-adminSubmit.addEventListener('click', async () => {
-  adminResult.textContent = '';
-  let base;
-  try {
-    base = new URL(adminApi.value.trim());
-    if (base.protocol !== 'https:' || base.username || base.password || base.pathname !== '/') throw new Error('NAS 관리 주소는 HTTPS 기본 주소여야 합니다.');
-    if (!adminToken.value || !adminSite.value || !adminUrl.value) throw new Error('관리 토큰, 사이트, 새 주소를 입력하세요.');
-    localStorage.setItem('tokki-admin-api', base.origin);
-    adminSubmit.disabled = true;
-    const response = await fetch(`${base.origin}/api/manual-candidate`, {
-      method: 'POST',
-      headers: {'Authorization': `Bearer ${adminToken.value}`, 'Content-Type': 'application/json'},
-      body: JSON.stringify({key: adminSite.value, url: adminUrl.value.trim()}),
-    });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || `HTTP ${response.status}`);
-    adminResult.textContent = `${result.url} 검증 요청 완료. NAS 확인 후 통과하면 공개 주소에 반영됩니다.`;
-  } catch (error) {
-    adminResult.textContent = `요청 실패: ${error.message}`;
-  } finally {
-    adminSubmit.disabled = false;
-  }
-});
 load();
 setInterval(load, 60_000);

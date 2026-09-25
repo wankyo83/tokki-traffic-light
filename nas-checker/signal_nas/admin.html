@@ -29,24 +29,20 @@ button,input,select{font:inherit}.shell{max-width:1440px;margin:auto;padding:24p
   <div class="notice" id="notice" hidden role="status"></div>
   <section class="counts" aria-label="주소 상태 개수"><div class="count"><strong id="good-count">0</strong><span>정상</span></div><div class="count"><strong id="stale-count">0</strong><span>확인 필요</span></div><div class="count"><strong id="manual-count">0</strong><span>수동 등록</span></div></section>
   <div class="grid"><section class="section"><h2>📚 만화·웹툰 신호등</h2><div class="rows" id="manga"></div></section><section class="section"><h2>🎬 미디어 주소</h2><div class="rows" id="media"></div></section></div>
-  <details class="admin" id="admin"><summary>관리자 기능 · 주소 변경 및 상세 오류</summary><div class="admin-body">
-    <p>위 상태는 토큰 없이 확인할 수 있습니다. 수동 주소 요청과 상세 오류 확인에는 관리 토큰이 필요합니다.</p>
+  <details class="admin" id="admin"><summary>검사 제어 및 상세 오류</summary><div class="admin-body">
+    <p>위 상태는 토큰 없이 확인할 수 있습니다. 전체 검사 요청과 상세 오류 확인에만 관리 토큰이 필요합니다.</p>
     <label>관리 토큰<input id="token" type="password" autocomplete="off" placeholder=".env의 ADMIN_TOKEN"></label>
-    <label>사이트<select id="site"></select></label>
-    <label>새 HTTPS 주소<input id="url" type="url" placeholder="https://example.com"></label>
-    <div class="admin-actions"><button id="submit" type="button">주소 확인 요청</button><button id="run" type="button">전체 검사 지금 실행</button><button id="details" type="button">상세 상태 확인</button></div>
-    <span id="message" role="status"></span><span id="private-error"></span><span id="pending"></span>
+    <div class="admin-actions"><button id="run" type="button">전체 검사 지금 실행</button><button id="details" type="button">상세 상태 확인</button></div>
+    <span id="message" role="status"></span><span id="private-error"></span>
     <small>토큰은 브라우저에 저장하지 않습니다. LAN HTTP에서는 다른 기기가 통신을 볼 수 있으니 HTTPS 또는 Tailscale 사용을 권장합니다.</small>
   </div></details>
   <p class="meta">새 주소는 NAS에서 사이트 구조를 검증한 뒤에만 공개됩니다. 검사 중에는 위 목록에 마지막 게시 결과가 표시됩니다.</p>
 </main>
 <script>
 'use strict';
-const keys=%KEYS%;
 const $=id=>document.getElementById(id);
 const phaseText={'idle':'대기 중','reading published snapshot':'공개 주소 읽는 중','checking KR egress':'국내 회선 확인 중','verifying sites':'사이트 순차 검사 중','publishing GitHub snapshot':'GitHub에 게시 중'};
 let latest=null;
-for(const [key,name] of keys){const option=document.createElement('option');option.value=key;option.textContent=name;$('site').append(option)}
 function time(value){if(!value)return '기록 없음';const date=new Date(value);return Number.isNaN(date.getTime())?'기록 없음':date.toLocaleString('ko-KR')}
 function safeUrl(value){try{const url=new URL(value);return ['https:','http:'].includes(url.protocol)?url.href:null}catch{return null}}
 function setText(id,value){$(id).textContent=value}
@@ -78,9 +74,8 @@ function render(data){
 }
 async function overview(){try{const response=await fetch('/api/overview',{cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);render(await response.json());if($('token').value&&$('admin').open)await privateState()}catch(error){const notice=$('notice');notice.hidden=false;notice.className='notice danger';notice.textContent='NAS 상태를 불러오지 못했습니다: '+error.message}}
 async function call(path,method='GET',payload){const response=await fetch(path,{method,headers:{'Authorization':'Bearer '+$('token').value,'Content-Type':'application/json'},body:payload?JSON.stringify(payload):undefined,cache:'no-store'});const value=await response.json();if(!response.ok)throw Error(value.error||'HTTP '+response.status);return value}
-async function privateState(){try{const data=await call('/api/state');setText('private-error',data.lastError?'상세 오류: '+data.lastError:'상세 오류: 없음');const pending=Object.entries(data.pending||{});setText('pending',pending.length?'확인 대기: '+pending.map(([key,value])=>key+' '+value.url).join(', '):'확인 대기 주소: 없음')}catch(error){setText('private-error','');setText('pending','');setText('message',error.message)}}
+async function privateState(){try{const data=await call('/api/state');setText('private-error',data.lastError?'상세 오류: '+data.lastError:'상세 오류: 없음')}catch(error){setText('private-error','');setText('message',error.message)}}
 $('refresh').onclick=overview;$('details').onclick=privateState;
-$('submit').onclick=async()=>{try{if(!$('token').value)throw Error('관리 토큰을 먼저 입력하세요.');const value=await call('/api/manual-candidate','POST',{key:$('site').value,url:$('url').value});setText('message','확인 대기: '+value.url);await privateState()}catch(error){setText('message',error.message)}};
 $('run').onclick=async()=>{try{if(!$('token').value)throw Error('관리 토큰을 먼저 입력하세요.');await call('/api/run','POST',{});setText('message','전체 검사를 요청했습니다. 진행 상황은 위에서 자동 갱신됩니다.');await overview()}catch(error){setText('message',error.message)}};
 setInterval(()=>{if(document.visibilityState==='visible')overview()},5000);overview();
 </script>

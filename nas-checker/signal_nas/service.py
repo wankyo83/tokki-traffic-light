@@ -29,10 +29,6 @@ class CheckerService:
         self.current_site = None
         self.completed_sites = 0
         self.started_at = None
-        self.queue_path = self.data_dir / "manual-candidates.json"
-        self.pending = self._read_file(self.queue_path, {})
-        self.cursor_path = self.data_dir / "scan-cursors.json"
-        self.scan_cursor = self._read_file(self.cursor_path, {})
         self.latest = {}
         self.latest_status = {}
 
@@ -49,14 +45,6 @@ class CheckerService:
         temporary.write_bytes(json_bytes(value))
         temporary.replace(path)
 
-    def submit(self, key, url):
-        normalized = validate_url(key, url)
-        with self.lock:
-            self.pending[key] = {"url": normalized, "submittedAt": now_iso()}
-            self._write_file(self.queue_path, self.pending)
-            self.wake.set()
-        return normalized
-
     def snapshot(self):
         with self.lock:
             return {
@@ -69,7 +57,6 @@ class CheckerService:
                 "completedSites": self.completed_sites,
                 "totalSites": len(SITES),
                 "startedAt": self.started_at,
-                "pending": copy.deepcopy(self.pending),
                 "domains": copy.deepcopy(self.latest.get("domains", {})),
                 "groups": copy.deepcopy(self.latest_status.get("groups", [])),
                 "publishedCheckedAt": self.latest_status.get("checkedAt"),
@@ -93,58 +80,56 @@ class CheckerService:
     def _unique(urls):
         return list(dict.fromkeys(url for url in urls if url))
 
-    async def _check_site(self, browser, site, current, manual):
+    async def _check_site(self, browser, site, current):
         key = site["key"]
-        if manual:
-            result, reason = await browser.verify(key, manual)
-            if result:
-                self._reset_cursor(key)
-                return result, "manual", "manual candidate", reason, True
+        checks = {
+            "current": {"state": "skipped", "detail": "no published address"},
+            "source": {"state": "skipped", "detail": "current address not checked yet"},
+            "numeric": {"state": "skipped", "checked": 0, "detail": "current address not checked yet"},
+        }
+        if current:
+            result, reason = await browser.verify(key, current)
+            if result and not automatic_regression(key, current, result):
+                checks["current"] = {"state": "healthy", "detail": reason}
+                checks["source"] = {"state": "skipped", "detail": "published address verified"}
+                checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "published address verified"}
+                return result, "healthy", "", reason, checks
+            checks["current"] = {"state": "failed", "detail": reason}
         source_urls, source_result = await browser.discover(site)
-        candidates = self._unique(source_urls + ([current] if current else []))
-        # Search numbered successors only when neither guide nor current address works.
-        tried = set()
-        failures = []
-        for candidate in candidates[:7]:
+        source_failures = []
+        tried = {current} if current else set()
+        for candidate in self._unique(source_urls)[:5]:
             if automatic_regression(key, current, candidate):
-                failures.append(f"{candidate}: older than the published address")
+                source_failures.append(f"{candidate}: older than the published address")
+                continue
+            if candidate in tried:
+                source_failures.append(f"{candidate}: published address already failed")
                 continue
             tried.add(candidate)
             result, reason = await browser.verify(key, candidate)
             if result and not automatic_regression(key, current, result):
-                if result != current:
-                    self._reset_cursor(key)
-                    return result, "healthy", source_result, reason, False
-                self._reset_cursor(key)
-                return result, "healthy", source_result, reason, False
-            failures.append(f"{candidate}: {reason}")
-        offset = self._cursor_offset(key, current)
-        numbered = numeric_candidates(key, current, start_offset=offset)
+                checks["source"] = {"state": "healthy", "detail": f"{candidate}: {reason}"}
+                checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "source address verified"}
+                return result, "healthy", source_result, reason, checks
+            source_failures.append(f"{candidate}: {reason}")
+        checks["source"] = {"state": "failed", "detail": "; ".join([source_result] + source_failures)[:400]}
+        numbered = numeric_candidates(key, current, count=10, start_offset=1)
+        numeric_failures = []
         for candidate in numbered:
             if candidate in tried:
+                numeric_failures.append(f"{candidate}: already failed")
                 continue
             result, reason = await browser.verify(key, candidate, timeout_ms=15_000)
             if result and result != current and not automatic_regression(key, current, result):
-                self._reset_cursor(key)
-                return result, "healthy", source_result, "numeric candidate verified: " + reason, False
-            failures.append(f"{candidate}: {reason}")
-        if numbered:
-            # Progress across hourly cycles instead of repeatedly checking only +1..+10.
-            next_offset = 1 if offset >= 191 else offset + 10
-            self.scan_cursor[key] = {"baseUrl": current, "nextOffset": next_offset}
-            self._write_file(self.cursor_path, self.scan_cursor)
-        return None, "stale", source_result, "; ".join(failures)[:500], False
-
-    def _cursor_offset(self, key, current):
-        saved = self.scan_cursor.get(key, {})
-        if saved.get("baseUrl") != current:
-            return 1
-        return max(1, min(191, int(saved.get("nextOffset", 1))))
-
-    def _reset_cursor(self, key):
-        if key in self.scan_cursor:
-            del self.scan_cursor[key]
-            self._write_file(self.cursor_path, self.scan_cursor)
+                checks["numeric"] = {"state": "healthy", "checked": numbered.index(candidate) + 1, "detail": f"{candidate}: {reason}"}
+                return result, "healthy", source_result, reason, checks
+            numeric_failures.append(f"{candidate}: {reason}")
+        checks["numeric"] = {
+            "state": "failed" if numbered else "unavailable",
+            "checked": len(numbered),
+            "detail": ("; ".join(numeric_failures)[-400:] if numbered else "no numbered successor for this site"),
+        }
+        return None, "stale", source_result, checks["current"]["detail"], checks
 
     async def _run_async(self, domains, old_status):
         start = time.monotonic()
@@ -156,21 +141,15 @@ class CheckerService:
                     self.current_site = site["name"]
                 prior = domains["domains"].get(key, {})
                 current = prior.get("baseUrl")
-                with self.lock:
-                    pending = self.pending.get(key, {}).get("url")
                 try:
-                    result, state, source_result, reason, accepted_manual = await asyncio.wait_for(
-                        self._check_site(browser, site, current, pending), timeout=540)
+                    result, state, source_result, reason, checks = await asyncio.wait_for(
+                        self._check_site(browser, site, current), timeout=540)
                 except Exception as exc:
-                    result, state, source_result, reason, accepted_manual = None, "stale", "check failed", f"{type(exc).__name__}: {str(exc)[:160]}", False
+                    result, state, source_result, reason = None, "stale", "check failed", f"{type(exc).__name__}: {str(exc)[:160]}"
+                    checks = {"current": {"state": "failed", "detail": reason}, "source": {"state": "skipped", "detail": "site check interrupted"}, "numeric": {"state": "skipped", "checked": 0, "detail": "site check interrupted"}}
                 checked = now_iso()
                 if result:
                     domains["domains"][key] = {**prior, "baseUrl": result, "status": "healthy", "lastConfirmedAt": checked}
-                if accepted_manual:
-                    with self.lock:
-                        if self.pending.get(key, {}).get("url") == pending:
-                            del self.pending[key]
-                            self._write_file(self.queue_path, self.pending)
                 old = old_groups.get(key, {})
                 source = site["source"]
                 group = {
@@ -179,12 +158,13 @@ class CheckerService:
                     "state": state if result else "stale",
                     "checkedAt": checked,
                     "lastSuccessfulAt": checked if result else old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
-                    "candidateBaseUrl": pending if pending and not accepted_manual else None,
+                    "candidateBaseUrl": None,
                     "candidateConfirmations": 0,
                     "candidateConfirmationsRequired": 1,
                     "sourceName": source["name"], "sourceUrl": source["url"], "sourceType": source["type"],
                     "errorCode": "" if result else "VERIFICATION_FAILED",
                     "reason": (source_result + "; " + reason)[:600],
+                    "checks": checks,
                 }
                 LOG.info("%s: %s %s", key, state, result or current or "none")
                 return group
@@ -198,7 +178,7 @@ class CheckerService:
             "schemaVersion": 3,
             "checkedAt": domains["updatedAt"],
             "durationMs": round((time.monotonic() - start) * 1000),
-            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 200, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 20},
+            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 20},
             "groups": groups,
         }
         return domains, status

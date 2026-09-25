@@ -12,7 +12,6 @@ from signal_nas.server import make_handler
 class FakeService:
     def __init__(self):
         self.wake = threading.Event()
-        self.submitted = None
 
     def snapshot(self):
         return {
@@ -23,10 +22,6 @@ class FakeService:
                         "sourceName": "티비위키 공식 텔레그램", "sourceUrl": "https://t.me/s/tvwiki_url",
                         "reason": "", "checkedAt": "2026-09-25T00:00:00Z", "privateField": "hidden"}],
         }
-
-    def submit(self, key, url):
-        self.submitted = (key, url)
-        return url
 
 
 class ServerTests(unittest.TestCase):
@@ -64,9 +59,17 @@ class ServerTests(unittest.TestCase):
         self.assertIn("미디어 주소", html)
         self.assertIn("/api/overview", html)
 
-    def test_manual_request_requires_token_and_cors_exact_origin(self):
+    def test_manual_request_is_removed_but_run_requires_token(self):
         payload = json.dumps({"key": "toki", "url": "https://toki33.com"}).encode()
         request = Request(self.base + "/api/manual-candidate", data=payload, method="POST", headers={
+            "Authorization": "Bearer " + os.environ["ADMIN_TOKEN"],
+            "Content-Type": "application/json",
+            "Origin": "https://wankyo83.github.io",
+        })
+        with self.assertRaises(HTTPError) as raised:
+            urlopen(request)
+        self.assertEqual(raised.exception.code, 404)
+        request = Request(self.base + "/api/run", data=b"{}", method="POST", headers={
             "Authorization": "Bearer " + os.environ["ADMIN_TOKEN"],
             "Content-Type": "application/json",
             "Origin": "https://wankyo83.github.io",
@@ -74,7 +77,7 @@ class ServerTests(unittest.TestCase):
         with urlopen(request) as response:
             self.assertEqual(response.status, 202)
             self.assertEqual(response.headers["Access-Control-Allow-Origin"], "https://wankyo83.github.io")
-        self.assertEqual(self.service.submitted, ("toki", "https://toki33.com"))
+        self.assertTrue(self.service.wake.is_set())
 
 
 if __name__ == "__main__":
