@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 from signal_nas.model import automatic_regression, host_candidates, numeric_candidates, validate_page, validate_url
 from signal_nas.browser import telegram_candidates
+from signal_nas.publish import GitHubPublisher
 from signal_nas.service import CheckerService
 
 
@@ -131,6 +132,30 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual({key: item["baseUrl"] for key, item in updated["domains"].items()}, examples)
         self.assertEqual(len(status["groups"]), len(SITES))
         self.assertEqual(self.service.snapshot()["completedSites"], len(SITES))
+
+
+class PublisherTests(unittest.TestCase):
+    def test_ref_is_read_from_singular_endpoint_and_updated_at_plural_endpoint(self):
+        with patch.dict(os.environ, {
+            "GITHUB_REPOSITORY": "example/repo", "GITHUB_BRANCH": "main",
+            "GITHUB_TOKEN": "test-token-not-a-secret",
+        }):
+            publisher = GitHubPublisher()
+        calls = []
+
+        def fake_api(method, path, payload=None):
+            calls.append((method, path, payload))
+            if method == "GET" and path.startswith("/git/ref/"):
+                return {"object": {"sha": "old"}}
+            if method == "GET" and path.startswith("/git/commits/"):
+                return {"tree": {"sha": "old-tree"}}
+            return {"sha": "new"}
+
+        publisher._api = fake_api
+        self.assertEqual(publisher.publish({"domains": {}}, {"groups": []}), "new")
+        self.assertEqual(calls[0][:2], ("GET", "/git/ref/heads/main"))
+        self.assertEqual(calls[-1][:2], ("PATCH", "/git/refs/heads/main"))
+        self.assertFalse(calls[-1][2]["force"])
 
 
 if __name__ == "__main__":

@@ -60,8 +60,12 @@ class GitHubPublisher:
 
     def publish(self, domains, status):
         """Commit both public JSON files atomically; never use the stale local checkout."""
-        ref_path = f"/git/ref/heads/{quote(self.branch, safe='')}"
-        ref = self._api("GET", ref_path)
+        branch = quote(self.branch, safe="")
+        # GitHub's read endpoint is singular /ref, but its update endpoint is
+        # plural /refs. Reusing the read path for PATCH returns HTTP 404.
+        read_ref_path = f"/git/ref/heads/{branch}"
+        write_ref_path = f"/git/refs/heads/{branch}"
+        ref = self._api("GET", read_ref_path)
         parent_sha = ref["object"]["sha"]
         parent = self._api("GET", f"/git/commits/{parent_sha}")
         tree = self._api("POST", "/git/trees", {
@@ -76,5 +80,5 @@ class GitHubPublisher:
             "tree": tree["sha"],
             "parents": [parent_sha],
         })
-        self._api("PATCH", ref_path, {"sha": commit["sha"], "force": False})
+        self._api("PATCH", write_ref_path, {"sha": commit["sha"], "force": False})
         return commit["sha"]

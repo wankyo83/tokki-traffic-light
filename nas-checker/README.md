@@ -59,5 +59,6 @@ docker compose restart checker
 
 로그에 `Published verified snapshot`이 나오면 GitHub Pages 배포를 확인합니다. `direct NAS exit not verified as KR`이면 회선/WARP 경로를 먼저 확인하세요. 강제로 게시하기 위해 `REQUIRE_KR_EGRESS`를 끄는 것은 권장하지 않습니다.
 관리 화면의 `lastError`에 `GitHub API ... HTTP 404`가 나오면 `.env`의 `GITHUB_REPOSITORY=wankyo83/tokki-traffic-light`, `GITHUB_BRANCH=main`, 그리고 fine-grained token의 저장소 선택 및 `Contents: Read and write` 권한을 확인합니다. 토큰 값 자체는 화면 캡처나 문의에 포함하지 마세요.
+`PATCH /git/ref/heads/main: HTTP 404`는 초기 배포본의 GitHub API 경로 오류입니다. `PATCH /git/refs/heads/main`을 사용하는 수정본으로 컨테이너 이미지를 재빌드해야 하며, 이 경우 NAS IP나 토큰을 변경할 필요가 없습니다.
 
 중지하려면 `docker compose stop`을 사용합니다. `./data`에는 수동 주소 대기열과 마지막 검사 결과가 남습니다. `.env`와 `data`는 Git에 올리지 마세요.
