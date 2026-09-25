@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-25T07:14:54.799Z",
+  "updatedAt": "2026-09-25T07:56:32.250Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T06:47:20.904Z"
+      "lastConfirmedAt": "2026-09-25T07:47:20.162Z"
     },
     "toki": {
       "baseUrl": "https://toki32.com",
@@ -25,7 +25,7 @@
     "blacktoon": {
       "baseUrl": "https://blacktoon423.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:38.582Z"
+      "lastConfirmedAt": "2026-09-25T07:53:39.484Z"
     },
     "jjaptoon": {
       "baseUrl": "https://www.jjaptoon007.com",
@@ -35,7 +35,7 @@
     "11toon": {
       "baseUrl": "https://11toon.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:40.464Z"
+      "lastConfirmedAt": "2026-09-25T07:54:50.191Z"
     },
     "naver": {
       "baseUrl": "https://comic.naver.com",
@@ -45,32 +45,32 @@
     "goodtoon": {
       "baseUrl": "https://goodtoon005.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:41.496Z"
+      "lastConfirmedAt": "2026-09-25T07:55:02.099Z"
     },
     "newxtoon": {
       "baseUrl": "https://newxtoon1.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:41.650Z"
+      "lastConfirmedAt": "2026-09-25T07:55:08.375Z"
     },
     "linkkf": {
       "baseUrl": "https://linkkf.tv",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:41.892Z"
+      "lastConfirmedAt": "2026-09-25T07:55:12.344Z"
     },
     "ani24": {
-      "baseUrl": "https://ohli24.net",
+      "baseUrl": "https://www.ohli24.net",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:42.028Z"
+      "lastConfirmedAt": "2026-09-25T07:55:21.386Z"
     },
     "tvroom": {
       "baseUrl": "https://tvroom35.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-24T23:40:42.193Z"
+      "lastConfirmedAt": "2026-09-25T07:55:27.964Z"
     },
     "tvwiki": {
       "baseUrl": "https://tvwiki51.net",
-      "status": "manual",
-      "lastConfirmedAt": "2026-09-24T23:40:42.193Z"
+      "status": "healthy",
+      "lastConfirmedAt": "2026-09-25T07:55:34.696Z"
     },
     "anilife": {
       "baseUrl": "https://anilife01.tv",

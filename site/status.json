@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-09-25T07:14:54.799Z",
-  "durationMs": 1665884,
+  "checkedAt": "2026-09-25T07:56:32.250Z",
+  "durationMs": 563314,
   "policy": {
     "intervalMinutes": 60,
     "preservesLastKnownGood": true,
@@ -19,8 +19,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
       "state": "healthy",
-      "checkedAt": "2026-09-25T06:47:20.904Z",
-      "lastSuccessfulAt": "2026-09-25T06:47:20.904Z",
+      "checkedAt": "2026-09-25T07:47:20.162Z",
+      "lastSuccessfulAt": "2026-09-25T07:47:20.162Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -50,8 +50,8 @@
       "name": "토끼",
       "category": "manga",
       "activeBaseUrl": "https://toki32.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-25T06:47:39.454Z",
+      "state": "stale",
+      "checkedAt": "2026-09-25T07:51:04.989Z",
       "lastSuccessfulAt": "2026-09-25T06:47:39.454Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -59,21 +59,21 @@
       "sourceName": "뉴토끼 주소 안내",
       "sourceUrl": "https://xn--h10b90bby9a7jkc4f.com/",
       "sourceType": "guide",
-      "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: HTTP 500; TimeoutError: ",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "site identity and structure verified"
+          "state": "failed",
+          "detail": "TimeoutError: "
         },
         "source": {
-          "state": "skipped",
-          "detail": "published address verified"
+          "state": "failed",
+          "detail": "guide unavailable: HTTP 500"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "https://toki33.com: TimeoutError: ; https://toki34.com: TimeoutError: ; https://toki35.com: TimeoutError: ; https://toki36.com: TimeoutError: ; https://toki37.com: TimeoutError: ; https://toki38.com: TimeoutError: ; https://toki39.com: TimeoutError: ; https://toki40.com: TimeoutError: ; https://toki41.com: TimeoutError: ; https://toki42.com: TimeoutError: "
         }
       }
     },
@@ -83,7 +83,7 @@
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
       "state": "stale",
-      "checkedAt": "2026-09-25T06:48:40.431Z",
+      "checkedAt": "2026-09-25T07:52:22.690Z",
       "lastSuccessfulAt": "2026-09-23T07:55:29.557Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -105,7 +105,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": ": NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh17.com/\", waiting until \"domcontentloaded\"\n; https://sbxh18.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh18.com/\", waiting until \"domcontentloaded\"\n; https://sbxh19.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh19.com/\", waiting until \"domcontentloaded\"\n"
+          "detail": "meout 15000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh17.com/\", waiting until \"domcontentloaded\"\n; https://sbxh18.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh18.com/\", waiting until \"domcontentloaded\"\n; https://sbxh19.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh19.com/\", waiting until \"domcontentloaded\"\n"
         }
       }
     },
@@ -115,7 +115,7 @@
       "category": "manga",
       "activeBaseUrl": "https://wfwf505.com",
       "state": "stale",
-      "checkedAt": "2026-09-25T06:51:47.955Z",
+      "checkedAt": "2026-09-25T07:53:30.761Z",
       "lastSuccessfulAt": "2026-09-24T23:40:37.952Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -137,7 +137,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "l log:\n  - navigating to \"https://wfwf513.com/\", waiting until \"domcontentloaded\"\n; https://wfwf514.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf514.com/\", waiting until \"domcontentloaded\"\n; https://wfwf515.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf515.com/\", waiting until \"domcontentloaded\"\n"
+          "detail": "fwf512.com: Error: Locator.evaluate_all: Execution context was destroyed, most likely because of a navigation; https://wfwf513.com: site identity marker missing; https://wfwf514.com: Error: Locator.evaluate_all: Execution context was destroyed, most likely because of a navigation; https://wfwf515.com: Error: Locator.evaluate_all: Execution context was destroyed, most likely because of a navigation"
         }
       }
     },
@@ -146,30 +146,30 @@
       "name": "블랙툰",
       "category": "manga",
       "activeBaseUrl": "https://blacktoon423.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T06:54:54.715Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:38.582Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:53:39.484Z",
+      "lastSuccessfulAt": "2026-09-25T07:53:39.484Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "블랙툰 공식 URL",
       "sourceUrl": "https://blacktoonurl.net/",
       "sourceType": "guide",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoonurl.net/\", waiting until \"domcontentl; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon423.com/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon423.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoonurl.net/\", waiting until \"domcontentl"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "\"https://blacktoon431.com/\", waiting until \"domcontentloaded\"\n; https://blacktoon432.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon432.com/\", waiting until \"domcontentloaded\"\n; https://blacktoon433.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon433.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -179,7 +179,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "stale",
-      "checkedAt": "2026-09-25T06:58:01.440Z",
+      "checkedAt": "2026-09-25T07:54:43.634Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -188,20 +188,20 @@
       "sourceUrl": "https://t.me/s/jjaptoon003?before=999999999",
       "sourceType": "telegram",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/jjaptoon003?before=999999999\", waiting ; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://www.jjaptoon007.com/\", waiting until \"domcontentloaded\"\n",
+      "reason": "latest labeled Telegram address; site identity marker missing",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://www.jjaptoon007.com/\", waiting until \"domcontentloaded\"\n"
+          "detail": "site identity marker missing"
         },
         "source": {
           "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/jjaptoon003?before=999999999\", waiting "
+          "detail": "latest labeled Telegram address; https://www.jjaptoon007.com: published address already failed"
         },
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "aptoon015.com/\", waiting until \"domcontentloaded\"\n; https://www.jjaptoon016.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://www.jjaptoon016.com/\", waiting until \"domcontentloaded\"\n; https://www.jjaptoon017.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://www.jjaptoon017.com/\", waiting until \"domcontentloaded\"\n"
+          "detail": "ps://www.jjaptoon015.com: insufficient site structure markers; https://www.jjaptoon016.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://www.jjaptoon016.com/\", waiting until \"domcontentloaded\"\n; https://www.jjaptoon017.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://www.jjaptoon017.com/\", waiting until \"domcontentloaded\"\n"
         }
       }
     },
@@ -210,30 +210,30 @@
       "name": "11툰",
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T06:58:17.030Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:40.464Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:54:50.191Z",
+      "lastSuccessfulAt": "2026-09-25T07:54:50.191Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "고정 주소 직접 확인",
       "sourceUrl": "https://11toon.com/",
       "sourceType": "fixed",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "fixed address; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://11toon.com/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://11toon.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "fixed address"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "unavailable",
+          "state": "skipped",
           "checked": 0,
-          "detail": "no numbered successor for this site"
+          "detail": "published address verified"
         }
       }
     },
@@ -243,7 +243,7 @@
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
       "state": "stale",
-      "checkedAt": "2026-09-25T06:58:32.586Z",
+      "checkedAt": "2026-09-25T07:54:54.927Z",
       "lastSuccessfulAt": "2026-09-24T23:40:41.356Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -252,11 +252,11 @@
       "sourceUrl": "https://comic.naver.com/webtoon",
       "sourceType": "fixed",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "fixed address; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://comic.naver.com/\", waiting until \"domcontentloaded\"\n",
+      "reason": "fixed address; insufficient site structure markers",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://comic.naver.com/\", waiting until \"domcontentloaded\"\n"
+          "detail": "insufficient site structure markers"
         },
         "source": {
           "state": "failed",
@@ -274,30 +274,30 @@
       "name": "굿툰",
       "category": "manga",
       "activeBaseUrl": "https://goodtoon005.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:01:39.497Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:41.496Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:55:02.099Z",
+      "lastSuccessfulAt": "2026-09-25T07:55:02.099Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "굿툰 공식 텔레그램",
       "sourceUrl": "https://t.me/s/goodtoon_url",
       "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/goodtoon_url\", waiting until \"domconten; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon005.com/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon005.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/goodtoon_url\", waiting until \"domconten"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "g to \"https://goodtoon013.com/\", waiting until \"domcontentloaded\"\n; https://goodtoon014.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon014.com/\", waiting until \"domcontentloaded\"\n; https://goodtoon015.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon015.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -306,30 +306,30 @@
       "name": "뉴엑스툰",
       "category": "manga",
       "activeBaseUrl": "https://newxtoon1.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:04:46.370Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:41.650Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:55:08.375Z",
+      "lastSuccessfulAt": "2026-09-25T07:55:08.375Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "뉴엑스툰 주소 안내",
       "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
       "sourceType": "guide",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"domco; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon1.com/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon1.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"domco"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "igating to \"https://newxtoon9.com/\", waiting until \"domcontentloaded\"\n; https://newxtoon10.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon10.com/\", waiting until \"domcontentloaded\"\n; https://newxtoon11.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon11.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -338,30 +338,30 @@
       "name": "Linkkf",
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:05:17.530Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:41.892Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:55:12.344Z",
+      "lastSuccessfulAt": "2026-09-25T07:55:12.344Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "Linkkf 공식 X",
       "sourceUrl": "https://x.com/linkkfcom",
       "sourceType": "guide",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://x.com/linkkfcom\", waiting until \"domcontentloa; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://linkkf.tv/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://linkkf.tv/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://x.com/linkkfcom\", waiting until \"domcontentloa"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "unavailable",
+          "state": "skipped",
           "checked": 0,
-          "detail": "no numbered successor for this site"
+          "detail": "published address verified"
         }
       }
     },
@@ -369,31 +369,31 @@
       "key": "ani24",
       "name": "애니24",
       "category": "media",
-      "activeBaseUrl": "https://ohli24.net",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:05:49.031Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:42.028Z",
+      "activeBaseUrl": "https://www.ohli24.net",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:55:21.386Z",
+      "lastSuccessfulAt": "2026-09-25T07:55:21.386Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "애니24 공식 텔레그램",
       "sourceUrl": "https://t.me/s/ohli24net?before=999999999",
       "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/ohli24net?before=999999999\", waiting un; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://ohli24.net/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://ohli24.net/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/ohli24net?before=999999999\", waiting un"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "he configured site family; https://ohli30.net: ValueError: URL is outside the configured site family; https://ohli31.net: ValueError: URL is outside the configured site family; https://ohli32.net: ValueError: URL is outside the configured site family; https://ohli33.net: ValueError: URL is outside the configured site family; https://ohli34.net: ValueError: URL is outside the configured site family"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -402,30 +402,30 @@
       "name": "티비룸",
       "category": "media",
       "activeBaseUrl": "https://tvroom35.org",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:08:55.981Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:42.193Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:55:27.964Z",
+      "lastSuccessfulAt": "2026-09-25T07:55:27.964Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "티비룸 공식 텔레그램",
       "sourceUrl": "https://t.me/s/tvroom8282",
       "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/tvroom8282\", waiting until \"domcontentl; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom35.org/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom35.org/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/tvroom8282\", waiting until \"domcontentl"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": ":\n  - navigating to \"https://tvroom43.org/\", waiting until \"domcontentloaded\"\n; https://tvroom44.org: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom44.org/\", waiting until \"domcontentloaded\"\n; https://tvroom45.org: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom45.org/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -434,30 +434,30 @@
       "name": "티비위키",
       "category": "media",
       "activeBaseUrl": "https://tvwiki51.net",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:12:02.979Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:42.193Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T07:55:34.696Z",
+      "lastSuccessfulAt": "2026-09-25T07:55:34.696Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "티비위키 공식 텔레그램",
       "sourceUrl": "https://t.me/s/tvwiki_url",
       "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/tvwiki_url\", waiting until \"domcontentl; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki51.net/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; site identity and structure verified",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki51.net/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "site identity and structure verified"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/tvwiki_url\", waiting until \"domcontentl"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": ":\n  - navigating to \"https://tvwiki59.net/\", waiting until \"domcontentloaded\"\n; https://tvwiki60.net: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki60.net/\", waiting until \"domcontentloaded\"\n; https://tvwiki61.net: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki61.net/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -467,7 +467,7 @@
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
       "state": "stale",
-      "checkedAt": "2026-09-25T07:14:54.396Z",
+      "checkedAt": "2026-09-25T07:56:31.719Z",
       "lastSuccessfulAt": "2026-09-24T23:40:42.193Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -476,11 +476,11 @@
       "sourceUrl": "https://anilife01.tv/",
       "sourceType": "fixed",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "fixed address; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://anilife01.tv/\", waiting until \"domcontentloaded\"\n",
+      "reason": "fixed address; insufficient site structure markers",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://anilife01.tv/\", waiting until \"domcontentloaded\"\n"
+          "detail": "insufficient site structure markers"
         },
         "source": {
           "state": "failed",
