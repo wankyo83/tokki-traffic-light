@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-09-25T20:30:30.832Z",
-  "durationMs": 210050,
+  "checkedAt": "2026-09-25T21:34:10.179Z",
+  "durationMs": 429383,
   "policy": {
     "intervalMinutes": 60,
     "preservesLastKnownGood": true,
@@ -19,8 +19,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:27:09.674Z",
-      "lastSuccessfulAt": "2026-09-25T20:27:09.674Z",
+      "checkedAt": "2026-09-25T21:27:11.154Z",
+      "lastSuccessfulAt": "2026-09-25T21:27:11.154Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -51,7 +51,7 @@
       "category": "manga",
       "activeBaseUrl": "https://toki32.com",
       "state": "stale",
-      "checkedAt": "2026-09-25T20:28:04.590Z",
+      "checkedAt": "2026-09-25T21:27:59.124Z",
       "lastSuccessfulAt": "2026-09-25T06:47:39.454Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -73,7 +73,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "t found; https://toki38.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki39.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki40.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready; https://toki41.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready; https://toki42.com: CaptchaDetectionError: Cloudflare iframes not found"
+          "detail": " CaptchaDetectionError: Cloudflare iframes not found; https://toki39.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready; https://toki40.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready; https://toki41.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready; https://toki42.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready"
         }
       }
     },
@@ -83,8 +83,8 @@
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:28:16.959Z",
-      "lastSuccessfulAt": "2026-09-25T20:28:16.959Z",
+      "checkedAt": "2026-09-25T21:28:08.162Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:08.162Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -92,11 +92,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "",
-      "reason": "; category route verified: /ing",
+      "reason": "; category navigation verified: /ing",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "category route verified: /ing"
+          "detail": "category navigation verified: /ing"
         },
         "source": {
           "state": "skipped",
@@ -115,8 +115,8 @@
       "category": "manga",
       "activeBaseUrl": "https://wfwf505.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:28:20.094Z",
-      "lastSuccessfulAt": "2026-09-25T20:28:20.094Z",
+      "checkedAt": "2026-09-25T21:28:12.580Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:12.580Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -147,8 +147,8 @@
       "category": "manga",
       "activeBaseUrl": "https://blacktoon423.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:28:27.567Z",
-      "lastSuccessfulAt": "2026-09-25T20:28:27.567Z",
+      "checkedAt": "2026-09-25T21:28:16.888Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:16.888Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -179,7 +179,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "paused",
-      "checkedAt": "2026-09-25T20:28:27.568Z",
+      "checkedAt": "2026-09-25T21:28:16.889Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -211,8 +211,8 @@
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:28:42.568Z",
-      "lastSuccessfulAt": "2026-09-25T20:28:42.568Z",
+      "checkedAt": "2026-09-25T21:28:21.443Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:21.443Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -220,11 +220,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "",
-      "reason": "; category route verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94",
+      "reason": "; category navigation verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "category route verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94"
+          "detail": "category navigation verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94"
         },
         "source": {
           "state": "skipped",
@@ -242,30 +242,30 @@
       "name": "네이버 웹툰",
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T20:28:56.434Z",
-      "lastSuccessfulAt": "2026-09-25T19:28:20.306Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T21:28:28.035Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:28.035Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "고정 주소",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "no reference source configured; category route unavailable: TimeoutError: ",
+      "errorCode": "",
+      "reason": "; category navigation verified: /webtoon",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "category route unavailable: TimeoutError: "
+          "state": "healthy",
+          "detail": "category navigation verified: /webtoon"
         },
         "source": {
           "state": "skipped",
-          "detail": "no reference source configured"
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "unavailable",
+          "state": "skipped",
           "checked": 0,
-          "detail": "no numbered successor for this site"
+          "detail": "published address verified"
         }
       }
     },
@@ -275,8 +275,8 @@
       "category": "manga",
       "activeBaseUrl": "https://goodtoon005.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:29:05.248Z",
-      "lastSuccessfulAt": "2026-09-25T20:29:05.248Z",
+      "checkedAt": "2026-09-25T21:28:34.177Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:34.177Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -307,8 +307,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newxtoon1.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:29:07.422Z",
-      "lastSuccessfulAt": "2026-09-25T20:29:07.422Z",
+      "checkedAt": "2026-09-25T21:28:36.274Z",
+      "lastSuccessfulAt": "2026-09-25T21:28:36.274Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -339,7 +339,7 @@
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
       "state": "stale",
-      "checkedAt": "2026-09-25T20:29:30.566Z",
+      "checkedAt": "2026-09-25T21:29:03.720Z",
       "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -356,7 +356,7 @@
         },
         "source": {
           "state": "failed",
-          "detail": "guide read"
+          "detail": "guide read; https://linkkf.app: HTTP 502; https://linkkf.com: HTTP 502; https://linkkf.tv: published address already failed"
         },
         "numeric": {
           "state": "unavailable",
@@ -371,8 +371,8 @@
       "category": "media",
       "activeBaseUrl": "https://www.ohli24.net",
       "state": "healthy",
-      "checkedAt": "2026-09-25T20:29:41.267Z",
-      "lastSuccessfulAt": "2026-09-25T20:29:41.267Z",
+      "checkedAt": "2026-09-25T21:29:08.829Z",
+      "lastSuccessfulAt": "2026-09-25T21:29:08.829Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -403,7 +403,7 @@
       "category": "media",
       "activeBaseUrl": "https://tvroom35.org",
       "state": "stale",
-      "checkedAt": "2026-09-25T20:30:23.291Z",
+      "checkedAt": "2026-09-25T21:30:04.960Z",
       "lastSuccessfulAt": "2026-09-25T14:30:29.838Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -412,11 +412,11 @@
       "sourceUrl": "https://t.me/s/tvroom8282",
       "sourceType": "telegram",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "latest labeled Telegram address; CaptchaDetectionError: Cloudflare iframes not found",
+      "reason": "latest labeled Telegram address; CaptchaDetectionError: Cloudflare checkbox not found or not ready",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "CaptchaDetectionError: Cloudflare iframes not found"
+          "detail": "CaptchaDetectionError: Cloudflare checkbox not found or not ready"
         },
         "source": {
           "state": "failed",
@@ -425,7 +425,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://tvroom43.org/\", waiting until \"commit\"\n; https://tvroom44.org: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://tvroom44.org/\", waiting until \"commit\"\n; https://tvroom45.org: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom45.org/\", waiting until \"commit\"\n"
+          "detail": "out 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom43.org/\", waiting until \"commit\"\n; https://tvroom44.org: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom44.org/\", waiting until \"commit\"\n; https://tvroom45.org: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvroom45.org/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -434,8 +434,8 @@
       "name": "티비위키",
       "category": "media",
       "activeBaseUrl": "https://tvwiki51.net",
-      "state": "healthy",
-      "checkedAt": "2026-09-25T20:30:28.808Z",
+      "state": "stale",
+      "checkedAt": "2026-09-25T21:32:13.438Z",
       "lastSuccessfulAt": "2026-09-25T20:30:28.808Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -443,21 +443,21 @@
       "sourceName": "티비위키 공식 텔레그램",
       "sourceUrl": "https://t.me/s/tvwiki_url",
       "sourceType": "telegram",
-      "errorCode": "",
-      "reason": "; category navigation verified: /movie",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 12000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/tvwiki_url\", waiting until \"commit\"\n; TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki51.net/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /movie"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki51.net/\", waiting until \"commit\"\n"
         },
         "source": {
-          "state": "skipped",
-          "detail": "published address verified"
+          "state": "failed",
+          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 12000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/tvwiki_url\", waiting until \"commit\"\n"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "out 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki59.net/\", waiting until \"commit\"\n; https://tvwiki60.net: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki60.net/\", waiting until \"commit\"\n; https://tvwiki61.net: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://tvwiki61.net/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -466,8 +466,8 @@
       "name": "애니라이프",
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
-      "state": "healthy",
-      "checkedAt": "2026-09-25T20:30:30.440Z",
+      "state": "stale",
+      "checkedAt": "2026-09-25T21:34:09.717Z",
       "lastSuccessfulAt": "2026-09-25T20:30:30.440Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -475,21 +475,21 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "; category navigation verified: /daily",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife01.tv/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /daily"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife01.tv/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "skipped",
-          "detail": "published address verified"
+          "detail": "no reference source configured"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "out 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife09.tv/\", waiting until \"commit\"\n; https://anilife10.tv: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife10.tv/\", waiting until \"commit\"\n; https://anilife11.tv: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife11.tv/\", waiting until \"commit\"\n"
         }
       }
     }
