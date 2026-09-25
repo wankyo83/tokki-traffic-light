@@ -20,6 +20,8 @@ NAS의 `/volume1/docker/tokki-signal-nas` 같은 **새 폴더**에 이 `nas-chec
 4. `http://192.168.0.7:8792/health` 또는 Tailscale의 `http://100.79.100.62:8792/health`에서 `ok: true`가 보이는지 확인합니다.
 5. 관리자 화면은 같은 주소의 `/`입니다. `.env`의 `ADMIN_TOKEN`을 입력하면 현재 상태와 수동 주소 후보를 볼 수 있습니다.
 
+기존 설치를 업데이트할 때는 새 `nas-checker` 파일로 교체하되 NAS의 `.env`와 `data/`는 보존하고, Container Manager에서 이미지를 다시 빌드해 컨테이너를 재생성합니다. 파일만 교체하거나 컨테이너만 재시작하면 이전 코드가 계속 실행됩니다.
+
 처음부터 공개 주소가 바뀌는 게 걱정되면 `GITHUB_TOKEN`을 비워 두고 이미지 빌드만 해 보세요. 다만 토큰이 비어 있으면 컨테이너가 시작되지 않습니다. 실제 시작 시 토큰을 넣어야 하며, 그때도 브라우저 검증 전에는 주소를 교체하지 않습니다.
 
 ## 중앙 페이지에서 수동 주소 제출
@@ -54,5 +56,6 @@ docker compose restart checker
 ```
 
 로그에 `Published verified snapshot`이 나오면 GitHub Pages 배포를 확인합니다. `direct NAS exit not verified as KR`이면 회선/WARP 경로를 먼저 확인하세요. 강제로 게시하기 위해 `REQUIRE_KR_EGRESS`를 끄는 것은 권장하지 않습니다.
+관리 화면의 `lastError`에 `GitHub API ... HTTP 404`가 나오면 `.env`의 `GITHUB_REPOSITORY=wankyo83/tokki-traffic-light`, `GITHUB_BRANCH=main`, 그리고 fine-grained token의 저장소 선택 및 `Contents: Read and write` 권한을 확인합니다. 토큰 값 자체는 화면 캡처나 문의에 포함하지 마세요.
 
 중지하려면 `docker compose stop`을 사용합니다. `./data`에는 수동 주소 대기열과 마지막 검사 결과가 남습니다. `.env`와 `data`는 Git에 올리지 마세요.
