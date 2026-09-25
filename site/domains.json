@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-25T04:18:42.108Z",
+  "updatedAt": "2026-09-25T05:19:21.769Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T03:47:29.137Z"
+      "lastConfirmedAt": "2026-09-25T04:47:21.960Z"
     },
     "toki": {
       "baseUrl": "https://toki32.com",
