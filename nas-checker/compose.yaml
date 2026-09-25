@@ -1,0 +1,21 @@
+name: tokki-signal-nas
+
+services:
+  checker:
+    platform: linux/amd64
+    build: .
+    image: tokki-signal-nas:local
+    container_name: tokki-signal-nas
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8792:8792"
+    volumes:
+      - ./data:/app/data
+    shm_size: 512mb
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8792/health',timeout=5)"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 2m

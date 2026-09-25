@@ -28,10 +28,22 @@
     <div id="freshness-warning" class="freshness-warning" role="status" hidden></div>
 
     <div class="meta">
-      <span id="updated">GitHub 최신 주소 검사 결과를 불러오는 중…</span>
+      <span id="updated">마지막 주소 확인 결과를 불러오는 중…</span>
       <span id="updated-age"></span>
       <span id="duration"></span>
     </div>
+
+    <details class="admin-panel">
+      <summary>관리자 수동 주소 확인</summary>
+      <p>새 주소를 제출하면 NAS가 Camoufox로 사이트를 검증합니다. 검증 전에는 공개 주소가 바뀌지 않습니다.</p>
+      <label>NAS HTTPS 관리 주소 <input id="admin-api" type="url" placeholder="https://wankyo.synology.me:8793"></label>
+      <label>관리 토큰 <input id="admin-token" type="password" autocomplete="off" placeholder="NAS .env의 ADMIN_TOKEN"></label>
+      <label>사이트 <select id="admin-site"></select></label>
+      <label>새 사이트 주소 <input id="admin-url" type="url" placeholder="https://..."></label>
+      <button id="admin-submit" type="button">검증 요청</button>
+      <span id="admin-result" role="status"></span>
+      <p class="admin-help">이 HTTPS 페이지에서는 NAS의 HTTP 주소를 직접 호출할 수 없습니다. Synology HTTPS 역방향 프록시가 필요합니다. 관리 토큰은 브라우저에 저장하지 않습니다.</p>
+    </details>
 
     <section class="summary" aria-label="검사 요약">
       <div><strong id="healthy-count">-</strong><span>정상</span></div>
@@ -55,8 +67,7 @@
 
     <footer>
       <p>주소 출처에 연결하지 못해도 마지막으로 확인된 주소는 유지됩니다.</p>
-      <p>초록 배지는 주소 안내처, 노란 NAS 배지는 해당 주소의 사이트 이름·기본 분류 구조를 일반 회선으로 확인한 참고 결과입니다.</p>
-      <p>NAS 확인 결과는 주소를 자동으로 바꾸거나 기존 상태를 덮어쓰지 않습니다.</p>
+      <p>NAS가 국내 회선의 Camoufox 브라우저로 안내처와 사이트 구조를 확인합니다. 인증이나 구조 확인에 실패한 후보는 공개 주소로 채택하지 않습니다.</p>
     </footer>
   </main>
   <script src="app.js"></script>
