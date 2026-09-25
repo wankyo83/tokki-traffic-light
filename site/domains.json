@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-25T21:34:10.179Z",
+  "updatedAt": "2026-09-25T22:40:49.069Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T21:27:11.154Z"
+      "lastConfirmedAt": "2026-09-25T22:27:11.472Z"
     },
     "toki": {
       "baseUrl": "https://toki32.com",
@@ -15,12 +15,12 @@
     "sbxh": {
       "baseUrl": "https://sbxh9.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T21:28:08.162Z"
+      "lastConfirmedAt": "2026-09-25T22:28:06.277Z"
     },
     "wfwf": {
       "baseUrl": "https://wfwf505.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T21:28:12.580Z"
+      "lastConfirmedAt": "2026-09-25T22:28:14.542Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon423.com",
