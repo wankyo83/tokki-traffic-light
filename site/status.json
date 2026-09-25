@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-09-25T07:56:32.250Z",
-  "durationMs": 563314,
+  "checkedAt": "2026-09-25T08:29:59.404Z",
+  "durationMs": 178296,
   "policy": {
     "intervalMinutes": 60,
     "preservesLastKnownGood": true,
@@ -19,20 +19,20 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:47:20.162Z",
-      "lastSuccessfulAt": "2026-09-25T07:47:20.162Z",
+      "checkedAt": "2026-09-25T08:27:15.724Z",
+      "lastSuccessfulAt": "2026-09-25T08:27:15.724Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "뉴토끼 주소 안내",
-      "sourceUrl": "https://xn--h10b90bby9a7jkc4f.com/",
-      "sourceType": "guide",
+      "sourceName": "참조처 없음",
+      "sourceUrl": "",
+      "sourceType": "none",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /webtoon",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /webtoon"
         },
         "source": {
           "state": "skipped",
@@ -51,29 +51,29 @@
       "category": "manga",
       "activeBaseUrl": "https://toki32.com",
       "state": "stale",
-      "checkedAt": "2026-09-25T07:51:04.989Z",
+      "checkedAt": "2026-09-25T08:28:08.721Z",
       "lastSuccessfulAt": "2026-09-25T06:47:39.454Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "뉴토끼 주소 안내",
-      "sourceUrl": "https://xn--h10b90bby9a7jkc4f.com/",
-      "sourceType": "guide",
+      "sourceName": "참조처 없음",
+      "sourceUrl": "",
+      "sourceType": "none",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: HTTP 500; TimeoutError: ",
+      "reason": "no reference source configured; CaptchaDetectionError: Cloudflare iframes not found",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "TimeoutError: "
+          "detail": "CaptchaDetectionError: Cloudflare iframes not found"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: HTTP 500"
+          "state": "skipped",
+          "detail": "no reference source configured"
         },
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "https://toki33.com: TimeoutError: ; https://toki34.com: TimeoutError: ; https://toki35.com: TimeoutError: ; https://toki36.com: TimeoutError: ; https://toki37.com: TimeoutError: ; https://toki38.com: TimeoutError: ; https://toki39.com: TimeoutError: ; https://toki40.com: TimeoutError: ; https://toki41.com: TimeoutError: ; https://toki42.com: TimeoutError: "
+          "detail": "Error: Cloudflare iframes not found; https://toki38.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki39.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki40.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki41.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki42.com: CaptchaDetectionError: Cloudflare iframes not found"
         }
       }
     },
@@ -82,30 +82,30 @@
       "name": "SBXH",
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:52:22.690Z",
-      "lastSuccessfulAt": "2026-09-23T07:55:29.557Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T08:28:19.680Z",
+      "lastSuccessfulAt": "2026-09-25T08:28:19.680Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "뉴토끼 주소 안내",
-      "sourceUrl": "https://xn--h10b90bby9a7jkc4f.com/",
-      "sourceType": "guide",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: HTTP 500; site identity marker missing",
+      "sourceName": "참조처 없음",
+      "sourceUrl": "",
+      "sourceType": "none",
+      "errorCode": "",
+      "reason": "; category route verified: /ing",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "site identity marker missing"
+          "state": "healthy",
+          "detail": "category route verified: /ing"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: HTTP 500"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "meout 15000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh17.com/\", waiting until \"domcontentloaded\"\n; https://sbxh18.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh18.com/\", waiting until \"domcontentloaded\"\n; https://sbxh19.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://sbxh19.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -114,30 +114,30 @@
       "name": "WFWF",
       "category": "manga",
       "activeBaseUrl": "https://wfwf505.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:53:30.761Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:37.952Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T08:28:28.376Z",
+      "lastSuccessfulAt": "2026-09-25T08:28:28.376Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "늑대닷컴 공식채널",
       "sourceUrl": "https://t.me/s/wftoon",
       "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/wftoon\", waiting until \"domcontentloade; TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf505.com/\", waiting until \"domcontentloaded\"\n",
+      "errorCode": "",
+      "reason": "; category navigation verified: /end",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf505.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "healthy",
+          "detail": "category navigation verified: /end"
         },
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/wftoon\", waiting until \"domcontentloade"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "fwf512.com: Error: Locator.evaluate_all: Execution context was destroyed, most likely because of a navigation; https://wfwf513.com: site identity marker missing; https://wfwf514.com: Error: Locator.evaluate_all: Execution context was destroyed, most likely because of a navigation; https://wfwf515.com: Error: Locator.evaluate_all: Execution context was destroyed, most likely because of a navigation"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     },
@@ -147,20 +147,20 @@
       "category": "manga",
       "activeBaseUrl": "https://blacktoon423.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:53:39.484Z",
-      "lastSuccessfulAt": "2026-09-25T07:53:39.484Z",
+      "checkedAt": "2026-09-25T08:28:37.508Z",
+      "lastSuccessfulAt": "2026-09-25T08:28:37.508Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "블랙툰 공식 URL",
-      "sourceUrl": "https://blacktoonurl.net/",
+      "sourceName": "블랙툰 주소 안내",
+      "sourceUrl": "https://www.blacktoonurls.com/address-collection",
       "sourceType": "guide",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /#continue",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /#continue"
         },
         "source": {
           "state": "skipped",
@@ -178,30 +178,30 @@
       "name": "짭툰",
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:54:43.634Z",
+      "state": "paused",
+      "checkedAt": "2026-09-25T08:28:37.509Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "짭툰 공식 텔레그램",
-      "sourceUrl": "https://t.me/s/jjaptoon003?before=999999999",
-      "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "latest labeled Telegram address; site identity marker missing",
+      "candidateConfirmationsRequired": 0,
+      "sourceName": "검사 제외",
+      "sourceUrl": "",
+      "sourceType": "none",
+      "errorCode": "",
+      "reason": "사이트 잠정 중단으로 검사 제외 · 기존 주소 유지",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "site identity marker missing"
+          "state": "skipped",
+          "detail": "site paused"
         },
         "source": {
-          "state": "failed",
-          "detail": "latest labeled Telegram address; https://www.jjaptoon007.com: published address already failed"
+          "state": "skipped",
+          "detail": "site paused"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "ps://www.jjaptoon015.com: insufficient site structure markers; https://www.jjaptoon016.com: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://www.jjaptoon016.com/\", waiting until \"domcontentloaded\"\n; https://www.jjaptoon017.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://www.jjaptoon017.com/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site paused"
         }
       }
     },
@@ -211,20 +211,20 @@
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:54:50.191Z",
-      "lastSuccessfulAt": "2026-09-25T07:54:50.191Z",
+      "checkedAt": "2026-09-25T08:28:55.201Z",
+      "lastSuccessfulAt": "2026-09-25T08:28:55.201Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "고정 주소 직접 확인",
-      "sourceUrl": "https://11toon.com/",
-      "sourceType": "fixed",
+      "sourceName": "참조처 없음",
+      "sourceUrl": "",
+      "sourceType": "none",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category route verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category route verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94"
         },
         "source": {
           "state": "skipped",
@@ -242,30 +242,30 @@
       "name": "네이버 웹툰",
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:54:54.927Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:41.356Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T08:29:06.050Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:06.050Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "고정 주소 직접 확인",
-      "sourceUrl": "https://comic.naver.com/webtoon",
-      "sourceType": "fixed",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "fixed address; insufficient site structure markers",
+      "sourceName": "고정 주소",
+      "sourceUrl": "",
+      "sourceType": "none",
+      "errorCode": "",
+      "reason": "; category route verified: /webtoon",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "insufficient site structure markers"
+          "state": "healthy",
+          "detail": "category route verified: /webtoon"
         },
         "source": {
-          "state": "failed",
-          "detail": "fixed address"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "unavailable",
+          "state": "skipped",
           "checked": 0,
-          "detail": "no numbered successor for this site"
+          "detail": "published address verified"
         }
       }
     },
@@ -275,8 +275,8 @@
       "category": "manga",
       "activeBaseUrl": "https://goodtoon005.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:55:02.099Z",
-      "lastSuccessfulAt": "2026-09-25T07:55:02.099Z",
+      "checkedAt": "2026-09-25T08:29:17.135Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:17.135Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -284,11 +284,11 @@
       "sourceUrl": "https://t.me/s/goodtoon_url",
       "sourceType": "telegram",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /ongoing/",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /ongoing/"
         },
         "source": {
           "state": "skipped",
@@ -307,8 +307,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newxtoon1.com",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:55:08.375Z",
-      "lastSuccessfulAt": "2026-09-25T07:55:08.375Z",
+      "checkedAt": "2026-09-25T08:29:19.463Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:19.463Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -316,11 +316,11 @@
       "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
       "sourceType": "guide",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /comics",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /comics"
         },
         "source": {
           "state": "skipped",
@@ -339,8 +339,8 @@
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:55:12.344Z",
-      "lastSuccessfulAt": "2026-09-25T07:55:12.344Z",
+      "checkedAt": "2026-09-25T08:29:28.517Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:28.517Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -348,11 +348,11 @@
       "sourceUrl": "https://x.com/linkkfcom",
       "sourceType": "guide",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /list/2/lang/Movie/",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /list/2/lang/Movie/"
         },
         "source": {
           "state": "skipped",
@@ -371,8 +371,8 @@
       "category": "media",
       "activeBaseUrl": "https://www.ohli24.net",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:55:21.386Z",
-      "lastSuccessfulAt": "2026-09-25T07:55:21.386Z",
+      "checkedAt": "2026-09-25T08:29:39.022Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:39.022Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -380,11 +380,11 @@
       "sourceUrl": "https://t.me/s/ohli24net?before=999999999",
       "sourceType": "telegram",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /ing",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /ing"
         },
         "source": {
           "state": "skipped",
@@ -403,8 +403,8 @@
       "category": "media",
       "activeBaseUrl": "https://tvroom35.org",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:55:27.964Z",
-      "lastSuccessfulAt": "2026-09-25T07:55:27.964Z",
+      "checkedAt": "2026-09-25T08:29:50.598Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:50.598Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -412,11 +412,11 @@
       "sourceUrl": "https://t.me/s/tvroom8282",
       "sourceType": "telegram",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /video/%EC%98%81%ED%99%94",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /video/%EC%98%81%ED%99%94"
         },
         "source": {
           "state": "skipped",
@@ -435,8 +435,8 @@
       "category": "media",
       "activeBaseUrl": "https://tvwiki51.net",
       "state": "healthy",
-      "checkedAt": "2026-09-25T07:55:34.696Z",
-      "lastSuccessfulAt": "2026-09-25T07:55:34.696Z",
+      "checkedAt": "2026-09-25T08:29:56.733Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:56.733Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -444,11 +444,11 @@
       "sourceUrl": "https://t.me/s/tvwiki_url",
       "sourceType": "telegram",
       "errorCode": "",
-      "reason": "; site identity and structure verified",
+      "reason": "; category navigation verified: /movie",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "site identity and structure verified"
+          "detail": "category navigation verified: /movie"
         },
         "source": {
           "state": "skipped",
@@ -466,30 +466,30 @@
       "name": "애니라이프",
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
-      "state": "stale",
-      "checkedAt": "2026-09-25T07:56:31.719Z",
-      "lastSuccessfulAt": "2026-09-24T23:40:42.193Z",
+      "state": "healthy",
+      "checkedAt": "2026-09-25T08:29:58.756Z",
+      "lastSuccessfulAt": "2026-09-25T08:29:58.756Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
-      "sourceName": "현재 주소 직접 확인",
-      "sourceUrl": "https://anilife01.tv/",
-      "sourceType": "fixed",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "fixed address; insufficient site structure markers",
+      "sourceName": "참조처 없음",
+      "sourceUrl": "",
+      "sourceType": "none",
+      "errorCode": "",
+      "reason": "; category navigation verified: /daily",
       "checks": {
         "current": {
-          "state": "failed",
-          "detail": "insufficient site structure markers"
+          "state": "healthy",
+          "detail": "category navigation verified: /daily"
         },
         "source": {
-          "state": "failed",
-          "detail": "fixed address"
+          "state": "skipped",
+          "detail": "published address verified"
         },
         "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": ":\n  - navigating to \"https://anilife09.tv/\", waiting until \"domcontentloaded\"\n; https://anilife10.tv: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://anilife10.tv/\", waiting until \"domcontentloaded\"\n; https://anilife11.tv: TimeoutError: Page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"https://anilife11.tv/\", waiting until \"domcontentloaded\"\n"
+          "state": "skipped",
+          "checked": 0,
+          "detail": "published address verified"
         }
       }
     }
