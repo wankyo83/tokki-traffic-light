@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-25T14:31:11.567Z",
+  "updatedAt": "2026-09-25T15:36:45.503Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:27:20.302Z"
+      "lastConfirmedAt": "2026-09-25T15:27:21.325Z"
     },
     "toki": {
       "baseUrl": "https://toki32.com",
@@ -15,12 +15,12 @@
     "sbxh": {
       "baseUrl": "https://sbxh9.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:28:44.070Z"
+      "lastConfirmedAt": "2026-09-25T15:28:46.247Z"
     },
     "wfwf": {
       "baseUrl": "https://wfwf505.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:28:53.734Z"
+      "lastConfirmedAt": "2026-09-25T15:28:53.581Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon423.com",
@@ -35,22 +35,22 @@
     "11toon": {
       "baseUrl": "https://11toon.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:29:11.515Z"
+      "lastConfirmedAt": "2026-09-25T15:29:55.313Z"
     },
     "naver": {
       "baseUrl": "https://comic.naver.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:29:24.957Z"
+      "lastConfirmedAt": "2026-09-25T15:30:05.226Z"
     },
     "goodtoon": {
       "baseUrl": "https://goodtoon005.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:29:35.341Z"
+      "lastConfirmedAt": "2026-09-25T15:30:12.875Z"
     },
     "newxtoon": {
       "baseUrl": "https://newxtoon1.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:29:39.897Z"
+      "lastConfirmedAt": "2026-09-25T15:30:17.780Z"
     },
     "linkkf": {
       "baseUrl": "https://linkkf.tv",
@@ -60,7 +60,7 @@
     "ani24": {
       "baseUrl": "https://www.ohli24.net",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T14:30:17.167Z"
+      "lastConfirmedAt": "2026-09-25T15:31:18.501Z"
     },
     "tvroom": {
       "baseUrl": "https://tvroom35.org",
