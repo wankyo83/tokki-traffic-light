@@ -25,6 +25,7 @@ class CheckerService:
         self.last_run = None
         self.last_error = ""
         self.last_commit = None
+        self.phase = "idle"
         self.queue_path = self.data_dir / "manual-candidates.json"
         self.pending = self._read_file(self.queue_path, {})
         self.cursor_path = self.data_dir / "scan-cursors.json"
@@ -60,6 +61,7 @@ class CheckerService:
                 "lastRun": self.last_run,
                 "lastError": self.last_error,
                 "lastCommit": self.last_commit,
+                "phase": self.phase,
                 "pending": copy.deepcopy(self.pending),
                 "domains": copy.deepcopy(self.latest.get("domains", {})),
                 "groups": copy.deepcopy(self.latest_status.get("groups", [])),
@@ -193,17 +195,24 @@ class CheckerService:
         with self.lock:
             self.running = True
             self.last_error = ""
+            self.phase = "reading published snapshot"
         try:
             domains, old_status = self._bootstrap()
             with self.lock:
                 self.latest = copy.deepcopy(domains)
                 self.latest_status = copy.deepcopy(old_status)
             if os.environ.get("REQUIRE_KR_EGRESS", "true").lower() == "true":
+                with self.lock:
+                    self.phase = "checking KR egress"
                 is_kr, location = check_kr_egress()
                 if not is_kr:
                     raise RuntimeError(f"direct NAS exit not verified as KR (loc={location}); publication stopped")
+            with self.lock:
+                self.phase = "verifying sites"
             domains, status = asyncio.run(self._run_async(domains, old_status))
             # GitHub commit precedes local state update: public snapshot remains the authority.
+            with self.lock:
+                self.phase = "publishing GitHub snapshot"
             sha = GitHubPublisher().publish(domains, status)
             self._write_file(self.data_dir / "last-domains.json", domains)
             self._write_file(self.data_dir / "last-status.json", status)
@@ -215,10 +224,11 @@ class CheckerService:
         except Exception as exc:
             LOG.exception("Cycle failed; published addresses were not changed")
             with self.lock:
-                self.last_error = f"{type(exc).__name__}: {str(exc)[:250]}"
+                self.last_error = f"{self.phase}: {type(exc).__name__}: {str(exc)[:250]}"
         finally:
             with self.lock:
                 self.running = False
+                self.phase = "idle"
                 self.last_run = now_iso()
 
     def loop(self):

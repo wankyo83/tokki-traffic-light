@@ -46,8 +46,17 @@ class GitHubPublisher:
                 "Content-Type": "application/json",
             },
         )
-        with urllib.request.urlopen(request, timeout=30) as response:
-            return json.load(response)
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            # GitHub often returns 404 for a repository the token cannot access.
+            # Include the API operation, never the Authorization header.
+            try:
+                detail = json.loads(exc.read(2048)).get("message", "")
+            except (ValueError, OSError):
+                detail = ""
+            raise RuntimeError(f"GitHub API {method} {path}: HTTP {exc.code} {detail}".strip()) from None
 
     def publish(self, domains, status):
         """Commit both public JSON files atomically; never use the stale local checkout."""

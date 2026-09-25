@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from signal_nas.model import automatic_regression, host_candidates, numeric_candidates, validate_page, validate_url
+from signal_nas.browser import telegram_candidates
 from signal_nas.service import CheckerService
 
 
@@ -29,6 +30,15 @@ class ModelTests(unittest.TestCase):
         self.assertIsNone(result)
         result, _ = validate_page("toki", "https://toki33.com", "뉴토끼", "웹툰 최신", 10, "<html></html>")
         self.assertEqual(result, "https://toki33.com")
+
+    def test_tvwiki_uses_latest_realtime_label_not_bypass_address(self):
+        site = {"key": "tvwiki", "source": {"preferredLabel": "티비위키 실시간 접속주소", "strictPreferredLabel": True}}
+        messages = [
+            "티비위키 실시간 접속주소\nhttps://tvwiki50.net",
+            "티비위키 우회 주소\nhttps://tvwiki.store\n티비위키 실시간 접속주소\nhttps://tvwiki51.net\n우회 접속 방법",
+        ]
+        self.assertEqual(telegram_candidates(site, messages), ["https://tvwiki51.net"])
+        self.assertEqual(telegram_candidates(site, ["티비위키 우회 주소\nhttps://tvwiki.store"]), [])
 
 
 class FakeBrowser:

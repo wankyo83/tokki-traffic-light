@@ -4,6 +4,27 @@ from urllib.parse import urlsplit
 from .model import CHALLENGE_MARKERS, host_candidates, validate_page, validate_url
 
 
+def telegram_candidates(site, messages):
+    """Telegram's DOM is oldest-first; use the newest matching address post."""
+    source = site["source"]
+    preferred = source.get("preferredLabel", "")
+    for message in reversed(messages):
+        if preferred:
+            position = message.lower().find(preferred.lower())
+            if position < 0:
+                continue
+            # The first URL after the label is the corresponding address, not
+            # a preceding 'bypass' or permanent gateway link in the same post.
+            candidates = host_candidates(site["key"], message[position + len(preferred):position + len(preferred) + 240])
+            if candidates:
+                return candidates[:1]
+            continue
+        candidates = host_candidates(site["key"], message)
+        if candidates:
+            return candidates[:1]
+    return []
+
+
 class BrowserVerifier:
     def __init__(self):
         self._manager = None
@@ -47,7 +68,8 @@ class BrowserVerifier:
             html = (await page.content())[:2_000_000]
             body = (await page.locator("body").inner_text(timeout=10_000))[:120_000]
             links = await page.locator("a[href]").evaluate_all("nodes => nodes.slice(0, 1000).map(a => ({href: a.href, text: a.innerText, parent: a.parentElement?.innerText?.slice(0, 500) || ''}))")
-            return {"url": page.url, "title": title, "html": html, "body": body, "links": links, "status": response.status if response else 0}
+            messages = await page.locator(".tgme_widget_message_text").evaluate_all("nodes => nodes.map(n => n.innerText)")
+            return {"url": page.url, "title": title, "html": html, "body": body, "links": links, "messages": messages, "status": response.status if response else 0}
         finally:
             await context.close()
 
@@ -68,6 +90,12 @@ class BrowserVerifier:
             return [], f"guide unavailable: HTTP {page['status']}"
         if any(marker in (page["title"] + page["body"][:300]).lower() for marker in CHALLENGE_MARKERS):
             return [], "guide challenged"
+        if source["type"] == "telegram":
+            selected = telegram_candidates(site, page.get("messages", []))
+            if selected:
+                return selected, "latest labeled Telegram address"
+            if source.get("strictPreferredLabel"):
+                return [], "Telegram address label missing or invalid"
         scored = {}
         preferred = source.get("preferredLabel", "").lower()
         stop_labels = [x.lower() for x in source.get("stopLabels", [])]
