@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from signal_nas.model import automatic_regression, host_candidates, numeric_candidates, validate_page, validate_url
-from signal_nas.browser import telegram_candidates
+from signal_nas.browser import BrowserVerifier, telegram_candidates
 from signal_nas.publish import GitHubPublisher
 from signal_nas.service import CheckerService
 
@@ -28,10 +28,26 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(host_candidates("tvroom", "old https://tvroom35.org/ new https://tvroom36.org/ and https://tvroom.com"), ["https://tvroom35.org", "https://tvroom36.org"])
 
     def test_challenge_not_valid(self):
-        result, _ = validate_page("toki", "https://toki33.com", "Just a moment", "뉴토끼 웹툰", 10, "<html></html>")
+        result, _ = validate_page("toki", "https://toki33.com", "Just a moment", "", [{"href":"https://toki33.com/novel"}], "<html></html>")
         self.assertIsNone(result)
-        result, _ = validate_page("toki", "https://toki33.com", "뉴토끼", "웹툰 최신", 10, "<html></html>")
+        result, _ = validate_page("toki", "https://toki33.com", "", "", [{"href":"https://toki33.com/novel"}], "<html></html>")
         self.assertEqual(result, "https://toki33.com")
+
+    def test_one_category_link_is_enough_without_brand_text(self):
+        links = [{"href":"https://sbxh9.com/ing"}]
+        result, reason = validate_page("sbxh", "https://sbxh9.com", "", "", links, "<html></html>")
+        self.assertEqual(result, "https://sbxh9.com")
+        self.assertIn("/ing", reason)
+        result, reason = validate_page("sbxh", "https://sbxh9.com", "", "", [{"href":"https://evil.example/ing"}], "<html></html>")
+        self.assertIsNone(result)
+        self.assertEqual(reason, "category navigation not found")
+
+    def test_category_query_and_http_failure(self):
+        link = {"href": "https://11toon.com/bbs/board.php?tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94&bo_table=toon_c&type=upd"}
+        result, _ = validate_page("11toon", "https://11toon.com", "", "", [link], "<html></html>")
+        self.assertEqual(result, "https://11toon.com")
+        result, _ = validate_page("11toon", "https://11toon.com", "", "", [link], "<html></html>", 404)
+        self.assertIsNone(result)
 
     def test_tvwiki_uses_latest_realtime_label_not_bypass_address(self):
         site = {"key": "tvwiki", "source": {"preferredLabel": "티비위키 실시간 접속주소", "strictPreferredLabel": True}}
@@ -66,6 +82,29 @@ class FakeBrowser:
         return None
 
 
+class BrowserTests(unittest.TestCase):
+    def test_sbxh_navigation_must_be_on_the_same_host(self):
+        page = {
+            "url": "https://sbxh9.com/", "status": 200, "title": "뉴토끼",
+            "body": "웹툰 만화 소설", "html": "<html></html>",
+            "links": [
+                {"href": "https://other.example/novel/updates"},
+            ],
+        }
+
+        async def fake_page(*_, **__):
+            return page
+
+        browser = BrowserVerifier()
+        with patch.object(browser, "_page", fake_page):
+            result, reason = asyncio.run(browser.verify("sbxh", "https://sbxh9.com"))
+            self.assertIsNone(result)
+            self.assertEqual(reason, "category navigation not found")
+            page["links"].append({"href": "https://sbxh9.com/ing"})
+            result, _ = asyncio.run(browser.verify("sbxh", "https://sbxh9.com"))
+            self.assertEqual(result, "https://sbxh9.com")
+
+
 class ServiceTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -91,6 +130,13 @@ class ServiceTests(unittest.TestCase):
         second = FakeBrowser({})
         asyncio.run(self.service._check_site(second, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(second.tried, browser.tried)
+
+    def test_no_source_skips_discovery_but_checks_next_ten(self):
+        browser = FakeBrowser({})
+        result = asyncio.run(self.service._check_site(browser, {"key": "sbxh", "source": {"type": "none"}}, "https://sbxh9.com"))
+        self.assertEqual(browser.discoveries, 0)
+        self.assertEqual(result[4]["source"]["state"], "skipped")
+        self.assertEqual(result[4]["numeric"]["checked"], 10)
 
     def test_redirect_to_next_verified(self):
         browser = FakeBrowser({"https://toki32.com": "https://toki33.com"})
@@ -147,6 +193,8 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(len(status["groups"]), len(SITES))
         self.assertEqual(status["policy"]["numericSearchMaxOffset"], 10)
         self.assertEqual(status["groups"][1]["checks"]["numeric"]["state"], "failed")
+        self.assertEqual(status["groups"][5]["state"], "paused")
+        self.assertEqual(status["groups"][5]["activeBaseUrl"], examples["jjaptoon"])
         self.assertEqual(self.service.snapshot()["completedSites"], len(SITES))
 
 

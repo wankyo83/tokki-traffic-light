@@ -1,17 +1,17 @@
 [
-  {"key":"newtoki","name":"뉴토끼","category":"manga","source":{"type":"guide","name":"뉴토끼 주소 안내","url":"https://xn--h10b90bby9a7jkc4f.com/"}},
-  {"key":"toki","name":"토끼","category":"manga","source":{"type":"guide","name":"뉴토끼 주소 안내","url":"https://xn--h10b90bby9a7jkc4f.com/"}},
-  {"key":"sbxh","name":"SBXH","category":"manga","source":{"type":"guide","name":"뉴토끼 주소 안내","url":"https://xn--h10b90bby9a7jkc4f.com/"}},
+  {"key":"newtoki","name":"뉴토끼","category":"manga","source":{"type":"none","name":"참조처 없음","url":""}},
+  {"key":"toki","name":"토끼","category":"manga","source":{"type":"none","name":"참조처 없음","url":""}},
+  {"key":"sbxh","name":"SBXH","category":"manga","source":{"type":"none","name":"참조처 없음","url":""}},
   {"key":"wfwf","name":"WFWF","category":"manga","source":{"type":"telegram","name":"늑대닷컴 공식채널","url":"https://t.me/s/wftoon","preferredLabel":"늑대닷컴 주소","stopLabels":["늑대닷컴2 주소"]}},
-  {"key":"blacktoon","name":"블랙툰","category":"manga","source":{"type":"guide","name":"블랙툰 공식 URL","url":"https://blacktoonurl.net/"}},
-  {"key":"jjaptoon","name":"짭툰","category":"manga","source":{"type":"telegram","name":"짭툰 공식 텔레그램","url":"https://t.me/s/jjaptoon003?before=999999999"}},
-  {"key":"11toon","name":"11툰","category":"manga","source":{"type":"fixed","name":"고정 주소 직접 확인","url":"https://11toon.com/"}},
-  {"key":"naver","name":"네이버 웹툰","category":"manga","source":{"type":"fixed","name":"고정 주소 직접 확인","url":"https://comic.naver.com/webtoon"}},
+  {"key":"blacktoon","name":"블랙툰","category":"manga","source":{"type":"guide","name":"블랙툰 주소 안내","url":"https://www.blacktoonurls.com/address-collection","preferredLabel":"블랙툰 바로가기","strictPreferredLabel":true}},
+  {"key":"jjaptoon","name":"짭툰","category":"manga","paused":true,"source":{"type":"none","name":"검사 제외","url":""}},
+  {"key":"11toon","name":"11툰","category":"manga","source":{"type":"none","name":"참조처 없음","url":""}},
+  {"key":"naver","name":"네이버 웹툰","category":"manga","source":{"type":"none","name":"고정 주소","url":""}},
   {"key":"goodtoon","name":"굿툰","category":"manga","source":{"type":"telegram","name":"굿툰 공식 텔레그램","url":"https://t.me/s/goodtoon_url"}},
   {"key":"newxtoon","name":"뉴엑스툰","category":"manga","source":{"type":"guide","name":"뉴엑스툰 주소 안내","url":"https://xn--vg1b002axlc8ts.com/"}},
   {"key":"linkkf","name":"Linkkf","category":"media","source":{"type":"guide","name":"Linkkf 공식 X","url":"https://x.com/linkkfcom"}},
   {"key":"ani24","name":"애니24","category":"media","source":{"type":"telegram","name":"애니24 공식 텔레그램","url":"https://t.me/s/ohli24net?before=999999999"}},
   {"key":"tvroom","name":"티비룸","category":"media","source":{"type":"telegram","name":"티비룸 공식 텔레그램","url":"https://t.me/s/tvroom8282"}},
   {"key":"tvwiki","name":"티비위키","category":"media","source":{"type":"telegram","name":"티비위키 공식 텔레그램","url":"https://t.me/s/tvwiki_url","preferredLabel":"티비위키 실시간 접속주소","strictPreferredLabel":true}},
-  {"key":"anilife","name":"애니라이프","category":"media","source":{"type":"fixed","name":"현재 주소 직접 확인","url":"https://anilife01.tv/"}}
+  {"key":"anilife","name":"애니라이프","category":"media","source":{"type":"none","name":"참조처 없음","url":""}}
 ]

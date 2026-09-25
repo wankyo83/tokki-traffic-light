@@ -2,7 +2,7 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -78,25 +78,42 @@ def automatic_regression(key, current, candidate):
     return bool(old_number and new_number and int(new_number.group()) < int(old_number.group()))
 
 
-def validate_page(key, final_url, title, body_text, internal_links, html):
+def matches_category(base_url, candidate_url, category_path):
+    base = urlsplit(base_url)
+    candidate = urlsplit(candidate_url)
+    expected = urlsplit(category_path)
+    if candidate.hostname != base.hostname or candidate.scheme != "https":
+        return False
+    if unquote(candidate.path).rstrip("/") != unquote(expected.path).rstrip("/"):
+        return False
+    if expected.fragment and candidate.fragment != expected.fragment:
+        return False
+    expected_query = parse_qsl(expected.query, keep_blank_values=True)
+    actual_query = parse_qsl(candidate.query, keep_blank_values=True)
+    return all(pair in actual_query for pair in expected_query)
+
+
+def validate_page(key, final_url, title, body_text, links, html, status=200, requested_category=None):
     try:
         base = validate_url(key, final_url)
     except ValueError as exc:
         return None, str(exc)
+    if status < 200 or status >= 400:
+        return None, f"HTTP {status}"
     sample = (title + " " + body_text[:120_000]).lower()
     html_head = html[:120_000].lower()
     if any(marker in sample or marker in html_head for marker in CHALLENGE_MARKERS):
         return None, "Cloudflare challenge remains"
-    rule = RULES[key]
-    brands = sum(1 for marker in rule["brandAny"] if marker.lower() in sample)
-    structures = sum(1 for marker in rule["structureAny"] if marker.lower() in sample)
-    if not brands:
-        return None, "site identity marker missing"
-    if structures < 2:
-        return None, "insufficient site structure markers"
-    if internal_links < 5:
-        return None, "too few internal links to recognize site"
-    return base, "site identity and structure verified"
+    paths = RULES[key].get("categoryPaths", [])
+    if not paths:
+        return None, "no category routes configured"
+    for path in paths:
+        if requested_category and path == requested_category and not urlsplit(path).fragment and matches_category(base, final_url, path):
+            if body_text.strip() or len(html) > 200:
+                return base, f"category route verified: {path}"
+        if any(matches_category(base, link.get("href", ""), path) for link in links):
+            return base, f"category navigation verified: {path}"
+    return None, "category navigation not found"
 
 
 def json_bytes(value):

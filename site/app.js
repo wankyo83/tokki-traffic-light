@@ -8,6 +8,7 @@ const refresh = document.querySelector('#refresh');
 const healthyCount = document.querySelector('#healthy-count');
 const verifyingCount = document.querySelector('#verifying-count');
 const blockedCount = document.querySelector('#blocked-count');
+const pausedCount = document.querySelector('#paused-count');
 const expectedGitHubIntervalMinutes = 60;
 const delayedAfterMinutes = 90;
 const criticalAfterMinutes = 150;
@@ -66,6 +67,7 @@ function addressRow(group) {
     verifying: {icon: '🔄', label: '새 주소 확인 중', badge: 'verifying'},
     stale: {icon: '⚠️', label: '확인 실패 · 기존 주소 유지', badge: 'stale'},
     unavailable: {icon: '❌', label: '확정 주소 없음', badge: 'unavailable'},
+    paused: {icon: '⏸️', label: '검사 제외 · 기존 주소 유지', badge: 'paused'},
   }[group.state] ?? {icon: '⚠️', label: '확인 필요', badge: 'stale'};
   const activeAddress = group.activeBaseUrl
     ? `<a class="url address-link" href="${escapeHtml(group.activeBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.activeBaseUrl)}</a>`
@@ -142,6 +144,7 @@ async function load() {
     healthyCount.textContent = groups.filter(group => group.state === 'healthy' || group.state === 'manual').length;
     verifyingCount.textContent = groups.filter(group => group.state === 'verifying').length;
     blockedCount.textContent = groups.filter(group => group.state === 'stale' || group.state === 'unavailable').length;
+    pausedCount.textContent = groups.filter(group => group.state === 'paused').length;
   } catch (error) {
     const errorView = `<div class="error">주소 확인 결과를 불러오지 못했습니다.<br>${escapeHtml(error.message)}</div>`;
     mangaAddresses.innerHTML = errorView;

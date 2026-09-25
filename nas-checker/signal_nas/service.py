@@ -95,7 +95,9 @@ class CheckerService:
                 checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "published address verified"}
                 return result, "healthy", "", reason, checks
             checks["current"] = {"state": "failed", "detail": reason}
-        source_urls, source_result = await browser.discover(site)
+        source = site.get("source", {})
+        has_source = source.get("type") not in ("none", "fixed", None)
+        source_urls, source_result = await browser.discover(site) if has_source else ([], "no reference source configured")
         source_failures = []
         tried = {current} if current else set()
         for candidate in self._unique(source_urls)[:5]:
@@ -112,7 +114,10 @@ class CheckerService:
                 checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "source address verified"}
                 return result, "healthy", source_result, reason, checks
             source_failures.append(f"{candidate}: {reason}")
-        checks["source"] = {"state": "failed", "detail": "; ".join([source_result] + source_failures)[:400]}
+        checks["source"] = {
+            "state": "failed" if has_source else "skipped",
+            "detail": "; ".join([source_result] + source_failures)[:400],
+        }
         numbered = numeric_candidates(key, current, count=10, start_offset=1)
         numeric_failures = []
         for candidate in numbered:
@@ -141,6 +146,20 @@ class CheckerService:
                     self.current_site = site["name"]
                 prior = domains["domains"].get(key, {})
                 current = prior.get("baseUrl")
+                if site.get("paused"):
+                    old = old_groups.get(key, {})
+                    return {
+                        "key": key, "name": site["name"], "category": site["category"],
+                        "activeBaseUrl": current, "state": "paused", "checkedAt": now_iso(),
+                        "lastSuccessfulAt": old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
+                        "candidateBaseUrl": None, "candidateConfirmations": 0,
+                        "candidateConfirmationsRequired": 0, "sourceName": "검사 제외",
+                        "sourceUrl": "", "sourceType": "none", "errorCode": "",
+                        "reason": "사이트 잠정 중단으로 검사 제외 · 기존 주소 유지",
+                        "checks": {"current": {"state": "skipped", "detail": "site paused"},
+                                   "source": {"state": "skipped", "detail": "site paused"},
+                                   "numeric": {"state": "skipped", "checked": 0, "detail": "site paused"}},
+                    }
                 try:
                     result, state, source_result, reason, checks = await asyncio.wait_for(
                         self._check_site(browser, site, current), timeout=540)
