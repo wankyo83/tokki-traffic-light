@@ -26,6 +26,9 @@ class CheckerService:
         self.last_error = ""
         self.last_commit = None
         self.phase = "idle"
+        self.current_site = None
+        self.completed_sites = 0
+        self.started_at = None
         self.queue_path = self.data_dir / "manual-candidates.json"
         self.pending = self._read_file(self.queue_path, {})
         self.cursor_path = self.data_dir / "scan-cursors.json"
@@ -62,9 +65,14 @@ class CheckerService:
                 "lastError": self.last_error,
                 "lastCommit": self.last_commit,
                 "phase": self.phase,
+                "currentSite": self.current_site,
+                "completedSites": self.completed_sites,
+                "totalSites": len(SITES),
+                "startedAt": self.started_at,
                 "pending": copy.deepcopy(self.pending),
                 "domains": copy.deepcopy(self.latest.get("domains", {})),
                 "groups": copy.deepcopy(self.latest_status.get("groups", [])),
+                "publishedCheckedAt": self.latest_status.get("checkedAt"),
             }
 
     def _bootstrap(self):
@@ -144,6 +152,8 @@ class CheckerService:
         async with BrowserVerifier() as browser:
             async def check_one(site):
                 key = site["key"]
+                with self.lock:
+                    self.current_site = site["name"]
                 prior = domains["domains"].get(key, {})
                 current = prior.get("baseUrl")
                 with self.lock:
@@ -181,6 +191,8 @@ class CheckerService:
             groups = []
             for site in SITES:
                 groups.append(await check_one(site))
+                with self.lock:
+                    self.completed_sites = len(groups)
         domains["updatedAt"] = now_iso()
         status = {
             "schemaVersion": 3,
@@ -196,6 +208,9 @@ class CheckerService:
             self.running = True
             self.last_error = ""
             self.phase = "reading published snapshot"
+            self.current_site = None
+            self.completed_sites = 0
+            self.started_at = now_iso()
         try:
             domains, old_status = self._bootstrap()
             with self.lock:
@@ -229,6 +244,7 @@ class CheckerService:
             with self.lock:
                 self.running = False
                 self.phase = "idle"
+                self.current_site = None
                 self.last_run = now_iso()
 
     def loop(self):

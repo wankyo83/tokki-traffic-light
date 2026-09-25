@@ -2,25 +2,31 @@ import hmac
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from .model import json_bytes
 
 
-ADMIN_HTML = """<!doctype html><html lang=\"ko\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>중앙 신호등 NAS 관리</title>
-<style>body{background:#101a2a;color:#eef7ff;font:16px system-ui;margin:0;padding:2rem}main{max-width:760px;margin:auto}h1{font-size:1.6rem}input,select,button{box-sizing:border-box;padding:.8rem;margin:.3rem 0;border-radius:.5rem;border:1px solid #52708d;font:inherit}input{width:100%}select{width:40%}button{background:#7ce1f5;color:#071621;cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#17293e;padding:1rem;border-radius:.6rem}small{color:#b5c8da}</style>
-<main><h1>중앙 신호등 NAS 관리</h1><p>주소를 입력하면 Camoufox가 실제 사이트를 확인합니다. 확인 전에는 공개 주소가 바뀌지 않습니다.</p>
-<label>관리 토큰<input id=token type=password autocomplete=off placeholder=\".env의 ADMIN_TOKEN\"></label>
-<label>사이트<select id=site></select></label><label>새 HTTPS 주소<input id=url type=url placeholder=\"https://example.com\"></label>
-<button id=submit>주소 확인 요청</button> <button id=refresh>상태 새로고침</button> <button id=run>전체 검사 지금 실행</button>
-<p id=message></p><small>토큰은 이 화면에서만 사용하며 저장하지 않습니다. LAN HTTP 대신 HTTPS 역방향 프록시 또는 Tailscale을 권장합니다.</small><pre id=state>상태를 보려면 토큰을 입력하고 새로고침하세요.</pre></main>
-<script>
-const keys=%KEYS%;const $=x=>document.getElementById(x);keys.forEach(([key,name])=>{const o=document.createElement('option');o.value=key;o.textContent=name;$('site').append(o)});
-async function call(path,method='GET',payload){const r=await fetch(path,{method,headers:{Authorization:'Bearer '+$('token').value,'Content-Type':'application/json'},body:payload?JSON.stringify(payload):undefined});const v=await r.json();if(!r.ok)throw Error(v.error||r.status);return v}
-$('refresh').onclick=async()=>{try{$('state').textContent=JSON.stringify(await call('/api/state'),null,2)}catch(e){$('message').textContent=e.message}};
-$('submit').onclick=async()=>{try{const v=await call('/api/manual-candidate','POST',{key:$('site').value,url:$('url').value});$('message').textContent='확인 대기: '+v.url;await $('refresh').onclick()}catch(e){$('message').textContent=e.message}};
-$('run').onclick=async()=>{try{await call('/api/run','POST',{});$('message').textContent='검사 요청 완료'}catch(e){$('message').textContent=e.message}};
-</script></html>"""
+ADMIN_HTML = Path(__file__).with_name("admin.html").read_text(encoding="utf-8")
+
+
+def public_overview(state):
+    """Only publish read-only metadata already visible in the public signal."""
+    fields = ("key", "name", "category", "activeBaseUrl", "state", "sourceName", "sourceUrl", "reason", "checkedAt")
+    return {
+        "running": state["running"],
+        "phase": state.get("phase", "idle"),
+        "currentSite": state.get("currentSite"),
+        "completedSites": state.get("completedSites", 0),
+        "totalSites": state.get("totalSites", 0),
+        "startedAt": state.get("startedAt"),
+        "lastRun": state.get("lastRun"),
+        "lastCommit": state.get("lastCommit"),
+        "hasError": bool(state.get("lastError")),
+        "publishedCheckedAt": state.get("publishedCheckedAt"),
+        "groups": [{key: group.get(key) for key in fields} for group in state.get("groups", [])],
+    }
 
 
 def make_handler(service):
@@ -63,7 +69,22 @@ def make_handler(service):
 
         def do_GET(self):
             if self.path == "/health":
-                self._send(200, {"ok": True, "running": service.snapshot()["running"]})
+                state = service.snapshot()
+                self._send(200, {
+                    "ok": True,
+                    "running": state["running"],
+                    "phase": state.get("phase", "idle"),
+                    "currentSite": state.get("currentSite"),
+                    "completedSites": state.get("completedSites", 0),
+                    "totalSites": state.get("totalSites", 0),
+                    "startedAt": state.get("startedAt"),
+                    "lastRun": state.get("lastRun"),
+                    "lastCommit": state.get("lastCommit"),
+                    "hasError": bool(state.get("lastError")),
+                })
+                return
+            if self.path == "/api/overview":
+                self._send(200, public_overview(service.snapshot()))
                 return
             if self.path == "/":
                 from .model import SITES

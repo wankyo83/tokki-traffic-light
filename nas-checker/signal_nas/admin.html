@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>중앙 신호등 NAS 관리</title>
+<style>
+:root{color-scheme:dark;--bg:#0c111b;--card:#151c28;--ink:#f2f4f7;--muted:#98a2b3;--line:#283241;--blue:#83b4ff;--green:#5bd37c;--yellow:#ffd677;--red:#ff7580}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+button,input,select{font:inherit}.shell{max-width:1440px;margin:auto;padding:24px 28px 48px}.hero{display:flex;align-items:center;gap:16px;margin-bottom:24px}.logo{display:grid;place-items:center;flex:0 0 58px;width:58px;height:58px;border-radius:18px;background:linear-gradient(145deg,#85e9fa,#5b88f8);color:#102333;font-size:21px;font-weight:900}.hero h1{margin:0;font-size:clamp(24px,4vw,31px)}.hero p{margin:3px 0 0;color:var(--muted)}
+.refresh{margin-left:auto;flex:0 0 auto;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--blue);padding:10px 14px;cursor:pointer}.refresh:hover,.copy:hover{border-color:var(--blue)}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}.metric{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:16px;text-align:center}.metric strong{display:block;font-size:22px;line-height:1.3;overflow-wrap:anywhere}.metric span{color:var(--muted);font-size:13px}.metric small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.metric.error strong{color:var(--red)}.metric.running strong{color:var(--blue)}
+.progress-card,.notice,.admin{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:16px 20px;margin-bottom:18px}.progress-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.progress-head strong{font-size:16px}.progress-head span,.meta{color:var(--muted);font-size:13px}.bar{height:8px;background:#273343;border-radius:99px;overflow:hidden;margin:12px 0}.fill{height:100%;width:0;background:#75dcf4;transition:width .3s}.notice{color:var(--yellow);border-color:#7b6238}.notice[hidden]{display:none}.notice.danger{color:var(--red);border-color:#74404a}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.count{display:flex;align-items:baseline;justify-content:center;gap:8px;border:1px solid var(--line);border-radius:15px;background:var(--card);padding:13px}.count strong{font-size:22px}.count span{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);gap:26px;align-items:start}.section{border:1px solid var(--line);border-radius:20px;background:var(--card);overflow:hidden}.section h2{font-size:18px;margin:0;padding:18px 20px;border-bottom:1px solid var(--line)}.rows:empty:after{content:"아직 표시할 결과가 없습니다";display:block;padding:28px;text-align:center;color:var(--muted)}.row{display:flex;align-items:center;gap:12px;min-height:84px;padding:15px 20px;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.symbol{flex:0 0 24px;font-size:20px}.row-main{min-width:0;flex:1}.name{font-weight:700;font-size:16px}.badge{display:inline-block;margin-left:7px;padding:2px 8px;border-radius:99px;background:#243d32;color:var(--green);font-size:11px;vertical-align:2px}.badge.stale,.badge.verifying{background:#4c3b23;color:var(--yellow)}.badge.manual{background:#263e32;color:#8ee3a6}.badge.error{background:#482c35;color:var(--red)}.url{display:inline-block;margin-top:5px;color:var(--blue);word-break:break-all;text-underline-offset:3px}.source,.reason,.checked{font-size:12px;color:var(--muted);margin-top:5px;overflow-wrap:anywhere}.source a{color:var(--muted);text-underline-offset:2px}.reason{color:var(--yellow)}.copy{flex:0 0 auto;background:transparent;border:1px solid var(--line);border-radius:9px;color:var(--blue);padding:7px 10px;cursor:pointer}.copy:disabled{opacity:.5;cursor:default}
+.admin{margin-top:22px}.admin summary{cursor:pointer;font-size:18px;font-weight:700}.admin-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:14px}.admin p{grid-column:1/-1;margin:0;color:var(--muted);font-size:13px}.admin label{display:block;color:var(--muted);font-size:13px}.admin input,.admin select{display:block;width:100%;margin-top:5px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#101a2a;color:var(--ink)}.admin-actions{grid-column:1/-1;display:flex;gap:9px;flex-wrap:wrap}.admin-actions button{border:1px solid #4776a8;border-radius:9px;background:#234c73;color:var(--ink);padding:9px 13px;cursor:pointer}.admin-actions button:hover{background:#31628f}.admin #message{grid-column:1/-1;min-height:20px}.admin #private-error{grid-column:1/-1;color:var(--red);overflow-wrap:anywhere}.admin #pending{grid-column:1/-1;color:var(--yellow)}.admin small{grid-column:1/-1;color:var(--muted)}.meta{margin:18px 3px 0;text-align:center}
+@media(max-width:900px){.grid{grid-template-columns:1fr;gap:18px}.shell{padding:18px 16px 40px}}@media(max-width:600px){.summary{grid-template-columns:1fr}.counts{gap:6px}.count{padding:9px 4px}.count strong{font-size:18px}.count span{font-size:11px}.row{padding:14px}.admin-body{grid-template-columns:1fr}.hero p{font-size:13px}.refresh{padding:8px 10px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero"><div class="logo" aria-hidden="true">TT</div><div><h1>중앙 신호등 NAS 관리</h1><p>Camoufox 주소 검사 · 공개 전 검증</p></div><button class="refresh" id="refresh" type="button">↻ 새로고침</button></header>
+  <section class="summary" aria-label="검사 요약">
+    <div class="metric" id="run-card"><strong id="run-state">확인 중</strong><span>검사 상태</span><small id="phase">상태 불러오는 중</small></div>
+    <div class="metric"><strong id="progress-number">—</strong><span>사이트 진행</span><small id="current-site">—</small></div>
+    <div class="metric"><strong id="commit-state">—</strong><span>GitHub 게시</span><small id="last-run">—</small></div>
+  </section>
+  <section class="progress-card" aria-label="검사 진행률"><div class="progress-head"><strong id="progress-title">검사 진행 상황</strong><span id="progress-detail">—</span></div><div class="bar"><div class="fill" id="progress-fill"></div></div><span class="meta" id="snapshot-time">마지막 공개 결과 불러오는 중</span></section>
+  <div class="notice" id="notice" hidden role="status"></div>
+  <section class="counts" aria-label="주소 상태 개수"><div class="count"><strong id="good-count">0</strong><span>정상</span></div><div class="count"><strong id="stale-count">0</strong><span>확인 필요</span></div><div class="count"><strong id="manual-count">0</strong><span>수동 등록</span></div></section>
+  <div class="grid"><section class="section"><h2>📚 만화·웹툰 신호등</h2><div class="rows" id="manga"></div></section><section class="section"><h2>🎬 미디어 주소</h2><div class="rows" id="media"></div></section></div>
+  <details class="admin" id="admin"><summary>관리자 기능 · 주소 변경 및 상세 오류</summary><div class="admin-body">
+    <p>위 상태는 토큰 없이 확인할 수 있습니다. 수동 주소 요청과 상세 오류 확인에는 관리 토큰이 필요합니다.</p>
+    <label>관리 토큰<input id="token" type="password" autocomplete="off" placeholder=".env의 ADMIN_TOKEN"></label>
+    <label>사이트<select id="site"></select></label>
+    <label>새 HTTPS 주소<input id="url" type="url" placeholder="https://example.com"></label>
+    <div class="admin-actions"><button id="submit" type="button">주소 확인 요청</button><button id="run" type="button">전체 검사 지금 실행</button><button id="details" type="button">상세 상태 확인</button></div>
+    <span id="message" role="status"></span><span id="private-error"></span><span id="pending"></span>
+    <small>토큰은 브라우저에 저장하지 않습니다. LAN HTTP에서는 다른 기기가 통신을 볼 수 있으니 HTTPS 또는 Tailscale 사용을 권장합니다.</small>
+  </div></details>
+  <p class="meta">새 주소는 NAS에서 사이트 구조를 검증한 뒤에만 공개됩니다. 검사 중에는 위 목록에 마지막 게시 결과가 표시됩니다.</p>
+</main>
+<script>
+'use strict';
+const keys=%KEYS%;
+const $=id=>document.getElementById(id);
+const phaseText={'idle':'대기 중','reading published snapshot':'공개 주소 읽는 중','checking KR egress':'국내 회선 확인 중','verifying sites':'사이트 순차 검사 중','publishing GitHub snapshot':'GitHub에 게시 중'};
+let latest=null;
+for(const [key,name] of keys){const option=document.createElement('option');option.value=key;option.textContent=name;$('site').append(option)}
+function time(value){if(!value)return '기록 없음';const date=new Date(value);return Number.isNaN(date.getTime())?'기록 없음':date.toLocaleString('ko-KR')}
+function safeUrl(value){try{const url=new URL(value);return ['https:','http:'].includes(url.protocol)?url.href:null}catch{return null}}
+function setText(id,value){$(id).textContent=value}
+function row(group){
+  const active=latest.running&&latest.currentSite===group.name;
+  const state=active?'verifying':group.state==='healthy'?'healthy':group.state==='manual'?'manual':'stale';
+  const label=active?'검사 중':state==='healthy'?'정상':state==='manual'?'수동 등록':'확인 필요';
+  const item=document.createElement('div');item.className='row';
+  const symbol=document.createElement('span');symbol.className='symbol';symbol.textContent=active?'🔄':state==='healthy'?'✅':state==='manual'?'📌':'⚠️';item.append(symbol);
+  const main=document.createElement('div');main.className='row-main';
+  const name=document.createElement('div');name.className='name';name.textContent=group.name||group.key;
+  const badge=document.createElement('span');badge.className='badge '+state;badge.textContent=label;name.append(badge);main.append(name);
+  const address=safeUrl(group.activeBaseUrl);if(address){const link=document.createElement('a');link.className='url';link.href=address;link.target='_blank';link.rel='noopener noreferrer';link.textContent=group.activeBaseUrl;main.append(link)}
+  const source=document.createElement('div');source.className='source';source.append(document.createTextNode('주소 출처: '));const sourceUrl=safeUrl(group.sourceUrl);if(sourceUrl){const link=document.createElement('a');link.href=sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent=group.sourceName||'안내처';source.append(link)}else{source.append(document.createTextNode(group.sourceName||'없음'))}main.append(source);
+  if(group.reason&&state==='stale'){const reason=document.createElement('div');reason.className='reason';reason.textContent=group.reason;main.append(reason)}
+  const checked=document.createElement('div');checked.className='checked';checked.textContent='마지막 확인: '+time(group.checkedAt);main.append(checked);item.append(main);
+  const copy=document.createElement('button');copy.className='copy';copy.type='button';copy.textContent='복사';copy.disabled=!address;copy.onclick=async()=>{try{if(navigator.clipboard){await navigator.clipboard.writeText(address)}else{const input=document.createElement('textarea');input.value=address;document.body.append(input);input.select();document.execCommand('copy');input.remove()}copy.textContent='복사됨';setTimeout(()=>copy.textContent='복사',1500)}catch{copy.textContent='복사 실패'}};item.append(copy);return item;
+}
+function render(data){
+  latest=data;const groups=data.groups||[];const completed=data.completedSites||0;const total=data.totalSites||groups.length;
+  const runState=data.running?'검사 중':data.hasError?'오류':'대기 중';setText('run-state',runState);$('run-card').className='metric '+(data.running?'running':data.hasError?'error':'');
+  setText('phase',phaseText[data.phase]||data.phase||'대기 중');setText('progress-number',total?completed+' / '+total:'—');setText('current-site',data.currentSite?'현재: '+data.currentSite:data.running?'다음 단계 준비 중':'현재 검사 없음');
+  setText('commit-state',data.lastCommit?'이번 실행 게시 완료':data.running?'검사 진행 중':data.hasError?'게시 실패':data.publishedCheckedAt?'공개 결과 유지':'게시 기록 없음');setText('last-run','마지막 종료: '+time(data.lastRun));
+  setText('progress-title',data.running?'검사가 진행 중입니다':data.hasError?'마지막 검사에서 오류가 났습니다':'검사 대기 중');setText('progress-detail',data.running?'현재 '+(data.currentSite||'준비 중'):data.lastRun?'마지막 검사 종료 '+time(data.lastRun):'첫 검사 전');
+  $('progress-fill').style.width=total?Math.min(100,Math.round(completed/total*100))+'%':'0%';setText('snapshot-time','목록 기준: 마지막 게시 결과 '+time(data.publishedCheckedAt));
+  const notice=$('notice');notice.hidden=!data.hasError;notice.textContent=data.hasError?'검사 또는 게시 오류가 있습니다. 아래 관리자 기능에서 상세 오류를 확인하세요.':'';notice.className='notice'+(data.hasError?' danger':'');
+  setText('good-count',groups.filter(g=>g.state==='healthy').length);setText('stale-count',groups.filter(g=>g.state!=='healthy'&&g.state!=='manual').length);setText('manual-count',groups.filter(g=>g.state==='manual').length);
+  for(const category of ['manga','media']){const target=$(category);target.replaceChildren();for(const group of groups.filter(g=>g.category===category))target.append(row(group))}
+}
+async function overview(){try{const response=await fetch('/api/overview',{cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);render(await response.json());if($('token').value&&$('admin').open)await privateState()}catch(error){const notice=$('notice');notice.hidden=false;notice.className='notice danger';notice.textContent='NAS 상태를 불러오지 못했습니다: '+error.message}}
+async function call(path,method='GET',payload){const response=await fetch(path,{method,headers:{'Authorization':'Bearer '+$('token').value,'Content-Type':'application/json'},body:payload?JSON.stringify(payload):undefined,cache:'no-store'});const value=await response.json();if(!response.ok)throw Error(value.error||'HTTP '+response.status);return value}
+async function privateState(){try{const data=await call('/api/state');setText('private-error',data.lastError?'상세 오류: '+data.lastError:'상세 오류: 없음');const pending=Object.entries(data.pending||{});setText('pending',pending.length?'확인 대기: '+pending.map(([key,value])=>key+' '+value.url).join(', '):'확인 대기 주소: 없음')}catch(error){setText('private-error','');setText('pending','');setText('message',error.message)}}
+$('refresh').onclick=overview;$('details').onclick=privateState;
+$('submit').onclick=async()=>{try{if(!$('token').value)throw Error('관리 토큰을 먼저 입력하세요.');const value=await call('/api/manual-candidate','POST',{key:$('site').value,url:$('url').value});setText('message','확인 대기: '+value.url);await privateState()}catch(error){setText('message',error.message)}};
+$('run').onclick=async()=>{try{if(!$('token').value)throw Error('관리 토큰을 먼저 입력하세요.');await call('/api/run','POST',{});setText('message','전체 검사를 요청했습니다. 진행 상황은 위에서 자동 갱신됩니다.');await overview()}catch(error){setText('message',error.message)}};
+setInterval(()=>{if(document.visibilityState==='visible')overview()},5000);overview();
+</script>
+</body>
+</html>

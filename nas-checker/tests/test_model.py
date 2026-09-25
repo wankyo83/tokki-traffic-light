@@ -130,6 +130,7 @@ class ServiceTests(unittest.TestCase):
             updated, status = asyncio.run(self.service._run_async(document, old_status))
         self.assertEqual({key: item["baseUrl"] for key, item in updated["domains"].items()}, examples)
         self.assertEqual(len(status["groups"]), len(SITES))
+        self.assertEqual(self.service.snapshot()["completedSites"], len(SITES))
 
 
 if __name__ == "__main__":

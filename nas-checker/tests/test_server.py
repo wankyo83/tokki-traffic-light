@@ -15,7 +15,14 @@ class FakeService:
         self.submitted = None
 
     def snapshot(self):
-        return {"running": False}
+        return {
+            "running": True, "phase": "verifying sites", "currentSite": "티비위키",
+            "completedSites": 13, "totalSites": 15, "lastError": "private detail",
+            "groups": [{"key": "tvwiki", "name": "티비위키", "category": "media",
+                        "activeBaseUrl": "https://tvwiki51.net", "state": "manual",
+                        "sourceName": "티비위키 공식 텔레그램", "sourceUrl": "https://t.me/s/tvwiki_url",
+                        "reason": "", "checkedAt": "2026-09-25T00:00:00Z", "privateField": "hidden"}],
+        }
 
     def submit(self, key, url):
         self.submitted = (key, url)
@@ -40,9 +47,22 @@ class ServerTests(unittest.TestCase):
     def test_health_public_but_state_private(self):
         with urlopen(self.base + "/health") as response:
             self.assertTrue(json.load(response)["ok"])
+        with urlopen(self.base + "/api/overview") as response:
+            overview = json.load(response)
+        self.assertEqual(overview["currentSite"], "티비위키")
+        self.assertTrue(overview["hasError"])
+        self.assertNotIn("lastError", overview)
+        self.assertNotIn("privateField", overview["groups"][0])
         with self.assertRaises(HTTPError) as raised:
             urlopen(self.base + "/api/state")
         self.assertEqual(raised.exception.code, 401)
+
+    def test_dashboard_is_readable_without_token(self):
+        with urlopen(self.base + "/") as response:
+            html = response.read().decode("utf-8")
+        self.assertIn("만화·웹툰 신호등", html)
+        self.assertIn("미디어 주소", html)
+        self.assertIn("/api/overview", html)
 
     def test_manual_request_requires_token_and_cors_exact_origin(self):
         payload = json.dumps({"key": "toki", "url": "https://toki33.com"}).encode()
