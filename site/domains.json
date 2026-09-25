@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-25T05:19:21.769Z",
+  "updatedAt": "2026-09-25T07:14:54.799Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T04:47:21.960Z"
+      "lastConfirmedAt": "2026-09-25T06:47:20.904Z"
     },
     "toki": {
       "baseUrl": "https://toki32.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-25T02:47:44.012Z"
+      "lastConfirmedAt": "2026-09-25T06:47:39.454Z"
     },
     "sbxh": {
       "baseUrl": "https://sbxh9.com",
