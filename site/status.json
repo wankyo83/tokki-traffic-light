@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-09-26T00:32:31.970Z",
-  "durationMs": 331123,
+  "checkedAt": "2026-09-26T01:30:23.962Z",
+  "durationMs": 203131,
   "policy": {
     "intervalMinutes": 60,
     "preservesLastKnownGood": true,
@@ -19,8 +19,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:27:11.664Z",
-      "lastSuccessfulAt": "2026-09-26T00:27:11.664Z",
+      "checkedAt": "2026-09-26T01:27:10.938Z",
+      "lastSuccessfulAt": "2026-09-26T01:27:10.938Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -51,7 +51,7 @@
       "category": "manga",
       "activeBaseUrl": "https://toki32.com",
       "state": "stale",
-      "checkedAt": "2026-09-26T00:28:04.281Z",
+      "checkedAt": "2026-09-26T01:28:00.178Z",
       "lastSuccessfulAt": "2026-09-25T06:47:39.454Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -60,11 +60,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "no reference source configured; CaptchaDetectionError: Cloudflare iframes not found",
+      "reason": "no reference source configured; CaptchaDetectionError: Cloudflare checkbox not found or not ready",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "CaptchaDetectionError: Cloudflare iframes not found"
+          "detail": "CaptchaDetectionError: Cloudflare checkbox not found or not ready"
         },
         "source": {
           "state": "skipped",
@@ -73,7 +73,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "are iframes not found; https://toki38.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki39.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki40.com: CaptchaDetectionError: Cloudflare checkbox not found or not ready; https://toki41.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki42.com: CaptchaDetectionError: Cloudflare iframes not found"
+          "detail": "Error: Cloudflare iframes not found; https://toki38.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki39.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki40.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki41.com: CaptchaDetectionError: Cloudflare iframes not found; https://toki42.com: CaptchaDetectionError: Cloudflare iframes not found"
         }
       }
     },
@@ -83,8 +83,8 @@
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:28:15.080Z",
-      "lastSuccessfulAt": "2026-09-26T00:28:15.080Z",
+      "checkedAt": "2026-09-26T01:28:14.174Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:14.174Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -92,11 +92,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "",
-      "reason": "; category route verified: /ing",
+      "reason": "; category navigation verified: /ing",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "category route verified: /ing"
+          "detail": "category navigation verified: /ing"
         },
         "source": {
           "state": "skipped",
@@ -115,8 +115,8 @@
       "category": "manga",
       "activeBaseUrl": "https://wfwf505.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:28:23.937Z",
-      "lastSuccessfulAt": "2026-09-26T00:28:23.937Z",
+      "checkedAt": "2026-09-26T01:28:18.384Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:18.384Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -147,8 +147,8 @@
       "category": "manga",
       "activeBaseUrl": "https://blacktoon423.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:28:25.812Z",
-      "lastSuccessfulAt": "2026-09-26T00:28:25.812Z",
+      "checkedAt": "2026-09-26T01:28:23.197Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:23.197Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -179,7 +179,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "paused",
-      "checkedAt": "2026-09-26T00:28:25.813Z",
+      "checkedAt": "2026-09-26T01:28:23.198Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -211,8 +211,8 @@
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:28:37.469Z",
-      "lastSuccessfulAt": "2026-09-26T00:28:37.469Z",
+      "checkedAt": "2026-09-26T01:28:28.898Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:28.898Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -220,11 +220,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "",
-      "reason": "; category route verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94",
+      "reason": "; category navigation verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94",
       "checks": {
         "current": {
           "state": "healthy",
-          "detail": "category route verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94"
+          "detail": "category navigation verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94"
         },
         "source": {
           "state": "skipped",
@@ -243,8 +243,8 @@
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:28:51.409Z",
-      "lastSuccessfulAt": "2026-09-26T00:28:51.409Z",
+      "checkedAt": "2026-09-26T01:28:36.237Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:36.237Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -275,8 +275,8 @@
       "category": "manga",
       "activeBaseUrl": "https://goodtoon005.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:29:03.433Z",
-      "lastSuccessfulAt": "2026-09-26T00:29:03.433Z",
+      "checkedAt": "2026-09-26T01:28:43.075Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:43.075Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -307,8 +307,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newxtoon1.com",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:29:05.928Z",
-      "lastSuccessfulAt": "2026-09-26T00:29:05.928Z",
+      "checkedAt": "2026-09-26T01:28:45.335Z",
+      "lastSuccessfulAt": "2026-09-26T01:28:45.335Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -339,7 +339,7 @@
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
       "state": "stale",
-      "checkedAt": "2026-09-26T00:29:34.542Z",
+      "checkedAt": "2026-09-26T01:29:12.304Z",
       "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -371,8 +371,8 @@
       "category": "media",
       "activeBaseUrl": "https://www.ohli24.net",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:29:45.371Z",
-      "lastSuccessfulAt": "2026-09-26T00:29:45.371Z",
+      "checkedAt": "2026-09-26T01:29:19.723Z",
+      "lastSuccessfulAt": "2026-09-26T01:29:19.723Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -403,7 +403,7 @@
       "category": "media",
       "activeBaseUrl": "https://tvroom35.org",
       "state": "stale",
-      "checkedAt": "2026-09-26T00:30:28.558Z",
+      "checkedAt": "2026-09-26T01:29:48.849Z",
       "lastSuccessfulAt": "2026-09-25T14:30:29.838Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -412,11 +412,11 @@
       "sourceUrl": "https://t.me/s/tvroom8282",
       "sourceType": "telegram",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "latest labeled Telegram address; CaptchaDetectionError: Cloudflare iframes not found",
+      "reason": "latest labeled Telegram address; CaptchaDetectionError: Cloudflare checkbox not found or not ready",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "CaptchaDetectionError: Cloudflare iframes not found"
+          "detail": "CaptchaDetectionError: Cloudflare checkbox not found or not ready"
         },
         "source": {
           "state": "failed",
@@ -435,8 +435,8 @@
       "category": "media",
       "activeBaseUrl": "https://tvwiki51.net",
       "state": "healthy",
-      "checkedAt": "2026-09-26T00:30:34.626Z",
-      "lastSuccessfulAt": "2026-09-26T00:30:34.626Z",
+      "checkedAt": "2026-09-26T01:29:54.015Z",
+      "lastSuccessfulAt": "2026-09-26T01:29:54.015Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -467,7 +467,7 @@
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
       "state": "stale",
-      "checkedAt": "2026-09-26T00:32:31.519Z",
+      "checkedAt": "2026-09-26T01:30:23.304Z",
       "lastSuccessfulAt": "2026-09-25T20:30:30.440Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -489,7 +489,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "out 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife09.tv/\", waiting until \"commit\"\n; https://anilife10.tv: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife10.tv/\", waiting until \"commit\"\n; https://anilife11.tv: TimeoutError: Page.goto: Timeout 10000ms exceeded.\nCall log:\n  - navigating to \"https://anilife11.tv/\", waiting until \"commit\"\n"
+          "detail": "tv: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://anilife09.tv/\", waiting until \"commit\"\n; https://anilife10.tv: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://anilife10.tv/\", waiting until \"commit\"\n; https://anilife11.tv: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://anilife11.tv/\", waiting until \"commit\"\n"
         }
       }
     }
