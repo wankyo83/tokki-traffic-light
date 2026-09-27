@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-27T14:44:49.114Z",
+  "updatedAt": "2026-09-27T15:57:15.222Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki9.org",
@@ -10,22 +10,22 @@
     "toki": {
       "baseUrl": "https://toki32.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:41:37.687Z"
+      "lastConfirmedAt": "2026-09-27T15:42:58.381Z"
     },
     "sbxh": {
       "baseUrl": "https://sbxh9.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:41:45.210Z"
+      "lastConfirmedAt": "2026-09-27T15:43:04.248Z"
     },
     "wfwf": {
       "baseUrl": "https://wfwf505.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:41:49.056Z"
+      "lastConfirmedAt": "2026-09-27T15:43:07.922Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon423.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:41:52.814Z"
+      "lastConfirmedAt": "2026-09-27T15:43:11.536Z"
     },
     "jjaptoon": {
       "baseUrl": "https://www.jjaptoon007.com",
@@ -35,22 +35,22 @@
     "11toon": {
       "baseUrl": "https://11toon.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:41:57.306Z"
+      "lastConfirmedAt": "2026-09-27T15:43:15.307Z"
     },
     "naver": {
       "baseUrl": "https://comic.naver.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:42:05.153Z"
+      "lastConfirmedAt": "2026-09-27T15:43:23.231Z"
     },
     "goodtoon": {
       "baseUrl": "https://goodtoon005.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:42:10.499Z"
+      "lastConfirmedAt": "2026-09-27T15:43:27.806Z"
     },
     "newxtoon": {
       "baseUrl": "https://newxtoon1.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-09-27T14:42:14.140Z"
+      "lastConfirmedAt": "2026-09-27T15:43:31.349Z"
     },
     "linkkf": {
       "baseUrl": "https://linkkf.tv",
