@@ -9,7 +9,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SITES = json.loads((ROOT / "config/sites.json").read_text(encoding="utf-8"))
 RULES = json.loads((ROOT / "config/verification-rules.json").read_text(encoding="utf-8"))["rules"]
 BY_KEY = {site["key"]: site for site in SITES}
-CHALLENGE_MARKERS = ("just a moment", "checking your browser", "verify you are human", "cf-chl", "_cf_chl_opt", "cloudflare ray id", "잠시만 기다려")
+CHALLENGE_MARKERS = (
+    "just a moment", "checking your browser", "performing security verification",
+    "verify you are human", "cf-chl", "_cf_chl_opt", "cloudflare ray id",
+    "잠시만 기다려", "보안 확인 수행 중", "사람인지 확인하십시오",
+)
 
 
 def now_iso():

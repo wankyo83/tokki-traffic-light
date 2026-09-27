@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from signal_nas.model import automatic_regression, host_candidates, numeric_candidates, validate_page, validate_url
-from signal_nas.browser import BrowserVerifier, telegram_candidates
+from signal_nas.browser import BrowserVerifier, challenge_signals, telegram_candidates
 from signal_nas.publish import GitHubPublisher
 from signal_nas.service import CheckerService
 
@@ -87,6 +87,23 @@ class FakeBrowser:
 
 
 class BrowserTests(unittest.TestCase):
+    def test_cloudflare_signal_waits_for_delayed_widget_shapes(self):
+        challenge, ready = challenge_signals(403, "", "<html><body></body></html>")
+        self.assertTrue(challenge)
+        self.assertFalse(ready)
+        challenge, ready = challenge_signals(
+            200, "잠시만 기다려 주세요", "<script src='/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1'></script>"
+        )
+        self.assertTrue(challenge)
+        self.assertTrue(ready)
+        challenge, ready = challenge_signals(200, "toki32.com 보안 확인 수행 중", "<html></html>")
+        self.assertTrue(challenge)
+        self.assertFalse(ready)
+        challenge, ready = challenge_signals(200, "정상 사이트", "<html></html>", ["https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile"])
+        self.assertTrue(challenge)
+        self.assertTrue(ready)
+        self.assertEqual(challenge_signals(200, "정상 사이트", "<html><a href='/webtoon'>웹툰</a></html>"), (False, False))
+
     def test_sbxh_navigation_must_be_on_the_same_host(self):
         page = {
             "url": "https://sbxh9.com/", "status": 200, "title": "뉴토끼",

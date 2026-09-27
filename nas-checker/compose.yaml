@@ -12,7 +12,9 @@ services:
       - "8792:8792"
     volumes:
       - ./data:/app/data
-    shm_size: 512mb
+    # Camoufox/Firefox can briefly use substantial shared memory while a
+    # Cloudflare challenge and the destination page overlap.
+    shm_size: 1gb
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8792/health',timeout=5)"]
       interval: 1m

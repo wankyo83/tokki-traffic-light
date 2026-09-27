@@ -124,7 +124,7 @@ class CheckerService:
             if candidate in tried:
                 numeric_failures.append(f"{candidate}: already failed")
                 continue
-            result, reason = await browser.verify(key, candidate, timeout_ms=15_000)
+            result, reason = await browser.verify(key, candidate, timeout_ms=25_000)
             if result and result != current and not automatic_regression(key, current, result):
                 checks["numeric"] = {"state": "healthy", "checked": numbered.index(candidate) + 1, "detail": f"{candidate}: {reason}"}
                 return result, "healthy", source_result, reason, checks
@@ -162,7 +162,7 @@ class CheckerService:
                     }
                 try:
                     result, state, source_result, reason, checks = await asyncio.wait_for(
-                        self._check_site(browser, site, current), timeout=540)
+                        self._check_site(browser, site, current), timeout=720)
                 except Exception as exc:
                     result, state, source_result, reason = None, "stale", "check failed", f"{type(exc).__name__}: {str(exc)[:160]}"
                     checks = {"current": {"state": "failed", "detail": reason}, "source": {"state": "skipped", "detail": "site check interrupted"}, "numeric": {"state": "skipped", "checked": 0, "detail": "site check interrupted"}}
@@ -197,7 +197,7 @@ class CheckerService:
             "schemaVersion": 3,
             "checkedAt": domains["updatedAt"],
             "durationMs": round((time.monotonic() - start) * 1000),
-            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 20},
+            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 25, "cloudflareSessionReuse": True},
             "groups": groups,
         }
         return domains, status
