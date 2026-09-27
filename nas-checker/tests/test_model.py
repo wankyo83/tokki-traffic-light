@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from signal_nas.model import automatic_regression, host_candidates, numeric_candidates, validate_page, validate_url
-from signal_nas.browser import BrowserVerifier, challenge_signals, telegram_candidates
+from signal_nas.browser import BrowserVerifier, CloudflareProtectedError, challenge_signals, telegram_candidates
 from signal_nas.publish import GitHubPublisher
 from signal_nas.service import CheckerService
 
@@ -68,14 +68,16 @@ class FakeBrowser:
         self.results = results
         self.guide = guide or []
         self.tried = []
+        self.verify_options = []
         self.discoveries = 0
 
     async def discover(self, site):
         self.discoveries += 1
         return self.guide, "guide failed" if not self.guide else "guide read"
 
-    async def verify(self, key, url, **_):
+    async def verify(self, key, url, **options):
         self.tried.append(url)
+        self.verify_options.append(options)
         result = self.results.get(url)
         return result, "verified" if result else "unavailable"
 
@@ -103,6 +105,23 @@ class BrowserTests(unittest.TestCase):
         self.assertTrue(challenge)
         self.assertTrue(ready)
         self.assertEqual(challenge_signals(200, "정상 사이트", "<html><a href='/webtoon'>웹툰</a></html>"), (False, False))
+
+    def test_protected_fallback_is_only_enabled_explicitly(self):
+        browser = BrowserVerifier()
+
+        async def protected_page(*_args, **_kwargs):
+            raise CloudflareProtectedError("challenge remained")
+
+        with patch.object(browser, "_page", protected_page):
+            result, reason = asyncio.run(browser.verify("toki", "https://toki32.com"))
+            self.assertIsNone(result)
+            self.assertIn("CloudflareProtectedError", reason)
+
+            result, reason = asyncio.run(
+                browser.verify("toki", "https://toki32.com", allow_protected=True)
+            )
+            self.assertEqual(result, "https://toki32.com")
+            self.assertIn("verified address preserved", reason)
 
     def test_sbxh_navigation_must_be_on_the_same_host(self):
         page = {
@@ -148,6 +167,8 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(result[4]["source"]["state"], "failed")
         self.assertEqual(result[4]["numeric"]["state"], "failed")
         self.assertEqual(result[4]["numeric"]["checked"], 10)
+        self.assertTrue(browser.verify_options[0].get("allow_protected"))
+        self.assertTrue(all(not item.get("allow_protected", False) for item in browser.verify_options[1:]))
         second = FakeBrowser({})
         asyncio.run(self.service._check_site(second, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(second.tried, browser.tried)

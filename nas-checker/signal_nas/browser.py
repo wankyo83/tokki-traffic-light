@@ -15,6 +15,10 @@ CHALLENGE_DOM_MARKERS = (
 )
 
 
+class CloudflareProtectedError(RuntimeError):
+    """A confirmed Cloudflare screen stayed active after the solve window."""
+
+
 def _seconds(name, default):
     try:
         return max(1.0, float(os.environ.get(name, default)))
@@ -95,6 +99,11 @@ class BrowserVerifier:
         except Exception:
             frame_urls = []
         challenge, widget_ready = challenge_signals(status, title, html, frame_urls)
+        sample = f"{title} {html[:120_000]}".lower()
+        frame_sample = " ".join(frame_urls).lower()
+        confirmed_challenge = widget_ready or any(
+            marker in sample for marker in CHALLENGE_MARKERS + CHALLENGE_DOM_MARKERS
+        ) or any(marker in frame_sample for marker in CHALLENGE_DOM_MARKERS)
         try:
             body_attached = await page.locator("body").count() > 0
             link_count = await page.locator("a[href]").count()
@@ -102,6 +111,7 @@ class BrowserVerifier:
             body_attached, link_count = False, 0
         return {
             "challenge": challenge,
+            "confirmedChallenge": confirmed_challenge,
             "widgetReady": widget_ready,
             "bodyAttached": body_attached,
             "linkCount": link_count,
@@ -183,22 +193,33 @@ class BrowserVerifier:
                 from playwright_captcha import CaptchaType
 
                 solve_seconds = min(_seconds("CF_SOLVE_TIMEOUT_SECONDS", 90), remaining_seconds())
-                await asyncio.wait_for(
-                    solver.solve_captcha(
-                        captcha_container=page,
-                        captcha_type=CaptchaType.CLOUDFLARE_INTERSTITIAL,
-                        solve_click_delay=10,
-                        wait_checkbox_attempts=20,
-                        wait_checkbox_delay=1,
-                        checkbox_click_attempts=5,
-                    ),
-                    timeout=solve_seconds,
-                )
-                solved_challenge = True
+                solve_error = None
+                try:
+                    await asyncio.wait_for(
+                        solver.solve_captcha(
+                            captcha_container=page,
+                            captcha_type=CaptchaType.CLOUDFLARE_INTERSTITIAL,
+                            solve_click_delay=10,
+                            wait_checkbox_attempts=20,
+                            wait_checkbox_delay=1,
+                            checkbox_click_attempts=5,
+                        ),
+                        timeout=solve_seconds,
+                    )
+                    solved_challenge = True
+                except Exception as exc:
+                    # The helper can report a failed heuristic immediately after
+                    # a successful click. Keep the page alive and judge the real
+                    # DOM transition before treating the probe as failed.
+                    solve_error = exc
                 exit_seconds = min(_seconds("CF_POST_SOLVE_TIMEOUT_SECONDS", 60), remaining_seconds())
                 state = await self._wait_for_challenge_exit(page, exit_seconds)
                 if state["challenge"]:
-                    raise TimeoutError("Cloudflare challenge remained after solver")
+                    detail = f": {type(solve_error).__name__}: {str(solve_error)[:120]}" if solve_error else ""
+                    if state.get("confirmedChallenge"):
+                        raise CloudflareProtectedError(f"Cloudflare challenge remained after solver{detail}")
+                    raise TimeoutError(f"HTTP 403 remained after solver{detail}")
+                solved_challenge = True
 
         try:
             await page.wait_for_function("document.querySelectorAll('a[href]').length > 0", timeout=5_000)
@@ -276,7 +297,8 @@ class BrowserVerifier:
                 scored[candidate] = max(scored.get(candidate, -999), 1 - index / 1000)
         return sorted(scored, key=lambda item: scored[item], reverse=True)[:5], "guide read"
 
-    async def verify(self, key, url, *, timeout_ms=210_000):
+    async def verify(self, key, url, *, timeout_ms=210_000, allow_protected=False):
+        target = None
         try:
             target = validate_url(key, url)
             page = await asyncio.wait_for(
@@ -309,5 +331,12 @@ class BrowserVerifier:
                 except Exception as exc:
                     reason = f"category route unavailable: {type(exc).__name__}: {str(exc)[:100]}"
             return None, reason
+        except CloudflareProtectedError as exc:
+            # Only an already-published address may use this reachability
+            # fallback. Discovered/numbered candidates must still expose one of
+            # the configured category routes before replacing an address.
+            if allow_protected and target:
+                return target, "Cloudflare protection responded; verified address preserved"
+            return None, f"CloudflareProtectedError: {str(exc)[:160]}"
         except Exception as exc:
             return None, f"{type(exc).__name__}: {str(exc)[:160]}"

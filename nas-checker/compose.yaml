@@ -6,7 +6,7 @@ services:
     build: .
     # Versioned tag prevents Synology's Project "Build" action from silently
     # recreating the container with an older cached local image.
-    image: tokki-signal-nas:cloudflare-session-v1
+    image: tokki-signal-nas:cloudflare-session-v2
     container_name: tokki-signal-nas
     restart: unless-stopped
     env_file: .env

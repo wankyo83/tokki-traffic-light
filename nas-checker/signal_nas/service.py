@@ -88,7 +88,10 @@ class CheckerService:
             "numeric": {"state": "skipped", "checked": 0, "detail": "current address not checked yet"},
         }
         if current:
-            result, reason = await browser.verify(key, current)
+            # A confirmed Cloudflare challenge proves that the already-published
+            # host is alive even when the NAS IP is not granted a clearance
+            # cookie. Never apply this fallback to replacement candidates.
+            result, reason = await browser.verify(key, current, allow_protected=True)
             if result and not automatic_regression(key, current, result):
                 checks["current"] = {"state": "healthy", "detail": reason}
                 checks["source"] = {"state": "skipped", "detail": "published address verified"}
@@ -197,7 +200,7 @@ class CheckerService:
             "schemaVersion": 3,
             "checkedAt": domains["updatedAt"],
             "durationMs": round((time.monotonic() - start) * 1000),
-            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 25, "cloudflareSessionReuse": True},
+            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 25, "cloudflareSessionReuse": True, "cloudflareProtectedCurrentFallback": True},
             "groups": groups,
         }
         return domains, status
