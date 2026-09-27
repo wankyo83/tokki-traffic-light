@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-09-27T15:57:15.222Z",
-  "durationMs": 1052755,
+  "checkedAt": "2026-09-27T17:19:45.726Z",
+  "durationMs": 2403283,
   "policy": {
     "intervalMinutes": 60,
     "preservesLastKnownGood": true,
@@ -21,7 +21,7 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki9.org",
       "state": "stale",
-      "checkedAt": "2026-09-27T15:41:35.562Z",
+      "checkedAt": "2026-09-27T16:41:29.577Z",
       "lastSuccessfulAt": "2026-09-27T14:40:06.012Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -43,7 +43,7 @@
         "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "log:\n  - navigating to \"https://newtoki16.org/\", waiting until \"commit\"\n; https://newtoki17.org: CloudflareProtectedError: Cloudflare challenge remained after solver; https://newtoki18.org: CloudflareProtectedError: Cloudflare challenge remained after solver; https://newtoki19.org: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://newtoki19.org/\", waiting until \"commit\"\n"
+          "detail": "\n; https://newtoki17.org: CloudflareProtectedError: Cloudflare challenge remained after solver; https://newtoki18.org: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://newtoki18.org/\", waiting until \"commit\"\n; https://newtoki19.org: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://newtoki19.org/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -52,8 +52,8 @@
       "name": "토끼",
       "category": "manga",
       "activeBaseUrl": "https://toki32.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:42:58.381Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T16:45:17.801Z",
       "lastSuccessfulAt": "2026-09-27T15:42:58.381Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -61,21 +61,21 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "; Cloudflare protection responded; verified address preserved",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://toki32.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "Cloudflare protection responded; verified address preserved"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://toki32.com/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "skipped",
-          "detail": "published address verified"
+          "detail": "no reference source configured"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://toki40.com/\", waiting until \"commit\"\n; https://toki41.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://toki41.com/\", waiting until \"commit\"\n; https://toki42.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://toki42.com/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -84,8 +84,8 @@
       "name": "SBXH",
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:04.248Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T16:49:05.661Z",
       "lastSuccessfulAt": "2026-09-27T15:43:04.248Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -93,21 +93,21 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "; category navigation verified: /ing",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh9.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /ing"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh9.com/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "skipped",
-          "detail": "published address verified"
+          "detail": "no reference source configured"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh17.com/\", waiting until \"commit\"\n; https://sbxh18.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh18.com/\", waiting until \"commit\"\n; https://sbxh19.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://sbxh19.com/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -116,8 +116,8 @@
       "name": "WFWF",
       "category": "manga",
       "activeBaseUrl": "https://wfwf505.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:07.922Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T16:53:13.423Z",
       "lastSuccessfulAt": "2026-09-27T15:43:07.922Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -125,21 +125,21 @@
       "sourceName": "늑대닷컴 공식채널",
       "sourceUrl": "https://t.me/s/wftoon",
       "sourceType": "telegram",
-      "errorCode": "",
-      "reason": "; category navigation verified: /end",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/wftoon\", waiting until \"commit\"\n; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf505.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /end"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf505.com/\", waiting until \"commit\"\n"
         },
         "source": {
-          "state": "skipped",
-          "detail": "published address verified"
+          "state": "failed",
+          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/wftoon\", waiting until \"commit\"\n"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": " Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf513.com/\", waiting until \"commit\"\n; https://wfwf514.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf514.com/\", waiting until \"commit\"\n; https://wfwf515.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://wfwf515.com/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -148,8 +148,8 @@
       "name": "블랙툰",
       "category": "manga",
       "activeBaseUrl": "https://blacktoon423.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:11.536Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T16:57:21.591Z",
       "lastSuccessfulAt": "2026-09-27T15:43:11.536Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -157,21 +157,21 @@
       "sourceName": "블랙툰 주소 안내",
       "sourceUrl": "https://www.blacktoonurls.com/address-collection",
       "sourceType": "guide",
-      "errorCode": "",
-      "reason": "; category navigation verified: /#continue",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://www.blacktoonurls.com/address-collection\", wai; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon423.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /#continue"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon423.com/\", waiting until \"commit\"\n"
         },
         "source": {
-          "state": "skipped",
-          "detail": "published address verified"
+          "state": "failed",
+          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://www.blacktoonurls.com/address-collection\", wai"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": ".\nCall log:\n  - navigating to \"https://blacktoon431.com/\", waiting until \"commit\"\n; https://blacktoon432.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon432.com/\", waiting until \"commit\"\n; https://blacktoon433.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://blacktoon433.com/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -181,7 +181,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "paused",
-      "checkedAt": "2026-09-27T15:43:11.537Z",
+      "checkedAt": "2026-09-27T16:57:21.591Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -212,8 +212,8 @@
       "name": "11툰",
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:15.307Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T16:57:42.367Z",
       "lastSuccessfulAt": "2026-09-27T15:43:15.307Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -221,21 +221,21 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "; category navigation verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://11toon.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /bbs/board.php?bo_table=toon_c&type=upd&tablename=%EC%B5%9C%EC%8B%A0%EB%A7%8C%ED%99%94"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://11toon.com/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "skipped",
-          "detail": "published address verified"
+          "detail": "no reference source configured"
         },
         "numeric": {
-          "state": "skipped",
+          "state": "unavailable",
           "checked": 0,
-          "detail": "published address verified"
+          "detail": "no numbered successor for this site"
         }
       }
     },
@@ -244,8 +244,8 @@
       "name": "네이버 웹툰",
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:23.231Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T16:58:02.957Z",
       "lastSuccessfulAt": "2026-09-27T15:43:23.231Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -253,21 +253,21 @@
       "sourceName": "고정 주소",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "; category navigation verified: /webtoon",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://comic.naver.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /webtoon"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://comic.naver.com/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "skipped",
-          "detail": "published address verified"
+          "detail": "no reference source configured"
         },
         "numeric": {
-          "state": "skipped",
+          "state": "unavailable",
           "checked": 0,
-          "detail": "published address verified"
+          "detail": "no numbered successor for this site"
         }
       }
     },
@@ -276,8 +276,8 @@
       "name": "굿툰",
       "category": "manga",
       "activeBaseUrl": "https://goodtoon005.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:27.806Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T17:02:10.847Z",
       "lastSuccessfulAt": "2026-09-27T15:43:27.806Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -285,21 +285,21 @@
       "sourceName": "굿툰 공식 텔레그램",
       "sourceUrl": "https://t.me/s/goodtoon_url",
       "sourceType": "telegram",
-      "errorCode": "",
-      "reason": "; category navigation verified: /ongoing/",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/goodtoon_url\", waiting until \"commit\"\n; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon005.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /ongoing/"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon005.com/\", waiting until \"commit\"\n"
         },
         "source": {
-          "state": "skipped",
-          "detail": "published address verified"
+          "state": "failed",
+          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/goodtoon_url\", waiting until \"commit\"\n"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "eeded.\nCall log:\n  - navigating to \"https://goodtoon013.com/\", waiting until \"commit\"\n; https://goodtoon014.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon014.com/\", waiting until \"commit\"\n; https://goodtoon015.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://goodtoon015.com/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -308,8 +308,8 @@
       "name": "뉴엑스툰",
       "category": "manga",
       "activeBaseUrl": "https://newxtoon1.com",
-      "state": "healthy",
-      "checkedAt": "2026-09-27T15:43:31.349Z",
+      "state": "stale",
+      "checkedAt": "2026-09-27T17:06:18.823Z",
       "lastSuccessfulAt": "2026-09-27T15:43:31.349Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -317,21 +317,21 @@
       "sourceName": "뉴엑스툰 주소 안내",
       "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
       "sourceType": "guide",
-      "errorCode": "",
-      "reason": "; category navigation verified: /comics",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"commi; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon1.com/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /comics"
+          "state": "failed",
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon1.com/\", waiting until \"commit\"\n"
         },
         "source": {
-          "state": "skipped",
-          "detail": "published address verified"
+          "state": "failed",
+          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"commi"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon9.com/\", waiting until \"commit\"\n; https://newxtoon10.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon10.com/\", waiting until \"commit\"\n; https://newxtoon11.com: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://newxtoon11.com/\", waiting until \"commit\"\n"
         }
       }
     },
@@ -341,7 +341,7 @@
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
       "state": "stale",
-      "checkedAt": "2026-09-27T15:43:38.405Z",
+      "checkedAt": "2026-09-27T17:07:00.057Z",
       "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -350,15 +350,15 @@
       "sourceUrl": "https://x.com/linkkfcom",
       "sourceType": "guide",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide read; Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://linkkf.tv/\", waiting until \"commit\"\n",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://x.com/linkkfcom\", waiting until \"commit\"\n; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://linkkf.tv/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://linkkf.tv/\", waiting until \"commit\"\n"
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://linkkf.tv/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "failed",
-          "detail": "guide read; https://linkkf.app: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://linkkf.app/\", waiting until \"commit\"\n; https://linkkf.com: Error: Page.goto: NS_ERROR_UNKNOWN_HOST\nCall log:\n  - navigating to \"https://linkkf.com/\", waiting until \"commit\"\n; https://linkkf.tv: published address already failed"
+          "detail": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://x.com/linkkfcom\", waiting until \"commit\"\n"
         },
         "numeric": {
           "state": "unavailable",
@@ -373,7 +373,7 @@
       "category": "media",
       "activeBaseUrl": "https://www.ohli24.net",
       "state": "stale",
-      "checkedAt": "2026-09-27T15:45:11.912Z",
+      "checkedAt": "2026-09-27T17:07:41.280Z",
       "lastSuccessfulAt": "2026-09-27T14:43:13.796Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -382,11 +382,11 @@
       "sourceUrl": "https://t.me/s/ohli24net?before=999999999",
       "sourceType": "telegram",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/ohli24net?before=999999999\", waiting un; category route unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://www.ohli24.net/movie\", wai",
+      "reason": "guide unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://t.me/s/ohli24net?before=999999999\", waiting un; TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://www.ohli24.net/\", waiting until \"commit\"\n",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "category route unavailable: TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://www.ohli24.net/movie\", wai"
+          "detail": "TimeoutError: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"https://www.ohli24.net/\", waiting until \"commit\"\n"
         },
         "source": {
           "state": "failed",
@@ -405,7 +405,7 @@
       "category": "media",
       "activeBaseUrl": "https://tvroom35.org",
       "state": "stale",
-      "checkedAt": "2026-09-27T15:49:19.481Z",
+      "checkedAt": "2026-09-27T17:11:49.852Z",
       "lastSuccessfulAt": "2026-09-27T14:44:41.423Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -437,7 +437,7 @@
       "category": "media",
       "activeBaseUrl": "https://tvwiki51.net",
       "state": "stale",
-      "checkedAt": "2026-09-27T15:53:27.283Z",
+      "checkedAt": "2026-09-27T17:15:58.255Z",
       "lastSuccessfulAt": "2026-09-27T14:44:46.825Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -469,7 +469,7 @@
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
       "state": "stale",
-      "checkedAt": "2026-09-27T15:57:14.772Z",
+      "checkedAt": "2026-09-27T17:19:45.201Z",
       "lastSuccessfulAt": "2026-09-27T14:44:48.572Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
