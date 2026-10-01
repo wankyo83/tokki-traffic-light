@@ -1,7 +1,16 @@
 {
   "schemaVersion": 2,
   "rules": {
-    "newtoki": {"hostPattern":"^(?:www\\.)?newtoki\\d+\\.org$","categoryPaths":["/webtoon","/manhwa","/novel"]},
+    "newtoki": {
+      "hostPattern":"^(?:www\\.)?newtoki\\d+\\.org$",
+      "categoryPaths":["/webtoon","/manhwa","/novel"],
+      "candidateContentPatterns":{
+        "/webtoon":"^/webtoon/\\d+$",
+        "/manhwa":"^/manhwa/\\d+$",
+        "/novel":"^/novel/\\d+$"
+      },
+      "blockedCandidateHosts":["newtoki9.org","www.newtoki9.org"]
+    },
     "toki": {"hostPattern":"^(?:www\\.)?toki\\d+\\.com$","categoryPaths":["/novel/updates","/novel","/webtoon"]},
     "sbxh": {"hostPattern":"^(?:www\\.)?sbxh\\d+\\.com$","categoryPaths":["/ing","/end","/manhwa/updates","/novel/updates"]},
     "wfwf": {"hostPattern":"^(?:www\\.)?wfwf\\d+\\.com$","categoryPaths":["/end","/cm"]},

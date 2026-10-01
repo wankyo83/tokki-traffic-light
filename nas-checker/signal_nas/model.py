@@ -97,7 +97,37 @@ def matches_category(base_url, candidate_url, category_path):
     return all(pair in actual_query for pair in expected_query)
 
 
-def validate_page(key, final_url, title, body_text, links, html, status=200, requested_category=None):
+def candidate_url_allowed(key, raw):
+    """Reject confirmed false-positive hosts without invalidating old snapshots."""
+    try:
+        hostname = urlsplit(validate_url(key, raw)).hostname
+    except ValueError:
+        return False
+    return hostname not in set(RULES[key].get("blockedCandidateHosts", []))
+
+
+def category_content_verified(key, base_url, links, category_path):
+    """Prove a candidate route is a listing, not an unrelated catch-all page."""
+    pattern = RULES[key].get("candidateContentPatterns", {}).get(category_path)
+    if not pattern:
+        return True
+    base = urlsplit(base_url)
+    matches = 0
+    for link in links:
+        parsed = urlsplit(link.get("href", ""))
+        if parsed.scheme not in ("", "https"):
+            continue
+        if parsed.hostname and parsed.hostname.removeprefix("www.") != (base.hostname or "").removeprefix("www."):
+            continue
+        if re.fullmatch(pattern, unquote(parsed.path).rstrip("/")):
+            matches += 1
+            if matches >= 2:
+                return True
+    return False
+
+
+def validate_page(key, final_url, title, body_text, links, html, status=200, requested_category=None,
+                  require_candidate_content=False):
     try:
         base = validate_url(key, final_url)
     except ValueError as exc:
@@ -113,9 +143,11 @@ def validate_page(key, final_url, title, body_text, links, html, status=200, req
         return None, "no category routes configured"
     for path in paths:
         if requested_category and path == requested_category and not urlsplit(path).fragment and matches_category(base, final_url, path):
-            if body_text.strip() or len(html) > 200:
+            if (body_text.strip() or len(html) > 200) and (
+                not require_candidate_content or category_content_verified(key, base, links, path)
+            ):
                 return base, f"category route verified: {path}"
-        if any(matches_category(base, link.get("href", ""), path) for link in links):
+        if not require_candidate_content and any(matches_category(base, link.get("href", ""), path) for link in links):
             return base, f"category navigation verified: {path}"
     return None, "category navigation not found"
 

@@ -8,7 +8,16 @@ import time
 from pathlib import Path
 
 from .browser import BrowserVerifier
-from .model import BY_KEY, SITES, automatic_regression, json_bytes, now_iso, numeric_candidates, validate_url
+from .model import (
+    BY_KEY,
+    SITES,
+    automatic_regression,
+    candidate_url_allowed,
+    json_bytes,
+    now_iso,
+    numeric_candidates,
+    validate_url,
+)
 from .publish import GitHubPublisher, check_kr_egress, read_public
 
 
@@ -83,37 +92,38 @@ class CheckerService:
     async def _check_site(self, browser, site, current):
         key = site["key"]
         checks = {
-            "current": {"state": "skipped", "detail": "no published address"},
-            "source": {"state": "skipped", "detail": "current address not checked yet"},
-            "numeric": {"state": "skipped", "checked": 0, "detail": "current address not checked yet"},
+            "source": {"state": "skipped", "detail": "no reference source configured"},
+            "current": {"state": "skipped", "detail": "source address not checked yet"},
+            "numeric": {"state": "skipped", "checked": 0, "detail": "source and current addresses not checked yet"},
         }
-        if current:
-            # A confirmed Cloudflare challenge proves that the already-published
-            # host is alive even when the NAS IP is not granted a clearance
-            # cookie. Never apply this fallback to replacement candidates.
-            result, reason = await browser.verify(key, current, allow_protected=True)
-            if result and not automatic_regression(key, current, result):
-                checks["current"] = {"state": "healthy", "detail": reason}
-                checks["source"] = {"state": "skipped", "detail": "published address verified"}
-                checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "published address verified"}
-                return result, "healthy", "", reason, checks
-            checks["current"] = {"state": "failed", "detail": reason}
         source = site.get("source", {})
         has_source = source.get("type") not in ("none", "fixed", None)
         source_urls, source_result = await browser.discover(site) if has_source else ([], "no reference source configured")
         source_failures = []
-        tried = {current} if current else set()
+        tried = set()
+        current_allowed = not current or candidate_url_allowed(key, current)
+
+        # Priority 1: always consult the configured latest-address source.
+        # A healthy published address must not prevent a newer official address
+        # from being discovered and promoted.
         for candidate in self._unique(source_urls)[:5]:
             if automatic_regression(key, current, candidate):
                 source_failures.append(f"{candidate}: older than the published address")
                 continue
-            if candidate in tried:
-                source_failures.append(f"{candidate}: published address already failed")
+            if not candidate_url_allowed(key, candidate):
+                source_failures.append(f"{candidate}: blocked as a confirmed false positive")
                 continue
             tried.add(candidate)
-            result, reason = await browser.verify(key, candidate)
+            is_published = bool(current_allowed and candidate == current)
+            result, reason = await browser.verify(
+                key,
+                candidate,
+                allow_protected=is_published,
+                candidate=not is_published,
+            )
             if result and not automatic_regression(key, current, result):
                 checks["source"] = {"state": "healthy", "detail": f"{candidate}: {reason}"}
+                checks["current"] = {"state": "skipped", "detail": "reference source address verified first"}
                 checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "source address verified"}
                 return result, "healthy", source_result, reason, checks
             source_failures.append(f"{candidate}: {reason}")
@@ -121,13 +131,45 @@ class CheckerService:
             "state": "failed" if has_source else "skipped",
             "detail": "; ".join([source_result] + source_failures)[:400],
         }
+
+        # Priority 2: keep using the currently published address when the guide
+        # is unavailable, invalid, or points to an address that fails checks.
+        if current and current_allowed:
+            # A confirmed Cloudflare challenge proves that the already-published
+            # host is alive even when the NAS IP is not granted a clearance
+            # cookie. Never apply this fallback to replacement candidates.
+            result, reason = await browser.verify(key, current, allow_protected=True)
+            if result and not automatic_regression(key, current, result):
+                checks["current"] = {"state": "healthy", "detail": reason}
+                checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "published address verified after source fallback"}
+                return result, "healthy", source_result, reason, checks
+            checks["current"] = {"state": "failed", "detail": reason}
+        elif current:
+            checks["current"] = {
+                "state": "failed",
+                "detail": "published host is blocked as a confirmed false positive",
+            }
+        if current:
+            tried.add(current)
+        for recovery in self._unique(site.get("recoveryUrls", [])):
+            if recovery in tried or not candidate_url_allowed(key, recovery):
+                continue
+            tried.add(recovery)
+            result, reason = await browser.verify(key, recovery, timeout_ms=45_000, candidate=True)
+            if result:
+                checks["source"] = {"state": "healthy", "detail": f"configured recovery {recovery}: {reason}"}
+                checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "configured recovery verified"}
+                return result, "healthy", "configured recovery address", reason, checks
+
+        # Priority 3: only after both the guide and current address fail, probe
+        # the next numbered hosts one by one.
         numbered = numeric_candidates(key, current, count=10, start_offset=1)
         numeric_failures = []
         for candidate in numbered:
             if candidate in tried:
                 numeric_failures.append(f"{candidate}: already failed")
                 continue
-            result, reason = await browser.verify(key, candidate, timeout_ms=25_000)
+            result, reason = await browser.verify(key, candidate, timeout_ms=45_000, candidate=True)
             if result and result != current and not automatic_regression(key, current, result):
                 checks["numeric"] = {"state": "healthy", "checked": numbered.index(candidate) + 1, "detail": f"{candidate}: {reason}"}
                 return result, "healthy", source_result, reason, checks
@@ -142,66 +184,79 @@ class CheckerService:
     async def _run_async(self, domains, old_status):
         start = time.monotonic()
         old_groups = {group["key"]: group for group in old_status["groups"] if "key" in group}
-        async with BrowserVerifier() as browser:
-            async def check_one(site):
-                key = site["key"]
-                with self.lock:
-                    self.current_site = site["name"]
-                prior = domains["domains"].get(key, {})
-                current = prior.get("baseUrl")
-                if site.get("paused"):
-                    old = old_groups.get(key, {})
-                    return {
-                        "key": key, "name": site["name"], "category": site["category"],
-                        "activeBaseUrl": current, "state": "paused", "checkedAt": now_iso(),
-                        "lastSuccessfulAt": old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
-                        "candidateBaseUrl": None, "candidateConfirmations": 0,
-                        "candidateConfirmationsRequired": 0, "sourceName": "검사 제외",
-                        "sourceUrl": "", "sourceType": "none", "errorCode": "",
-                        "reason": "사이트 잠정 중단으로 검사 제외 · 기존 주소 유지",
-                        "checks": {"current": {"state": "skipped", "detail": "site paused"},
-                                   "source": {"state": "skipped", "detail": "site paused"},
-                                   "numeric": {"state": "skipped", "checked": 0, "detail": "site paused"}},
-                    }
-                try:
-                    result, state, source_result, reason, checks = await asyncio.wait_for(
-                        self._check_site(browser, site, current), timeout=720)
-                except Exception as exc:
-                    result, state, source_result, reason = None, "stale", "check failed", f"{type(exc).__name__}: {str(exc)[:160]}"
-                    checks = {"current": {"state": "failed", "detail": reason}, "source": {"state": "skipped", "detail": "site check interrupted"}, "numeric": {"state": "skipped", "checked": 0, "detail": "site check interrupted"}}
-                checked = now_iso()
-                if result:
-                    domains["domains"][key] = {**prior, "baseUrl": result, "status": "healthy", "lastConfirmedAt": checked}
+        async def check_one(browser, site, startup_error=None):
+            key = site["key"]
+            with self.lock:
+                self.current_site = site["name"]
+            prior = domains["domains"].get(key, {})
+            current = prior.get("baseUrl")
+            if site.get("paused"):
                 old = old_groups.get(key, {})
-                source = site["source"]
-                group = {
+                return {
                     "key": key, "name": site["name"], "category": site["category"],
-                    "activeBaseUrl": domains["domains"].get(key, {}).get("baseUrl"),
-                    "state": state if result else "stale",
-                    "checkedAt": checked,
-                    "lastSuccessfulAt": checked if result else old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
-                    "candidateBaseUrl": None,
-                    "candidateConfirmations": 0,
-                    "candidateConfirmationsRequired": 1,
-                    "sourceName": source["name"], "sourceUrl": source["url"], "sourceType": source["type"],
-                    "errorCode": "" if result else "VERIFICATION_FAILED",
-                    "reason": (source_result + "; " + reason)[:600],
-                    "checks": checks,
+                    "activeBaseUrl": current, "state": "paused", "checkedAt": now_iso(),
+                    "lastSuccessfulAt": old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
+                    "candidateBaseUrl": None, "candidateConfirmations": 0,
+                    "candidateConfirmationsRequired": 0, "sourceName": "검사 제외",
+                    "sourceUrl": "", "sourceType": "none", "errorCode": "",
+                    "reason": "사이트 잠정 중단으로 검사 제외 · 기존 주소 유지",
+                    "checks": {"current": {"state": "skipped", "detail": "site paused"},
+                               "source": {"state": "skipped", "detail": "site paused"},
+                               "numeric": {"state": "skipped", "checked": 0, "detail": "site paused"}},
                 }
-                LOG.info("%s: %s %s", key, state, result or current or "none")
-                return group
-            groups = []
-            for site in SITES:
-                groups.append(await check_one(site))
-                with self.lock:
-                    self.completed_sites = len(groups)
+            try:
+                if startup_error is not None:
+                    raise startup_error
+                result, state, source_result, reason, checks = await asyncio.wait_for(
+                    self._check_site(browser, site, current), timeout=720)
+            except Exception as exc:
+                result, state, source_result, reason = None, "stale", "check failed", f"{type(exc).__name__}: {str(exc)[:160]}"
+                checks = {"current": {"state": "failed", "detail": reason}, "source": {"state": "skipped", "detail": "site check interrupted"}, "numeric": {"state": "skipped", "checked": 0, "detail": "site check interrupted"}}
+            checked = now_iso()
+            if result:
+                domains["domains"][key] = {**prior, "baseUrl": result, "status": "healthy", "lastConfirmedAt": checked}
+            old = old_groups.get(key, {})
+            source = site["source"]
+            group = {
+                "key": key, "name": site["name"], "category": site["category"],
+                "activeBaseUrl": domains["domains"].get(key, {}).get("baseUrl"),
+                "state": state if result else "stale",
+                "checkedAt": checked,
+                "lastSuccessfulAt": checked if result else old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
+                "candidateBaseUrl": None,
+                "candidateConfirmations": 0,
+                "candidateConfirmationsRequired": 1,
+                "sourceName": source["name"], "sourceUrl": source["url"], "sourceType": source["type"],
+                "errorCode": "" if result else "VERIFICATION_FAILED",
+                "reason": (source_result + "; " + reason)[:600],
+                "checks": checks,
+            }
+            LOG.info("%s: %s %s", key, state, result or current or "none")
+            return group
+
+        groups = []
+        for site in SITES:
+            if site.get("paused"):
+                groups.append(await check_one(None, site))
+            else:
+                # One Firefox networking failure must not poison every site
+                # that follows it. Keep cookies only within a single site.
+                try:
+                    async with BrowserVerifier() as browser:
+                        groups.append(await check_one(browser, site))
+                except Exception as exc:
+                    LOG.exception("Camoufox startup/teardown failed for %s", site["key"])
+                    groups.append(await check_one(None, site, exc))
+            with self.lock:
+                self.completed_sites = len(groups)
         domains["updatedAt"] = now_iso()
         status = {
             "schemaVersion": 3,
             "checkedAt": domains["updatedAt"],
             "durationMs": round((time.monotonic() - start) * 1000),
-            "policy": {"intervalMinutes": 60, "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 25, "cloudflareSessionReuse": True, "cloudflareProtectedCurrentFallback": True},
+            "policy": {"intervalMinutes": 60, "addressPriority": ["referenceSource", "publishedAddress", "numericSuccessors"], "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 45, "browserIsolation": "per-site", "cloudflareSessionReuse": "within-site", "cloudflareProtectedCurrentFallback": True},
             "groups": groups,
+            "checkerVersion": "transport-recovery-v5.1",
         }
         return domains, status
 

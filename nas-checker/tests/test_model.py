@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from signal_nas.model import automatic_regression, host_candidates, numeric_candidates, validate_page, validate_url
-from signal_nas.browser import BrowserVerifier, CloudflareProtectedError, challenge_signals, telegram_candidates
+from signal_nas.browser import BrowserVerifier, challenge_signals, telegram_candidates
 from signal_nas.publish import GitHubPublisher
 from signal_nas.service import CheckerService
 
@@ -68,16 +68,14 @@ class FakeBrowser:
         self.results = results
         self.guide = guide or []
         self.tried = []
-        self.verify_options = []
         self.discoveries = 0
 
     async def discover(self, site):
         self.discoveries += 1
         return self.guide, "guide failed" if not self.guide else "guide read"
 
-    async def verify(self, key, url, **options):
+    async def verify(self, key, url, **_):
         self.tried.append(url)
-        self.verify_options.append(options)
         result = self.results.get(url)
         return result, "verified" if result else "unavailable"
 
@@ -105,23 +103,6 @@ class BrowserTests(unittest.TestCase):
         self.assertTrue(challenge)
         self.assertTrue(ready)
         self.assertEqual(challenge_signals(200, "정상 사이트", "<html><a href='/webtoon'>웹툰</a></html>"), (False, False))
-
-    def test_protected_fallback_is_only_enabled_explicitly(self):
-        browser = BrowserVerifier()
-
-        async def protected_page(*_args, **_kwargs):
-            raise CloudflareProtectedError("challenge remained")
-
-        with patch.object(browser, "_page", protected_page):
-            result, reason = asyncio.run(browser.verify("toki", "https://toki32.com"))
-            self.assertIsNone(result)
-            self.assertIn("CloudflareProtectedError", reason)
-
-            result, reason = asyncio.run(
-                browser.verify("toki", "https://toki32.com", allow_protected=True)
-            )
-            self.assertEqual(result, "https://toki32.com")
-            self.assertIn("verified address preserved", reason)
 
     def test_sbxh_navigation_must_be_on_the_same_host(self):
         page = {
@@ -167,8 +148,6 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(result[4]["source"]["state"], "failed")
         self.assertEqual(result[4]["numeric"]["state"], "failed")
         self.assertEqual(result[4]["numeric"]["checked"], 10)
-        self.assertTrue(browser.verify_options[0].get("allow_protected"))
-        self.assertTrue(all(not item.get("allow_protected", False) for item in browser.verify_options[1:]))
         second = FakeBrowser({})
         asyncio.run(self.service._check_site(second, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(second.tried, browser.tried)
@@ -184,14 +163,14 @@ class ServiceTests(unittest.TestCase):
         browser = FakeBrowser({"https://toki32.com": "https://toki33.com"})
         result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(result[0], "https://toki33.com")
-        self.assertEqual(browser.discoveries, 0)
+        self.assertEqual(browser.discoveries, 1)
 
     def test_working_current_skips_number_scan(self):
         browser = FakeBrowser({"https://toki32.com": "https://toki32.com", "https://toki33.com": "https://toki33.com"})
         result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
         self.assertEqual(result[0], "https://toki32.com")
         self.assertNotIn("https://toki33.com", browser.tried)
-        self.assertEqual(browser.discoveries, 0)
+        self.assertEqual(browser.discoveries, 1)
 
     def test_working_current_kept_if_numbered_candidates_fail(self):
         browser = FakeBrowser({"https://toki32.com": "https://toki32.com"})
@@ -214,8 +193,36 @@ class ServiceTests(unittest.TestCase):
     def test_source_success_stops_numeric_scan(self):
         browser = FakeBrowser({"https://toki34.com": "https://toki34.com"}, ["https://toki34.com"])
         result = asyncio.run(self.service._check_site(browser, {"key": "toki", "source": {"type": "guide"}}, "https://toki32.com"))
-        self.assertEqual(browser.tried, ["https://toki32.com", "https://toki34.com"])
+        self.assertEqual(browser.tried, ["https://toki34.com"])
         self.assertEqual(result[4]["source"]["state"], "healthy")
+        self.assertEqual(result[4]["current"]["state"], "skipped")
+        self.assertEqual(result[4]["numeric"]["state"], "skipped")
+
+    def test_latest_source_address_wins_even_when_current_is_healthy(self):
+        browser = FakeBrowser({
+            "https://wfwf505.com": "https://wfwf505.com",
+            "https://wfwf507.com": "https://wfwf507.com",
+        }, ["https://wfwf507.com"])
+        result = asyncio.run(self.service._check_site(
+            browser,
+            {"key": "wfwf", "source": {"type": "telegram"}},
+            "https://wfwf505.com",
+        ))
+        self.assertEqual(result[0], "https://wfwf507.com")
+        self.assertEqual(browser.tried, ["https://wfwf507.com"])
+        self.assertEqual(result[4]["source"]["state"], "healthy")
+
+    def test_failed_source_candidate_falls_back_to_working_current(self):
+        browser = FakeBrowser({"https://wfwf505.com": "https://wfwf505.com"}, ["https://wfwf507.com"])
+        result = asyncio.run(self.service._check_site(
+            browser,
+            {"key": "wfwf", "source": {"type": "telegram"}},
+            "https://wfwf505.com",
+        ))
+        self.assertEqual(result[0], "https://wfwf505.com")
+        self.assertEqual(browser.tried, ["https://wfwf507.com", "https://wfwf505.com"])
+        self.assertEqual(result[4]["source"]["state"], "failed")
+        self.assertEqual(result[4]["current"]["state"], "healthy")
         self.assertEqual(result[4]["numeric"]["state"], "skipped")
 
     def test_all_fail_preserves_every_published_address(self):

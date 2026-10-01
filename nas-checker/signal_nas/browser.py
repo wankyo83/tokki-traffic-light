@@ -1,10 +1,14 @@
 import asyncio
+import logging
 import os
 import time
 from contextlib import asynccontextmanager, suppress
 from urllib.parse import urlsplit
 
-from .model import CHALLENGE_MARKERS, RULES, host_candidates, validate_page, validate_url
+from .model import (
+    CHALLENGE_MARKERS, RULES, candidate_url_allowed, host_candidates,
+    validate_page, validate_url,
+)
 
 
 CHALLENGE_DOM_MARKERS = (
@@ -13,6 +17,19 @@ CHALLENGE_DOM_MARKERS = (
     "cf-chl-widget",
     "cf-turnstile",
 )
+
+LOG = logging.getLogger(__name__)
+
+
+def transient_navigation_error(exc):
+    # DNS failures, invalid URLs, HTTP errors and failed content validation
+    # must not be promoted to healthy or waste time in network recovery.
+    return isinstance(exc, (TimeoutError, asyncio.TimeoutError)) or any(
+        marker in str(exc).upper() for marker in (
+            "NS_ERROR_NET_RESET", "ERR_CONNECTION_RESET", "NS_ERROR_NET_TIMEOUT",
+            "ERR_TIMED_OUT", "PAGE.GOTO: TIMEOUT",
+        )
+    )
 
 
 class CloudflareProtectedError(RuntimeError):
@@ -80,10 +97,14 @@ class BrowserVerifier:
 
     async def __aexit__(self, kind, value, traceback):
         if self.context is not None:
-            await self.context.close()
+            with suppress(Exception):
+                await self.context.close()
             self.context = None
         if self._manager is not None:
-            await self._manager.__aexit__(kind, value, traceback)
+            with suppress(Exception):
+                await self._manager.__aexit__(kind, value, traceback)
+            self._manager = None
+        self.browser = None
 
     async def _inspect(self, page, status=0):
         try:
@@ -174,17 +195,26 @@ class BrowserVerifier:
         ) as solver:
             yield solver
 
-    async def _load(self, page, solver, url, timeout_ms, source_type):
+    async def _load(self, page, solver, url, timeout_ms, source_type, protected_current=False):
         deadline = time.monotonic() + timeout_ms / 1000
 
         def remaining_seconds():
             return max(1.0, deadline - time.monotonic())
 
-        response = await page.goto(url, wait_until="commit", timeout=min(timeout_ms, 20_000))
+        commit_timeout = min(timeout_ms, int(_seconds("NAVIGATION_COMMIT_TIMEOUT_SECONDS", 45) * 1000))
+        response = await page.goto(url, wait_until="commit", timeout=commit_timeout)
         status = response.status if response else 0
         detect_seconds = min(_seconds("CF_DETECT_TIMEOUT_SECONDS", 20), remaining_seconds())
         state = await self._wait_for_initial_state(page, status, source_type, detect_seconds)
         solved_challenge = False
+
+        # The existing policy permits only the published host to preserve its
+        # address after a confirmed CF response. Keep that proof before a
+        # solver timeout can erase it. Plain HTTP 403/reset is NOT sufficient.
+        if protected_current and state.get("confirmedChallenge"):
+            state = await self._wait_for_challenge_exit(page, min(10, remaining_seconds()))
+            if state.get("confirmedChallenge"):
+                raise CloudflareProtectedError("confirmed protection on published host; content not verified")
 
         if solver is not None and state["challenge"]:
             widget_seconds = min(_seconds("CF_WIDGET_TIMEOUT_SECONDS", 30), remaining_seconds())
@@ -242,13 +272,13 @@ class BrowserVerifier:
             "links": links, "messages": messages, "status": status,
         }
 
-    async def _page(self, url, *, solve=True, timeout_ms=210_000, source_type=""):
+    async def _page(self, url, *, solve=True, timeout_ms=210_000, source_type="", protected_current=False):
         if self.context is None:
             raise RuntimeError("BrowserVerifier is not started")
         page = await self.context.new_page()
         try:
             async with self._solver(page, solve) as solver:
-                return await self._load(page, solver, url, timeout_ms, source_type)
+                return await self._load(page, solver, url, timeout_ms, source_type, protected_current)
         finally:
             with suppress(Exception):
                 await page.close()
@@ -297,37 +327,83 @@ class BrowserVerifier:
                 scored[candidate] = max(scored.get(candidate, -999), 1 - index / 1000)
         return sorted(scored, key=lambda item: scored[item], reverse=True)[:5], "guide read"
 
-    async def verify(self, key, url, *, timeout_ms=210_000, allow_protected=False):
+    async def verify(self, key, url, *, timeout_ms=210_000, allow_protected=False, candidate=False):
+        # One budget covers homepage, restart, retry and category probes. The
+        # old implementation could spend the full timeout on every route.
+        try:
+            return await asyncio.wait_for(
+                self._verify(key, url, timeout_ms, allow_protected, candidate),
+                timeout=timeout_ms / 1000,
+            )
+        except Exception as exc:
+            return None, f"{type(exc).__name__}: {str(exc)[:160]}"
+
+    async def _restart_browser(self):
+        # A new tab/context alone shares Firefox's broken connection pool.
+        # This verifier is isolated per site, so no other site's work is lost.
+        await self.__aexit__(None, None, None)
+        await self.__aenter__()
+
+    async def _verify(self, key, url, timeout_ms, allow_protected, candidate):
         target = None
+        deadline = time.monotonic() + timeout_ms / 1000
+
+        async def probe(route, cap_ms):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("site verification budget exhausted")
+            budget = min(cap_ms, int(remaining * 1000))
+            return await asyncio.wait_for(
+                self._page(route, timeout_ms=budget, protected_current=allow_protected and not candidate),
+                timeout=budget / 1000,
+            )
+
         try:
             target = validate_url(key, url)
-            page = await asyncio.wait_for(
-                self._page(target, timeout_ms=timeout_ms),
-                timeout=timeout_ms / 1000 + 10,
-            )
-            result, reason = validate_page(
-                key, page["url"], page["title"], page["body"], page["links"], page["html"], page["status"]
-            )
-            if result:
-                return result, reason
-            if reason != "category navigation not found":
-                return None, reason
+            if candidate and not candidate_url_allowed(key, target):
+                return None, "candidate host is explicitly blocked after a confirmed false positive"
+            reason = "homepage unavailable"
+            for attempt in range(1 if candidate else 2):
+                try:
+                    page = await probe(target, 60_000)
+                    result, reason = validate_page(
+                        key, page["url"], page["title"], page["body"], page["links"], page["html"], page["status"],
+                        require_candidate_content=candidate,
+                    )
+                    if result and not candidate:
+                        return result, reason + ("; recovered after browser restart" if attempt else "")
+                    if not result and reason not in ("category navigation not found", "HTTP 404"):
+                        return None, reason
+                    break
+                except CloudflareProtectedError:
+                    raise
+                except Exception as exc:
+                    if not transient_navigation_error(exc):
+                        raise
+                    reason = f"homepage transport failed: {type(exc).__name__}: {str(exc)[:100]}"
+                    LOG.warning("%s homepage attempt %s: %s", key, attempt + 1, reason)
+                    if candidate or attempt:
+                        break
+                    await asyncio.wait_for(
+                        self._restart_browser(), timeout=min(30, max(0.01, deadline - time.monotonic())),
+                    )
+            # A reset at '/' does not prove '/ing' or '/novel/updates' is down.
+            # Only actual same-family category content can recover the check.
             for category in RULES[key]["categoryPaths"]:
                 if urlsplit(category).fragment:
                     continue
                 try:
-                    route_timeout = min(timeout_ms, 180_000)
-                    probe = await asyncio.wait_for(
-                        self._page(target + category, solve=True, timeout_ms=route_timeout),
-                        timeout=route_timeout / 1000 + 10,
-                    )
+                    category_page = await probe(target + category, 45_000)
                     result, probe_reason = validate_page(
-                        key, probe["url"], probe["title"], probe["body"], probe["links"],
-                        probe["html"], probe["status"], category,
+                        key, category_page["url"], category_page["title"], category_page["body"], category_page["links"],
+                        category_page["html"], category_page["status"], category,
+                        require_candidate_content=candidate,
                     )
                     if result:
                         return result, probe_reason
                     reason = probe_reason
+                except CloudflareProtectedError:
+                    raise
                 except Exception as exc:
                     reason = f"category route unavailable: {type(exc).__name__}: {str(exc)[:100]}"
             return None, reason
@@ -335,7 +411,7 @@ class BrowserVerifier:
             # Only an already-published address may use this reachability
             # fallback. Discovered/numbered candidates must still expose one of
             # the configured category routes before replacing an address.
-            if allow_protected and target:
+            if allow_protected and not candidate and target:
                 return target, "Cloudflare protection responded; verified address preserved"
             return None, f"CloudflareProtectedError: {str(exc)[:160]}"
         except Exception as exc:
