@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-10-08T12:27:51.021Z",
+  "checkedAt": "2026-10-08T12:28:15.000Z",
   "durationMs": 1081528,
   "policy": {
     "intervalMinutes": 60,
@@ -57,10 +57,10 @@
       "key": "toki",
       "name": "토끼",
       "category": "manga",
-      "activeBaseUrl": "https://toki32.com",
+      "activeBaseUrl": "https://toki33.com",
       "state": "healthy",
-      "checkedAt": "2026-10-08T12:18:11.795Z",
-      "lastSuccessfulAt": "2026-10-08T12:18:11.795Z",
+      "checkedAt": "2026-10-08T12:28:15.000Z",
+      "lastSuccessfulAt": "2026-10-08T12:28:15.000Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -68,7 +68,7 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "",
-      "reason": "no reference source configured; Cloudflare protection responded; verified address preserved",
+      "reason": "Ordinary Edge navigation from toki32.com redirected to toki33.com; /manhwa displayed 40 work links",
       "checks": {
         "source": {
           "state": "skipped",
@@ -76,7 +76,7 @@
         },
         "current": {
           "state": "healthy",
-          "detail": "Cloudflare protection responded; verified address preserved"
+          "detail": "toki32.com redirected to toki33.com; category navigation verified: /manhwa"
         },
         "numeric": {
           "state": "skipped",
