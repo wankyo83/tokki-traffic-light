@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-15T01:39:58.386Z",
+  "updatedAt": "2026-10-15T01:40:57.968Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
@@ -18,9 +18,9 @@
       "lastConfirmedAt": "2026-10-15T01:35:46.069Z"
     },
     "wfwf": {
-      "baseUrl": "https://wfwf515.com",
+      "baseUrl": "https://wfwf516.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-10-15T01:36:21.387Z"
+      "lastConfirmedAt": "2026-10-15T01:40:57.342Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon424.com",

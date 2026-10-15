@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-10-15T01:39:58.386Z",
-  "durationMs": 701840,
+  "checkedAt": "2026-10-15T01:40:57.968Z",
+  "durationMs": 25674,
   "policy": {
     "intervalMinutes": 60,
     "addressPriority": [
@@ -124,32 +124,38 @@
       "key": "wfwf",
       "name": "WFWF",
       "category": "manga",
-      "activeBaseUrl": "https://wfwf515.com",
+      "activeBaseUrl": "https://wfwf516.com",
       "state": "healthy",
-      "checkedAt": "2026-10-15T01:36:21.387Z",
-      "lastSuccessfulAt": "2026-10-15T01:36:21.387Z",
+      "checkedAt": "2026-10-15T01:40:57.342Z",
+      "lastSuccessfulAt": "2026-10-15T01:40:57.342Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
       "sourceName": "늑대닷컴 공식채널",
-      "sourceUrl": "https://t.me/s/wftoon",
+      "sourceUrl": "https://t.me/s/wftoon999",
       "sourceType": "telegram",
       "errorCode": "",
-      "reason": "guide read; category navigation verified: /end",
+      "reason": "latest labeled Telegram address; category route verified: /end",
       "checks": {
         "source": {
-          "state": "failed",
-          "detail": "guide read",
-          "candidates": []
+          "state": "healthy",
+          "detail": "https://wfwf516.com: category route verified: /end",
+          "candidates": [
+            {
+              "baseUrl": "https://wfwf516.com",
+              "state": "healthy",
+              "detail": "category route verified: /end"
+            }
+          ]
         },
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /end"
+          "state": "skipped",
+          "detail": "reference source address verified first"
         },
         "numeric": {
           "state": "skipped",
           "checked": 0,
-          "detail": "published address verified after source fallback"
+          "detail": "source address verified"
         }
       }
     },
@@ -562,5 +568,5 @@
       }
     }
   ],
-  "checkerVersion": "hash-catalog-v5.2"
+  "checkerVersion": "hash-catalog-v5.2.1"
 }
