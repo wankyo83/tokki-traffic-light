@@ -112,7 +112,7 @@ def category_content_verified(key, base_url, links, category_path):
     if not pattern:
         return True
     base = urlsplit(base_url)
-    matches = 0
+    matches = set()
     for link in links:
         parsed = urlsplit(link.get("href", ""))
         if parsed.scheme not in ("", "https"):
@@ -120,8 +120,8 @@ def category_content_verified(key, base_url, links, category_path):
         if parsed.hostname and parsed.hostname.removeprefix("www.") != (base.hostname or "").removeprefix("www."):
             continue
         if re.fullmatch(pattern, unquote(parsed.path).rstrip("/")):
-            matches += 1
-            if matches >= 2:
+            matches.add(unquote(parsed.path).rstrip("/"))
+            if len(matches) >= 2:
                 return True
     return False
 
@@ -142,13 +142,20 @@ def validate_page(key, final_url, title, body_text, links, html, status=200, req
     if not paths:
         return None, "no category routes configured"
     for path in paths:
-        if requested_category and path == requested_category and not urlsplit(path).fragment and matches_category(base, final_url, path):
+        fragment = bool(urlsplit(path).fragment)
+        # A hash route is a real client-rendered category, not an HTTP path.
+        # Never accept it on URL/title alone: require configured work links.
+        content_verified = category_content_verified(key, base, links, path)
+        fragment_verified = fragment and path in RULES[key].get("candidateContentPatterns", {}) and content_verified
+        if requested_category and path == requested_category and matches_category(base, final_url, path) and (not fragment or fragment_verified):
             if (body_text.strip() or len(html) > 200) and (
-                not require_candidate_content or category_content_verified(key, base, links, path)
+                not require_candidate_content or content_verified
             ):
                 return base, f"category route verified: {path}"
         if not require_candidate_content and any(matches_category(base, link.get("href", ""), path) for link in links):
             return base, f"category navigation verified: {path}"
+        if require_candidate_content and fragment_verified and any(matches_category(base, link.get("href", ""), path) for link in links):
+            return base, f"category navigation and work content verified: {path}"
     return None, "category navigation not found"
 
 

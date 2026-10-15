@@ -73,7 +73,7 @@ function addressRow(group) {
     ? `<a class="url address-link" href="${escapeHtml(group.activeBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.activeBaseUrl)}</a>`
     : '<div class="url">확정 주소 없음</div>';
   const candidate = group.candidateBaseUrl
-    ? `<div class="candidate">새 주소 후보: <a href="${escapeHtml(group.candidateBaseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(group.candidateBaseUrl)}</a> · 직접 확인 필요</div>`
+    ? `<div class="candidate">발견한 새 주소: ${escapeHtml(group.candidateBaseUrl)} · 검증 미완료, 연결 주소로 채택하지 않음</div>`
     : '';
   const checks = group.checks;
   const stageMessages = [];
@@ -81,7 +81,7 @@ function addressRow(group) {
     stageMessages.push(`등록 주소 확인 실패: ${checks.current.detail || '사이트 검증 실패'}`);
   }
   if (checks?.source?.state === 'failed') {
-    stageMessages.push(`참조처 확인 실패: ${checks.source.detail || '유효한 주소를 찾지 못함'}`);
+    stageMessages.push(`안내처 주소 발견·검증 결과: ${checks.source.detail || '유효한 주소를 찾지 못함'}`);
   }
   if (checks?.source?.state === 'healthy') {
     stageMessages.push('참조처 주소 검증 성공');

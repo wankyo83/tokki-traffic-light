@@ -195,7 +195,7 @@ class BrowserVerifier:
         ) as solver:
             yield solver
 
-    async def _load(self, page, solver, url, timeout_ms, source_type, protected_current=False):
+    async def _load(self, page, solver, url, timeout_ms, source_type, protected_current=False, content_selector=""):
         deadline = time.monotonic() + timeout_ms / 1000
 
         def remaining_seconds():
@@ -255,6 +255,11 @@ class BrowserVerifier:
             await page.wait_for_function("document.querySelectorAll('a[href]').length > 0", timeout=5_000)
         except Exception:
             pass
+        if content_selector:
+            # A menu can arrive well before the JavaScript work cards. Inspect
+            # the populated catalog, not the first anchor in the page shell.
+            with suppress(Exception):
+                await page.wait_for_selector(content_selector, state="attached", timeout=min(20_000, int(remaining_seconds() * 1000)))
         title = await page.title()
         html = (await page.content())[:2_000_000]
         try:
@@ -272,13 +277,13 @@ class BrowserVerifier:
             "links": links, "messages": messages, "status": status,
         }
 
-    async def _page(self, url, *, solve=True, timeout_ms=210_000, source_type="", protected_current=False):
+    async def _page(self, url, *, solve=True, timeout_ms=210_000, source_type="", protected_current=False, content_selector=""):
         if self.context is None:
             raise RuntimeError("BrowserVerifier is not started")
         page = await self.context.new_page()
         try:
             async with self._solver(page, solve) as solver:
-                return await self._load(page, solver, url, timeout_ms, source_type, protected_current)
+                return await self._load(page, solver, url, timeout_ms, source_type, protected_current, content_selector)
         finally:
             with suppress(Exception):
                 await page.close()
@@ -354,7 +359,8 @@ class BrowserVerifier:
                 raise TimeoutError("site verification budget exhausted")
             budget = min(cap_ms, int(remaining * 1000))
             return await asyncio.wait_for(
-                self._page(route, timeout_ms=budget, protected_current=allow_protected and not candidate),
+                self._page(route, timeout_ms=budget, protected_current=allow_protected and not candidate,
+                           content_selector=RULES[key].get("contentReadySelector", "")),
                 timeout=budget / 1000,
             )
 
@@ -390,8 +396,6 @@ class BrowserVerifier:
             # A reset at '/' does not prove '/ing' or '/novel/updates' is down.
             # Only actual same-family category content can recover the check.
             for category in RULES[key]["categoryPaths"]:
-                if urlsplit(category).fragment:
-                    continue
                 try:
                     category_page = await probe(target + category, 45_000)
                     result, probe_reason = validate_page(

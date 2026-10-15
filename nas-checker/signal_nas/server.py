@@ -13,7 +13,7 @@ ADMIN_HTML = Path(__file__).with_name("admin.html").read_text(encoding="utf-8")
 
 def public_overview(state):
     """Only publish read-only metadata already visible in the public signal."""
-    fields = ("key", "name", "category", "activeBaseUrl", "state", "sourceName", "sourceUrl", "reason", "checkedAt")
+    fields = ("key", "name", "category", "activeBaseUrl", "candidateBaseUrl", "state", "sourceName", "sourceUrl", "reason", "checkedAt")
     return {
         "running": state["running"],
         "phase": state.get("phase", "idle"),
@@ -25,7 +25,10 @@ def public_overview(state):
         "lastCommit": state.get("lastCommit"),
         "hasError": bool(state.get("lastError")),
         "publishedCheckedAt": state.get("publishedCheckedAt"),
-        "groups": [{key: group.get(key) for key in fields} for group in state.get("groups", [])],
+        "groups": [{**{key: group.get(key) for key in fields},
+                    "checks": {stage: {key: value for key, value in check.items() if key in ("state", "detail", "checked", "candidates")}
+                               for stage, check in group.get("checks", {}).items() if stage in ("source", "current", "numeric")}}
+                   for group in state.get("groups", [])],
     }
 
 

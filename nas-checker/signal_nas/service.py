@@ -100,6 +100,8 @@ class CheckerService:
         has_source = source.get("type") not in ("none", "fixed", None)
         source_urls, source_result = await browser.discover(site) if has_source else ([], "no reference source configured")
         source_failures = []
+        source_candidates = []
+        checks["source"]["candidates"] = source_candidates
         tried = set()
         current_allowed = not current or candidate_url_allowed(key, current)
 
@@ -114,6 +116,8 @@ class CheckerService:
                 source_failures.append(f"{candidate}: blocked as a confirmed false positive")
                 continue
             tried.add(candidate)
+            evidence = {"baseUrl": candidate, "state": "verifying", "detail": ""}
+            source_candidates.append(evidence)
             is_published = bool(current_allowed and candidate == current)
             result, reason = await browser.verify(
                 key,
@@ -122,14 +126,17 @@ class CheckerService:
                 candidate=not is_published,
             )
             if result and not automatic_regression(key, current, result):
-                checks["source"] = {"state": "healthy", "detail": f"{candidate}: {reason}"}
+                evidence.update(state="healthy", detail=reason)
+                checks["source"] = {"state": "healthy", "detail": f"{candidate}: {reason}", "candidates": source_candidates}
                 checks["current"] = {"state": "skipped", "detail": "reference source address verified first"}
                 checks["numeric"] = {"state": "skipped", "checked": 0, "detail": "source address verified"}
                 return result, "healthy", source_result, reason, checks
+            evidence.update(state="failed", detail=reason)
             source_failures.append(f"{candidate}: {reason}")
         checks["source"] = {
             "state": "failed" if has_source else "skipped",
             "detail": "; ".join([source_result] + source_failures)[:400],
+            "candidates": source_candidates,
         }
 
         # Priority 2: keep using the currently published address when the guide
@@ -181,7 +188,7 @@ class CheckerService:
         }
         return None, "stale", source_result, checks["current"]["detail"], checks
 
-    async def _run_async(self, domains, old_status):
+    async def _run_async(self, domains, old_status, only_keys=None):
         start = time.monotonic()
         old_groups = {group["key"]: group for group in old_status["groups"] if "key" in group}
         async def check_one(browser, site, startup_error=None):
@@ -223,7 +230,9 @@ class CheckerService:
                 "state": state if result else "stale",
                 "checkedAt": checked,
                 "lastSuccessfulAt": checked if result else old.get("lastSuccessfulAt", prior.get("lastConfirmedAt")),
-                "candidateBaseUrl": None,
+                "candidateBaseUrl": next((item["baseUrl"] for item in checks["source"].get("candidates", [])
+                                          if item["baseUrl"] != domains["domains"].get(key, {}).get("baseUrl")
+                                          and item["state"] == "failed"), None),
                 "candidateConfirmations": 0,
                 "candidateConfirmationsRequired": 1,
                 "sourceName": source["name"], "sourceUrl": source["url"], "sourceType": source["type"],
@@ -236,6 +245,10 @@ class CheckerService:
 
         groups = []
         for site in SITES:
+            if only_keys is not None and site["key"] not in only_keys:
+                if site["key"] in old_groups:
+                    groups.append(copy.deepcopy(old_groups[site["key"]]))
+                continue
             if site.get("paused"):
                 groups.append(await check_one(None, site))
             else:
@@ -256,11 +269,13 @@ class CheckerService:
             "durationMs": round((time.monotonic() - start) * 1000),
             "policy": {"intervalMinutes": 60, "addressPriority": ["referenceSource", "publishedAddress", "numericSuccessors"], "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 45, "browserIsolation": "per-site", "cloudflareSessionReuse": "within-site", "cloudflareProtectedCurrentFallback": True},
             "groups": groups,
-            "checkerVersion": "transport-recovery-v5.1",
+            "checkerVersion": "hash-catalog-v5.2",
         }
         return domains, status
 
-    def run_once(self):
+    def run_once(self, only_keys=None):
+        if only_keys is not None and (not only_keys or not set(only_keys) <= set(BY_KEY)):
+            raise ValueError("unknown or empty site selection")
         with self.lock:
             self.running = True
             self.last_error = ""
@@ -281,7 +296,7 @@ class CheckerService:
                     raise RuntimeError(f"direct NAS exit not verified as KR (loc={location}); publication stopped")
             with self.lock:
                 self.phase = "verifying sites"
-            domains, status = asyncio.run(self._run_async(domains, old_status))
+            domains, status = asyncio.run(self._run_async(domains, old_status, only_keys))
             # GitHub commit precedes local state update: public snapshot remains the authority.
             with self.lock:
                 self.phase = "publishing GitHub snapshot"

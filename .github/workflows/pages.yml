@@ -23,6 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: NAS 주소 검증 회귀 테스트
+        working-directory: nas-checker
+        run: python3 -m unittest discover -s tests -v
+      - name: 공개 화면 JavaScript 구문 검사
+        run: node --check site/app.js
       - name: UI 배포 시 현재 공개 주소 보존
         run: python3 scripts/prepare-pages-snapshot.py
       - name: 공개 중인 주소보다 오래된 파일 배포 차단

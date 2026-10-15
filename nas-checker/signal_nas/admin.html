@@ -49,14 +49,16 @@ function setText(id,value){$(id).textContent=value}
 function row(group){
   const active=latest.running&&latest.currentSite===group.name;
   const state=active?'verifying':group.state==='healthy'?'healthy':group.state==='manual'?'manual':'stale';
-  const label=active?'검사 중':state==='healthy'?'정상':state==='manual'?'수동 등록':'확인 필요';
+  const label=active?'검사 중':state==='healthy'?'정상':state==='manual'?'수동 등록':'확인 실패 · 기존 주소 유지';
   const item=document.createElement('div');item.className='row';
   const symbol=document.createElement('span');symbol.className='symbol';symbol.textContent=active?'🔄':state==='healthy'?'✅':state==='manual'?'📌':'⚠️';item.append(symbol);
   const main=document.createElement('div');main.className='row-main';
   const name=document.createElement('div');name.className='name';name.textContent=group.name||group.key;
   const badge=document.createElement('span');badge.className='badge '+state;badge.textContent=label;name.append(badge);main.append(name);
   const address=safeUrl(group.activeBaseUrl);if(address){const link=document.createElement('a');link.className='url';link.href=address;link.target='_blank';link.rel='noopener noreferrer';link.textContent=group.activeBaseUrl;main.append(link)}
+  const candidate=safeUrl(group.candidateBaseUrl);if(candidate&&candidate!==address){const found=document.createElement('div');found.className='reason';found.textContent='발견한 새 주소: '+group.candidateBaseUrl+' · 검증 미완료, 연결 주소로 채택하지 않음';main.append(found)}
   const source=document.createElement('div');source.className='source';source.append(document.createTextNode('주소 출처: '));const sourceUrl=safeUrl(group.sourceUrl);if(sourceUrl){const link=document.createElement('a');link.href=sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent=group.sourceName||'안내처';source.append(link)}else{source.append(document.createTextNode(group.sourceName||'없음'))}main.append(source);
+  for(const [stage,title] of [['source','새 주소 검증'],['current','기존 주소 검증'],['numeric','다음 번호 검사']]){const check=group.checks?.[stage];if(check?.state==='failed'){const detail=document.createElement('div');detail.className='reason';detail.textContent=title+': '+(check.detail||'확인 실패');main.append(detail)}}
   if(group.reason&&state==='stale'){const reason=document.createElement('div');reason.className='reason';reason.textContent=group.reason;main.append(reason)}
   const checked=document.createElement('div');checked.className='checked';checked.textContent='마지막 확인: '+time(group.checkedAt);main.append(checked);item.append(main);
   const copy=document.createElement('button');copy.className='copy';copy.type='button';copy.textContent='복사';copy.disabled=!address;copy.onclick=async()=>{try{if(navigator.clipboard){await navigator.clipboard.writeText(address)}else{const input=document.createElement('textarea');input.value=address;document.body.append(input);input.select();document.execCommand('copy');input.remove()}copy.textContent='복사됨';setTimeout(()=>copy.textContent='복사',1500)}catch{copy.textContent='복사 실패'}};item.append(copy);return item;
