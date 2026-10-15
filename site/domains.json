@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-15T01:23:14.025Z",
+  "updatedAt": "2026-10-15T01:25:52.313Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
@@ -23,9 +23,9 @@
       "lastConfirmedAt": "2026-10-15T01:17:47.351Z"
     },
     "blacktoon": {
-      "baseUrl": "https://blacktoon423.com",
+      "baseUrl": "https://blacktoon424.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-10-13T02:18:37.621Z"
+      "lastConfirmedAt": "2026-10-15T01:25:51.492Z"
     },
     "jjaptoon": {
       "baseUrl": "https://www.jjaptoon007.com",
