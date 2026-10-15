@@ -269,7 +269,7 @@ class CheckerService:
             "durationMs": round((time.monotonic() - start) * 1000),
             "policy": {"intervalMinutes": 60, "addressPriority": ["referenceSource", "publishedAddress", "numericSuccessors"], "preservesLastKnownGood": True, "browser": "Camoufox", "directNasEgress": True, "numericSearchWindow": 10, "numericSearchMaxOffset": 10, "maxConcurrentSites": 1, "candidateTimeoutSeconds": 45, "browserIsolation": "per-site", "cloudflareSessionReuse": "within-site", "cloudflareProtectedCurrentFallback": True},
             "groups": groups,
-            "checkerVersion": "hash-catalog-v5.2",
+            "checkerVersion": "hash-catalog-v5.2.1",
         }
         return domains, status
 
