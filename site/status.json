@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-11-02T19:05:13.875Z",
-  "durationMs": 191294,
+  "checkedAt": "2026-11-02T20:03:24.253Z",
+  "durationMs": 81678,
   "policy": {
     "intervalMinutes": 60,
     "addressPriority": [
@@ -26,8 +26,8 @@
       "name": "뉴토끼",
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
-      "state": "healthy",
-      "checkedAt": "2026-11-02T19:02:13.091Z",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:05.710Z",
       "lastSuccessfulAt": "2026-11-02T19:02:13.091Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -35,8 +35,8 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "no reference source configured; category navigation verified: /webtoon",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79",
       "checks": {
         "source": {
           "state": "skipped",
@@ -44,13 +44,13 @@
           "candidates": []
         },
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /webtoon"
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified after source fallback"
+          "state": "failed",
+          "checked": 10,
+          "detail": "r: BrowserContext.new_page: Target page, context or browser has been closed; https://newtoki9.org: candidate host is explicitly blocked after a confirmed false positive; https://newtoki10.org: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://newtoki11.org: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         }
       }
     },
@@ -59,8 +59,8 @@
       "name": "토끼",
       "category": "manga",
       "activeBaseUrl": "https://toki35.com",
-      "state": "healthy",
-      "checkedAt": "2026-11-02T19:02:34.982Z",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:08.528Z",
       "lastSuccessfulAt": "2026-11-02T19:02:34.982Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -68,8 +68,8 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "no reference source configured; category navigation verified: /novel/updates",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79",
       "checks": {
         "source": {
           "state": "skipped",
@@ -77,13 +77,13 @@
           "candidates": []
         },
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /novel/updates"
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified after source fallback"
+          "state": "failed",
+          "checked": 10,
+          "detail": "ext.new_page: Target page, context or browser has been closed; https://toki43.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://toki44.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://toki45.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         }
       }
     },
@@ -92,8 +92,8 @@
       "name": "SBXH",
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
-      "state": "healthy",
-      "checkedAt": "2026-11-02T19:02:59.302Z",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:11.565Z",
       "lastSuccessfulAt": "2026-11-02T19:02:59.302Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -101,8 +101,8 @@
       "sourceName": "참조처 없음",
       "sourceUrl": "",
       "sourceType": "none",
-      "errorCode": "",
-      "reason": "no reference source configured; category navigation verified: /ing",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "no reference source configured; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79",
       "checks": {
         "source": {
           "state": "skipped",
@@ -110,13 +110,13 @@
           "candidates": []
         },
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /ing"
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified after source fallback"
+          "state": "failed",
+          "checked": 10,
+          "detail": "ext.new_page: Target page, context or browser has been closed; https://sbxh17.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://sbxh18.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://sbxh19.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         }
       }
     },
@@ -125,8 +125,8 @@
       "name": "WFWF",
       "category": "manga",
       "activeBaseUrl": "https://wfwf524.com",
-      "state": "healthy",
-      "checkedAt": "2026-11-02T19:03:32.180Z",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:47.377Z",
       "lastSuccessfulAt": "2026-11-02T19:03:32.180Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -134,22 +134,22 @@
       "sourceName": "늑대닷컴 공식채널",
       "sourceUrl": "https://t.me/s/wftoon999",
       "sourceType": "telegram",
-      "errorCode": "",
-      "reason": "Telegram address label missing or invalid; category route verified: /end",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
       "checks": {
         "source": {
           "state": "failed",
-          "detail": "Telegram address label missing or invalid",
+          "detail": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo",
           "candidates": []
         },
         "current": {
-          "state": "healthy",
-          "detail": "category route verified: /end"
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified after source fallback"
+          "state": "failed",
+          "checked": 10,
+          "detail": ".new_page: Target page, context or browser has been closed; https://wfwf532.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://wfwf533.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://wfwf534.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         }
       }
     },
@@ -158,8 +158,8 @@
       "name": "블랙툰",
       "category": "manga",
       "activeBaseUrl": "https://blacktoon426.com",
-      "state": "healthy",
-      "checkedAt": "2026-11-02T19:03:57.717Z",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:50.119Z",
       "lastSuccessfulAt": "2026-11-02T19:03:57.717Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -167,28 +167,22 @@
       "sourceName": "블랙툰 주소 안내",
       "sourceUrl": "https://www.blacktoonurls.com/address-collection",
       "sourceType": "guide",
-      "errorCode": "",
-      "reason": "guide read; category navigation verified: /#continue",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
       "checks": {
         "source": {
-          "state": "healthy",
-          "detail": "https://blacktoon426.com: category navigation verified: /#continue",
-          "candidates": [
-            {
-              "baseUrl": "https://blacktoon426.com",
-              "state": "healthy",
-              "detail": "category navigation verified: /#continue"
-            }
-          ]
+          "state": "failed",
+          "detail": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo",
+          "candidates": []
         },
         "current": {
-          "state": "skipped",
-          "detail": "reference source address verified first"
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "source address verified"
+          "state": "failed",
+          "checked": 10,
+          "detail": "et page, context or browser has been closed; https://blacktoon434.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://blacktoon435.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://blacktoon436.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
         }
       }
     },
@@ -198,7 +192,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "paused",
-      "checkedAt": "2026-11-02T19:03:58.536Z",
+      "checkedAt": "2026-11-02T20:02:50.145Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -230,272 +224,8 @@
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
       "state": "stale",
-      "checkedAt": "2026-11-02T19:04:22.323Z",
+      "checkedAt": "2026-11-02T20:02:52.907Z",
       "lastSuccessfulAt": "2026-11-02T18:04:11.688Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "참조처 없음",
-      "sourceUrl": "",
-      "sourceType": "none",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "no reference source configured; TargetClosedError: Page.title: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "skipped",
-          "detail": "no reference source configured",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: Page.title: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "unavailable",
-          "checked": 0,
-          "detail": "no numbered successor for this site"
-        }
-      }
-    },
-    {
-      "key": "naver",
-      "name": "네이버 웹툰",
-      "category": "manga",
-      "activeBaseUrl": "https://comic.naver.com",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:04:45.700Z",
-      "lastSuccessfulAt": "2026-11-02T18:04:22.680Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "고정 주소",
-      "sourceUrl": "",
-      "sourceType": "none",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "no reference source configured; TargetClosedError: Page.title: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "skipped",
-          "detail": "no reference source configured",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: Page.title: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "unavailable",
-          "checked": 0,
-          "detail": "no numbered successor for this site"
-        }
-      }
-    },
-    {
-      "key": "goodtoon",
-      "name": "굿툰",
-      "category": "manga",
-      "activeBaseUrl": "https://www.goodtoon009.com",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:04:50.825Z",
-      "lastSuccessfulAt": "2026-11-02T18:05:04.718Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "굿툰 공식 텔레그램",
-      "sourceUrl": "https://t.me/s/goodtoon_url",
-      "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TargetClosedError: Page.goto: Target page, context or browser has been closed\nCall log:\n  - navigating to \"https://t.me/s/goodtoon_url\", wa; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TargetClosedError: Page.goto: Target page, context or browser has been closed\nCall log:\n  - navigating to \"https://t.me/s/goodtoon_url\", wa",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "context or browser has been closed; https://www.goodtoon017.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://www.goodtoon018.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://www.goodtoon019.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        }
-      }
-    },
-    {
-      "key": "newxtoon",
-      "name": "뉴엑스툰",
-      "category": "manga",
-      "activeBaseUrl": "https://newxtoon4.com",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:04:56.880Z",
-      "lastSuccessfulAt": "2026-11-02T18:05:15.390Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "뉴엑스툰 주소 안내",
-      "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
-      "sourceType": "guide",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TargetClosedError: Page.goto: Page crashed\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"commit\"\n; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79",
-      "checks": {
-        "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TargetClosedError: Page.goto: Page crashed\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"commit\"\n",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79"
-        },
-        "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": ": Target page, context or browser has been closed; https://newxtoon12.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://newxtoon13.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://newxtoon14.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        }
-      }
-    },
-    {
-      "key": "linkkf",
-      "name": "Linkkf",
-      "category": "media",
-      "activeBaseUrl": "https://linkkf.tv",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:04:59.999Z",
-      "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "Linkkf 공식 X",
-      "sourceUrl": "https://x.com/linkkfcom",
-      "sourceType": "guide",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TargetClosedError: Page.goto: Target page, context or browser has been closed\nCall log:\n  - navigating to \"https://x.com/linkkfcom\", waitin; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TargetClosedError: Page.goto: Target page, context or browser has been closed\nCall log:\n  - navigating to \"https://x.com/linkkfcom\", waitin",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "unavailable",
-          "checked": 0,
-          "detail": "no numbered successor for this site"
-        }
-      }
-    },
-    {
-      "key": "ani24",
-      "name": "애니24",
-      "category": "media",
-      "activeBaseUrl": "https://www.ohli24.net",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:05:04.100Z",
-      "lastSuccessfulAt": "2026-11-02T18:06:00.051Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "애니24 공식 텔레그램",
-      "sourceUrl": "https://t.me/s/ohli24net?before=999999999",
-      "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "amily; https://www.ohli30.net: ValueError: URL is outside the configured site family; https://www.ohli31.net: ValueError: URL is outside the configured site family; https://www.ohli32.net: ValueError: URL is outside the configured site family; https://www.ohli33.net: ValueError: URL is outside the configured site family; https://www.ohli34.net: ValueError: URL is outside the configured site family"
-        }
-      }
-    },
-    {
-      "key": "tvroom",
-      "name": "티비룸",
-      "category": "media",
-      "activeBaseUrl": "https://tvroom43.org",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:05:07.572Z",
-      "lastSuccessfulAt": "2026-11-02T18:06:21.867Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "티비룸 공식 텔레그램",
-      "sourceUrl": "https://t.me/s/tvroom8282",
-      "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "w_page: Target page, context or browser has been closed; https://tvroom51.org: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://tvroom52.org: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://tvroom53.org: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        }
-      }
-    },
-    {
-      "key": "tvwiki",
-      "name": "티비위키",
-      "category": "media",
-      "activeBaseUrl": "https://tvwiki56.net",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:05:10.828Z",
-      "lastSuccessfulAt": "2026-11-02T18:06:44.728Z",
-      "candidateBaseUrl": null,
-      "candidateConfirmations": 0,
-      "candidateConfirmationsRequired": 1,
-      "sourceName": "티비위키 공식 텔레그램",
-      "sourceUrl": "https://t.me/s/tvwiki_url",
-      "sourceType": "telegram",
-      "errorCode": "VERIFICATION_FAILED",
-      "reason": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
-      "checks": {
-        "source": {
-          "state": "failed",
-          "detail": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
-          "candidates": []
-        },
-        "current": {
-          "state": "failed",
-          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        },
-        "numeric": {
-          "state": "failed",
-          "checked": 10,
-          "detail": "w_page: Target page, context or browser has been closed; https://tvwiki64.net: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://tvwiki65.net: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://tvwiki66.net: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
-        }
-      }
-    },
-    {
-      "key": "anilife",
-      "name": "애니라이프",
-      "category": "media",
-      "activeBaseUrl": "https://anilife01.tv",
-      "state": "stale",
-      "checkedAt": "2026-11-02T19:05:13.849Z",
-      "lastSuccessfulAt": "2026-11-02T18:06:50.105Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -515,9 +245,266 @@
           "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a79"
         },
         "numeric": {
+          "state": "unavailable",
+          "checked": 0,
+          "detail": "no numbered successor for this site"
+        }
+      }
+    },
+    {
+      "key": "naver",
+      "name": "네이버 웹툰",
+      "category": "manga",
+      "activeBaseUrl": "https://comic.naver.com",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:54.457Z",
+      "lastSuccessfulAt": "2026-11-02T18:04:22.680Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "고정 주소",
+      "sourceUrl": "",
+      "sourceType": "none",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
+        }
+      }
+    },
+    {
+      "key": "goodtoon",
+      "name": "굿툰",
+      "category": "manga",
+      "activeBaseUrl": "https://www.goodtoon009.com",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:57.065Z",
+      "lastSuccessfulAt": "2026-11-02T18:05:04.718Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "굿툰 공식 텔레그램",
+      "sourceUrl": "https://t.me/s/goodtoon_url",
+      "sourceType": "telegram",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo; TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed",
+      "checks": {
+        "source": {
+          "state": "failed",
+          "detail": "guide unavailable: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufo",
+          "candidates": []
+        },
+        "current": {
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
+        },
+        "numeric": {
           "state": "failed",
           "checked": 10,
-          "detail": "w_page: Target page, context or browser has been closed; https://anilife09.tv: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://anilife10.tv: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://anilife11.tv: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
+          "detail": "context or browser has been closed; https://www.goodtoon017.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://www.goodtoon018.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed; https://www.goodtoon019.com: TargetClosedError: BrowserContext.new_page: Target page, context or browser has been closed"
+        }
+      }
+    },
+    {
+      "key": "newxtoon",
+      "name": "뉴엑스툰",
+      "category": "manga",
+      "activeBaseUrl": "https://newxtoon4.com",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:02:58.692Z",
+      "lastSuccessfulAt": "2026-11-02T18:05:15.390Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "뉴엑스툰 주소 안내",
+      "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
+      "sourceType": "guide",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
+        }
+      }
+    },
+    {
+      "key": "linkkf",
+      "name": "Linkkf",
+      "category": "media",
+      "activeBaseUrl": "https://linkkf.tv",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:03:00.203Z",
+      "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "Linkkf 공식 X",
+      "sourceUrl": "https://x.com/linkkfcom",
+      "sourceType": "guide",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
+        }
+      }
+    },
+    {
+      "key": "ani24",
+      "name": "애니24",
+      "category": "media",
+      "activeBaseUrl": "https://www.ohli24.net",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:03:01.798Z",
+      "lastSuccessfulAt": "2026-11-02T18:06:00.051Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "애니24 공식 텔레그램",
+      "sourceUrl": "https://t.me/s/ohli24net?before=999999999",
+      "sourceType": "telegram",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
+        }
+      }
+    },
+    {
+      "key": "tvroom",
+      "name": "티비룸",
+      "category": "media",
+      "activeBaseUrl": "https://tvroom43.org",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:03:21.014Z",
+      "lastSuccessfulAt": "2026-11-02T18:06:21.867Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "티비룸 공식 텔레그램",
+      "sourceUrl": "https://t.me/s/tvroom8282",
+      "sourceType": "telegram",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
+        }
+      }
+    },
+    {
+      "key": "tvwiki",
+      "name": "티비위키",
+      "category": "media",
+      "activeBaseUrl": "https://tvwiki56.net",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:03:22.670Z",
+      "lastSuccessfulAt": "2026-11-02T18:06:44.728Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "티비위키 공식 텔레그램",
+      "sourceUrl": "https://t.me/s/tvwiki_url",
+      "sourceType": "telegram",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
+        }
+      }
+    },
+    {
+      "key": "anilife",
+      "name": "애니라이프",
+      "category": "media",
+      "activeBaseUrl": "https://anilife01.tv",
+      "state": "stale",
+      "checkedAt": "2026-11-02T20:03:24.253Z",
+      "lastSuccessfulAt": "2026-11-02T18:06:50.105Z",
+      "candidateBaseUrl": null,
+      "candidateConfirmations": 0,
+      "candidateConfirmationsRequired": 1,
+      "sourceName": "참조처 없음",
+      "sourceUrl": "",
+      "sourceType": "none",
+      "errorCode": "VERIFICATION_FAILED",
+      "reason": "check failed; TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/",
+      "checks": {
+        "current": {
+          "state": "failed",
+          "detail": "TargetClosedError: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/"
+        },
+        "source": {
+          "state": "skipped",
+          "detail": "site check interrupted"
+        },
+        "numeric": {
+          "state": "skipped",
+          "checked": 0,
+          "detail": "site check interrupted"
         }
       }
     }
