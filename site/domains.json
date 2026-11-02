@@ -1,31 +1,31 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-02T18:06:50.823Z",
+  "updatedAt": "2026-11-02T19:05:13.875Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-02T18:02:13.092Z"
+      "lastConfirmedAt": "2026-11-02T19:02:13.091Z"
     },
     "toki": {
       "baseUrl": "https://toki35.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-02T18:02:42.685Z"
+      "lastConfirmedAt": "2026-11-02T19:02:34.982Z"
     },
     "sbxh": {
       "baseUrl": "https://sbxh9.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-02T18:03:04.447Z"
+      "lastConfirmedAt": "2026-11-02T19:02:59.302Z"
     },
     "wfwf": {
       "baseUrl": "https://wfwf524.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-02T18:03:36.545Z"
+      "lastConfirmedAt": "2026-11-02T19:03:32.180Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon426.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-02T18:04:02.531Z"
+      "lastConfirmedAt": "2026-11-02T19:03:57.717Z"
     },
     "jjaptoon": {
       "baseUrl": "https://www.jjaptoon007.com",
