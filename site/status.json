@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-11-03T05:02:14.989Z",
-  "durationMs": 12471,
+  "checkedAt": "2026-11-03T06:02:16.218Z",
+  "durationMs": 12830,
   "policy": {
     "intervalMinutes": 60,
     "addressPriority": [
@@ -27,7 +27,7 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:03.592Z",
+      "checkedAt": "2026-11-03T06:02:04.140Z",
       "lastSuccessfulAt": "2026-11-02T19:02:13.091Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -59,7 +59,7 @@
       "category": "manga",
       "activeBaseUrl": "https://toki35.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:04.357Z",
+      "checkedAt": "2026-11-03T06:02:04.917Z",
       "lastSuccessfulAt": "2026-11-02T19:02:34.982Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -91,7 +91,7 @@
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:05.145Z",
+      "checkedAt": "2026-11-03T06:02:05.771Z",
       "lastSuccessfulAt": "2026-11-02T19:02:59.302Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -100,11 +100,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "check failed; Exception: BrowserType.launch: Connection closed while reading from the driver",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch: Error: spawn /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-bin EAGAIN\nCall log:\n  - <launching",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "Exception: BrowserType.launch: Connection closed while reading from the driver"
+          "detail": "Error: BrowserType.launch: Failed to launch: Error: spawn /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-bin EAGAIN\nCall log:\n  - <launching"
         },
         "source": {
           "state": "skipped",
@@ -123,7 +123,7 @@
       "category": "manga",
       "activeBaseUrl": "https://wfwf524.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:05.890Z",
+      "checkedAt": "2026-11-03T06:02:06.626Z",
       "lastSuccessfulAt": "2026-11-02T19:03:32.180Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -155,7 +155,7 @@
       "category": "manga",
       "activeBaseUrl": "https://blacktoon426.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:06.702Z",
+      "checkedAt": "2026-11-03T06:02:07.449Z",
       "lastSuccessfulAt": "2026-11-02T19:03:57.717Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -187,7 +187,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "paused",
-      "checkedAt": "2026-11-03T05:02:06.703Z",
+      "checkedAt": "2026-11-03T06:02:07.449Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -219,7 +219,7 @@
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:07.440Z",
+      "checkedAt": "2026-11-03T06:02:09.003Z",
       "lastSuccessfulAt": "2026-11-02T18:04:11.688Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -228,11 +228,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "check failed; Exception: BrowserType.launch: Connection closed while reading from the driver",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "Exception: BrowserType.launch: Connection closed while reading from the driver"
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
         },
         "source": {
           "state": "skipped",
@@ -251,7 +251,7 @@
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:08.189Z",
+      "checkedAt": "2026-11-03T06:02:09.969Z",
       "lastSuccessfulAt": "2026-11-02T18:04:22.680Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -260,11 +260,11 @@
       "sourceUrl": "",
       "sourceType": "none",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "check failed; Exception: BrowserType.launch: Connection closed while reading from the driver",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "Exception: BrowserType.launch: Connection closed while reading from the driver"
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
         },
         "source": {
           "state": "skipped",
@@ -283,7 +283,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.goodtoon009.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:09.061Z",
+      "checkedAt": "2026-11-03T06:02:10.820Z",
       "lastSuccessfulAt": "2026-11-02T18:05:04.718Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -292,11 +292,11 @@
       "sourceUrl": "https://t.me/s/goodtoon_url",
       "sourceType": "telegram",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "check failed; Exception: BrowserType.launch: Connection closed while reading from the driver",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "Exception: BrowserType.launch: Connection closed while reading from the driver"
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
         },
         "source": {
           "state": "skipped",
@@ -315,7 +315,7 @@
       "category": "manga",
       "activeBaseUrl": "https://newxtoon4.com",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:09.825Z",
+      "checkedAt": "2026-11-03T06:02:11.745Z",
       "lastSuccessfulAt": "2026-11-02T18:05:15.390Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -324,11 +324,11 @@
       "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
       "sourceType": "guide",
       "errorCode": "VERIFICATION_FAILED",
-      "reason": "check failed; Exception: BrowserType.launch: Connection closed while reading from the driver",
+      "reason": "check failed; Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b",
       "checks": {
         "current": {
           "state": "failed",
-          "detail": "Exception: BrowserType.launch: Connection closed while reading from the driver"
+          "detail": "Error: BrowserType.launch: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /root/.cache/camoufox/browsers/official/152.0.4-beta.31-3a7958c8/camoufox-b"
         },
         "source": {
           "state": "skipped",
@@ -347,7 +347,7 @@
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:11.303Z",
+      "checkedAt": "2026-11-03T06:02:12.710Z",
       "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -379,7 +379,7 @@
       "category": "media",
       "activeBaseUrl": "https://www.ohli24.net",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:12.264Z",
+      "checkedAt": "2026-11-03T06:02:13.568Z",
       "lastSuccessfulAt": "2026-11-02T18:06:00.051Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -411,7 +411,7 @@
       "category": "media",
       "activeBaseUrl": "https://tvroom43.org",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:13.096Z",
+      "checkedAt": "2026-11-03T06:02:14.444Z",
       "lastSuccessfulAt": "2026-11-02T18:06:21.867Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -443,7 +443,7 @@
       "category": "media",
       "activeBaseUrl": "https://tvwiki56.net",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:14.032Z",
+      "checkedAt": "2026-11-03T06:02:15.313Z",
       "lastSuccessfulAt": "2026-11-02T18:06:44.728Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -475,7 +475,7 @@
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
       "state": "stale",
-      "checkedAt": "2026-11-03T05:02:14.989Z",
+      "checkedAt": "2026-11-03T06:02:16.217Z",
       "lastSuccessfulAt": "2026-11-02T18:06:50.105Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
