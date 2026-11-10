@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-10T07:51:06.274Z",
+  "updatedAt": "2026-11-10T08:51:26.941Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:38:47.682Z"
+      "lastConfirmedAt": "2026-11-10T08:38:47.559Z"
     },
     "toki": {
       "baseUrl": "https://toki35.com",
@@ -15,17 +15,17 @@
     "sbxh": {
       "baseUrl": "https://sbxh9.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:46:50.354Z"
+      "lastConfirmedAt": "2026-11-10T08:46:39.663Z"
     },
     "wfwf": {
       "baseUrl": "https://wfwf529.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:47:21.548Z"
+      "lastConfirmedAt": "2026-11-10T08:47:21.367Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon427.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:47:47.527Z"
+      "lastConfirmedAt": "2026-11-10T08:47:44.492Z"
     },
     "jjaptoon": {
       "baseUrl": "https://www.jjaptoon007.com",
@@ -35,22 +35,22 @@
     "11toon": {
       "baseUrl": "https://11toon.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:47:55.091Z"
+      "lastConfirmedAt": "2026-11-10T08:47:52.358Z"
     },
     "naver": {
       "baseUrl": "https://comic.naver.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:48:03.951Z"
+      "lastConfirmedAt": "2026-11-10T08:48:07.039Z"
     },
     "goodtoon": {
       "baseUrl": "https://www.goodtoon010.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:48:51.725Z"
+      "lastConfirmedAt": "2026-11-10T08:48:55.538Z"
     },
     "newxtoon": {
       "baseUrl": "https://newxtoon5.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:49:04.810Z"
+      "lastConfirmedAt": "2026-11-10T08:49:08.815Z"
     },
     "linkkf": {
       "baseUrl": "https://linkkf.tv",
@@ -60,22 +60,22 @@
     "ani24": {
       "baseUrl": "https://www.ohli24.net",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:49:43.798Z"
+      "lastConfirmedAt": "2026-11-10T08:50:05.606Z"
     },
     "tvroom": {
       "baseUrl": "https://tvroom46.org",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:50:06.004Z"
+      "lastConfirmedAt": "2026-11-10T08:50:25.643Z"
     },
     "tvwiki": {
       "baseUrl": "https://tvwiki57.net",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:50:48.308Z"
+      "lastConfirmedAt": "2026-11-10T08:51:07.498Z"
     },
     "anilife": {
       "baseUrl": "https://anilife01.tv",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-10T07:50:59.242Z"
+      "lastConfirmedAt": "2026-11-10T08:51:19.822Z"
     }
   }
 }
