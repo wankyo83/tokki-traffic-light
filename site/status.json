@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
-  "checkedAt": "2026-11-11T23:44:10.647Z",
-  "durationMs": 338035,
+  "checkedAt": "2026-11-12T00:44:32.750Z",
+  "durationMs": 360146,
   "policy": {
     "intervalMinutes": 60,
     "addressPriority": [
@@ -27,8 +27,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newtoki1.org",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:38:47.153Z",
-      "lastSuccessfulAt": "2026-11-11T23:38:47.153Z",
+      "checkedAt": "2026-11-12T00:38:45.039Z",
+      "lastSuccessfulAt": "2026-11-12T00:38:45.039Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -60,8 +60,8 @@
       "category": "manga",
       "activeBaseUrl": "https://toki35.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:39:14.442Z",
-      "lastSuccessfulAt": "2026-11-11T23:39:14.442Z",
+      "checkedAt": "2026-11-12T00:39:10.676Z",
+      "lastSuccessfulAt": "2026-11-12T00:39:10.676Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -93,8 +93,8 @@
       "category": "manga",
       "activeBaseUrl": "https://sbxh9.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:39:35.994Z",
-      "lastSuccessfulAt": "2026-11-11T23:39:35.994Z",
+      "checkedAt": "2026-11-12T00:39:31.394Z",
+      "lastSuccessfulAt": "2026-11-12T00:39:31.394Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -124,10 +124,10 @@
       "key": "wfwf",
       "name": "WFWF",
       "category": "manga",
-      "activeBaseUrl": "https://wfwf529.com",
+      "activeBaseUrl": "https://wfwf532.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:40:11.398Z",
-      "lastSuccessfulAt": "2026-11-11T23:40:11.398Z",
+      "checkedAt": "2026-11-12T00:40:09.050Z",
+      "lastSuccessfulAt": "2026-11-12T00:40:09.050Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -143,13 +143,13 @@
           "candidates": []
         },
         "current": {
-          "state": "healthy",
-          "detail": "category route verified: /end"
+          "state": "failed",
+          "detail": "HTTP 451"
         },
         "numeric": {
-          "state": "skipped",
-          "checked": 0,
-          "detail": "published address verified after source fallback"
+          "state": "healthy",
+          "checked": 3,
+          "detail": "https://wfwf532.com: category route verified: /end"
         }
       }
     },
@@ -159,8 +159,8 @@
       "category": "manga",
       "activeBaseUrl": "https://blacktoon427.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:40:36.241Z",
-      "lastSuccessfulAt": "2026-11-11T23:40:36.241Z",
+      "checkedAt": "2026-11-12T00:40:32.540Z",
+      "lastSuccessfulAt": "2026-11-12T00:40:32.540Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -198,7 +198,7 @@
       "category": "manga",
       "activeBaseUrl": "https://www.jjaptoon007.com",
       "state": "paused",
-      "checkedAt": "2026-11-11T23:40:37.098Z",
+      "checkedAt": "2026-11-12T00:40:33.343Z",
       "lastSuccessfulAt": "2026-09-24T23:40:38.742Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
@@ -230,8 +230,8 @@
       "category": "manga",
       "activeBaseUrl": "https://11toon.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:40:44.751Z",
-      "lastSuccessfulAt": "2026-11-11T23:40:44.751Z",
+      "checkedAt": "2026-11-12T00:40:41.293Z",
+      "lastSuccessfulAt": "2026-11-12T00:40:41.293Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -263,8 +263,8 @@
       "category": "manga",
       "activeBaseUrl": "https://comic.naver.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:41:01.159Z",
-      "lastSuccessfulAt": "2026-11-11T23:41:01.159Z",
+      "checkedAt": "2026-11-12T00:41:14.094Z",
+      "lastSuccessfulAt": "2026-11-12T00:41:14.094Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -296,8 +296,8 @@
       "category": "manga",
       "activeBaseUrl": "https://www.goodtoon011.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:41:45.858Z",
-      "lastSuccessfulAt": "2026-11-11T23:41:45.858Z",
+      "checkedAt": "2026-11-12T00:42:02.886Z",
+      "lastSuccessfulAt": "2026-11-12T00:42:02.886Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -329,8 +329,8 @@
       "category": "manga",
       "activeBaseUrl": "https://newxtoon5.com",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:41:56.650Z",
-      "lastSuccessfulAt": "2026-11-11T23:41:56.650Z",
+      "checkedAt": "2026-11-12T00:42:14.976Z",
+      "lastSuccessfulAt": "2026-11-12T00:42:14.976Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -338,21 +338,27 @@
       "sourceUrl": "https://xn--vg1b002axlc8ts.com/",
       "sourceType": "guide",
       "errorCode": "",
-      "reason": "guide unavailable: Error: Page.goto: NS_ERROR_NET_RESET\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"commit\"\n; category navigation verified: /comics",
+      "reason": "guide read; category navigation verified: /comics",
       "checks": {
         "source": {
-          "state": "failed",
-          "detail": "guide unavailable: Error: Page.goto: NS_ERROR_NET_RESET\nCall log:\n  - navigating to \"https://xn--vg1b002axlc8ts.com/\", waiting until \"commit\"\n",
-          "candidates": []
+          "state": "healthy",
+          "detail": "https://newxtoon5.com: category navigation verified: /comics",
+          "candidates": [
+            {
+              "baseUrl": "https://newxtoon5.com",
+              "state": "healthy",
+              "detail": "category navigation verified: /comics"
+            }
+          ]
         },
         "current": {
-          "state": "healthy",
-          "detail": "category navigation verified: /comics"
+          "state": "skipped",
+          "detail": "reference source address verified first"
         },
         "numeric": {
           "state": "skipped",
           "checked": 0,
-          "detail": "published address verified after source fallback"
+          "detail": "source address verified"
         }
       }
     },
@@ -362,7 +368,7 @@
       "category": "media",
       "activeBaseUrl": "https://linkkf.tv",
       "state": "stale",
-      "checkedAt": "2026-11-11T23:42:15.537Z",
+      "checkedAt": "2026-11-12T00:42:32.030Z",
       "lastSuccessfulAt": "2026-09-25T11:28:34.964Z",
       "candidateBaseUrl": "https://linkkf.app",
       "candidateConfirmations": 0,
@@ -411,8 +417,8 @@
       "category": "media",
       "activeBaseUrl": "https://www.ohli24.net",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:42:47.896Z",
-      "lastSuccessfulAt": "2026-11-11T23:42:47.896Z",
+      "checkedAt": "2026-11-12T00:43:07.750Z",
+      "lastSuccessfulAt": "2026-11-12T00:43:07.750Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -450,8 +456,8 @@
       "category": "media",
       "activeBaseUrl": "https://tvroom46.org",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:43:08.030Z",
-      "lastSuccessfulAt": "2026-11-11T23:43:08.030Z",
+      "checkedAt": "2026-11-12T00:43:30.134Z",
+      "lastSuccessfulAt": "2026-11-12T00:43:30.134Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -489,8 +495,8 @@
       "category": "media",
       "activeBaseUrl": "https://tvwiki57.net",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:43:55.164Z",
-      "lastSuccessfulAt": "2026-11-11T23:43:55.164Z",
+      "checkedAt": "2026-11-12T00:44:13.267Z",
+      "lastSuccessfulAt": "2026-11-12T00:44:13.267Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
@@ -522,8 +528,8 @@
       "category": "media",
       "activeBaseUrl": "https://anilife01.tv",
       "state": "healthy",
-      "checkedAt": "2026-11-11T23:44:07.938Z",
-      "lastSuccessfulAt": "2026-11-11T23:44:07.938Z",
+      "checkedAt": "2026-11-12T00:44:30.770Z",
+      "lastSuccessfulAt": "2026-11-12T00:44:30.770Z",
       "candidateBaseUrl": null,
       "candidateConfirmations": 0,
       "candidateConfirmationsRequired": 1,
