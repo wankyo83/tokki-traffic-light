@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-13T00:58:56.742Z",
+  "updatedAt": "2026-11-13T01:56:51.173Z",
   "domains": {
     "newtoki": {
       "baseUrl": "https://newtoki1.org",
@@ -18,14 +18,14 @@
       "lastConfirmedAt": "2026-11-12T18:39:32.985Z"
     },
     "wfwf": {
-      "baseUrl": "https://wfwf532.com",
+      "baseUrl": "https://wfwf534.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:55:06.731Z"
+      "lastConfirmedAt": "2026-11-13T01:52:57.902Z"
     },
     "blacktoon": {
       "baseUrl": "https://blacktoon428.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:55:29.701Z"
+      "lastConfirmedAt": "2026-11-13T01:53:24.169Z"
     },
     "jjaptoon": {
       "baseUrl": "https://www.jjaptoon007.com",
@@ -35,22 +35,22 @@
     "11toon": {
       "baseUrl": "https://11toon.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:55:39.981Z"
+      "lastConfirmedAt": "2026-11-13T01:53:32.421Z"
     },
     "naver": {
       "baseUrl": "https://comic.naver.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:55:53.975Z"
+      "lastConfirmedAt": "2026-11-13T01:53:44.095Z"
     },
     "goodtoon": {
       "baseUrl": "https://www.goodtoon011.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:56:40.888Z"
+      "lastConfirmedAt": "2026-11-13T01:54:26.446Z"
     },
     "newxtoon": {
       "baseUrl": "https://newxtoon5.com",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:56:50.881Z"
+      "lastConfirmedAt": "2026-11-13T01:54:36.075Z"
     },
     "linkkf": {
       "baseUrl": "https://linkkf.tv",
@@ -60,7 +60,7 @@
     "ani24": {
       "baseUrl": "https://www.ohli24.net",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:57:38.184Z"
+      "lastConfirmedAt": "2026-11-13T01:55:26.547Z"
     },
     "tvroom": {
       "baseUrl": "https://tvroom46.org",
@@ -70,12 +70,12 @@
     "tvwiki": {
       "baseUrl": "https://tvwiki58.net",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:58:45.054Z"
+      "lastConfirmedAt": "2026-11-13T01:56:37.745Z"
     },
     "anilife": {
       "baseUrl": "https://anilife01.tv",
       "status": "healthy",
-      "lastConfirmedAt": "2026-11-13T00:58:50.618Z"
+      "lastConfirmedAt": "2026-11-13T01:56:48.688Z"
     }
   }
 }
